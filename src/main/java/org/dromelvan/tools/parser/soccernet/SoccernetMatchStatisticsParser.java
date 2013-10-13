@@ -207,7 +207,7 @@ public class SoccernetMatchStatisticsParser extends MatchStatisticsHTMLFileParse
             if(assistsMatchParserObject != null) {
                 for(TeamParserObject team : assistsMatchParserObject.getTeams()) {
                     for(PlayerParserObject assistPlayer : team.getPlayers()) {
-                        PlayerParserObject player = matchParserObject.getTeam(team.getName()).getPlayer(assistPlayer.getName());
+                        PlayerParserObject player = matchParserObject.getTeam(team.getName()).getPlayer(assistPlayer.getName(), "assists");
                         if(player != null) {
                             logger.debug("Player {} was mapped to player {}.", assistPlayer.getName(), player.getName());
                             player.setAssists(assistPlayer.getAssists());
@@ -237,7 +237,7 @@ public class SoccernetMatchStatisticsParser extends MatchStatisticsHTMLFileParse
                 for(TeamParserObject team : ratingsMatchParserObject.getTeams()) {
                     for(PlayerParserObject ratingPlayer : team.getPlayers()) {
                         if(ratingPlayer.getRating() > 0) {
-                            PlayerParserObject player = matchParserObject.getTeam(team.getName()).getPlayer(ratingPlayer.getName());
+                            PlayerParserObject player = matchParserObject.getTeam(team.getName()).getPlayer(ratingPlayer.getName(), "rating");
                             if(player != null) {
                                 logger.debug("Player {} was mapped to player {}.", ratingPlayer.getName(), player.getName());
                                 player.setRating(ratingPlayer.getRating());
