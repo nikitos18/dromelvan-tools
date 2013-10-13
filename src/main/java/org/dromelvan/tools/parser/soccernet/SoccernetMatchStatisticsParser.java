@@ -10,8 +10,8 @@ import java.util.regex.Pattern;
 
 import org.dromelvan.tools.parser.CardParserObject;
 import org.dromelvan.tools.parser.GoalParserObject;
-import org.dromelvan.tools.parser.MatchStatisticsHTMLFileParser;
 import org.dromelvan.tools.parser.MatchParserObject;
+import org.dromelvan.tools.parser.MatchStatisticsHTMLFileParser;
 import org.dromelvan.tools.parser.PlayerParserObject;
 import org.dromelvan.tools.parser.SubstitutionParserObject;
 import org.dromelvan.tools.parser.TeamParserObject;
@@ -41,9 +41,9 @@ public class SoccernetMatchStatisticsParser extends MatchStatisticsHTMLFileParse
     protected void postParseDocument(Set<MatchParserObject> matchParserObjects) {
         super.postParseDocument(matchParserObjects);
         parseAssists(matchParserObjects.iterator().next());
-        parseRatings(matchParserObjects.iterator().next());        
+        parseRatings(matchParserObjects.iterator().next());
     }
-    
+
     @Override
     protected Set<MatchParserObject> parseMatches() {
         MatchParserObject matchParserObject = new MatchParserObject();
@@ -86,7 +86,7 @@ public class SoccernetMatchStatisticsParser extends MatchStatisticsHTMLFileParse
             if(!playerName.isEmpty()) {
                 ++count;
                 PlayerParserObject player = new PlayerParserObject(playerName);
-                player.setParticipated((count <= 11 ? 1 : 2));
+                player.setParticipated((count <= 11 ? 2 : 1));
                 logger.debug("Parsed row {} to player {}.", count, player);
                 players.add(player);
             }
