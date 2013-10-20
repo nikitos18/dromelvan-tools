@@ -40,6 +40,7 @@ public class D11Tools {
     }
 
     public void execute() {
+        logger.info("D11Tools v.{}. Running {} tool.", getClass().getPackage().getImplementationVersion(), this.tool);
         if(this.help) {
             this.jCommander.usage();
             return;
