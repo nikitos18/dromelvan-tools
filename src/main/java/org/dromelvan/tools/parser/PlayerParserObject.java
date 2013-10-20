@@ -2,10 +2,10 @@ package org.dromelvan.tools.parser;
 
 public class PlayerParserObject extends ParserObject {
 
-    public String name;
-    public int participated;
-    public int assists;
-    public int rating;
+    private String name;
+    private int participated;
+    private int assists;
+    private int rating;
 
     public PlayerParserObject(String name) {
         this.name = name;
