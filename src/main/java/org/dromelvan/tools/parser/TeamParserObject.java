@@ -67,14 +67,36 @@ public class TeamParserObject extends ParserObject {
             return matchingPlayers.iterator().next();
         } else if(!matchingPlayers.isEmpty()) {
             logger.warn("More than one match for player {} in team {}:", name, getName());
+            PlayerParserObject matchingPlayer = null;
             for(PlayerParserObject player : matchingPlayers) {
-                logger.warn(player.getName());
+                if(played(player)) {
+                    matchingPlayer = player;
+                    logger.warn("{} played.", player.getName());
+                } else {
+                    logger.warn("{} did not play.", player.getName());
+                }
             }
-            PlayerParserObject matchingPlayer = matchingPlayers.iterator().next();
+            if(matchingPlayer == null) {
+                matchingPlayer = matchingPlayers.iterator().next();
+            }
             logger.warn("Updating {} for {}.", context, matchingPlayer.getName());
             return matchingPlayer;
         }
         return null;
+    }
+
+    private boolean played(PlayerParserObject player) {
+        if(player.getParticipated() == 2) {
+            return true;
+        }
+        if(player.getParticipated() == 1) {
+            for(SubstitutionParserObject substition : getSubstitutions()) {
+                if(substition.getPlayerIn().equalsIgnoreCase(player.getName())) {
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 
     @Override
