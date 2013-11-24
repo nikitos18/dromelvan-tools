@@ -43,6 +43,7 @@ public class FileParserTool extends D11Tool {
         if(files != null
            && files.length > 0) {
             for(File file : files) {
+                logger.info("");
                 logger.info("Handling file {} ==>", file.getName());
                 getFileParser().setFile(file);
                 Set<ParserObject> parserObjects = getFileParser().parse();
