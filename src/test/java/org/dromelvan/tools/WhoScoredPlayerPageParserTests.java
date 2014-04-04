@@ -1,6 +1,8 @@
 package org.dromelvan.tools;
 
+import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -36,7 +38,7 @@ public class WhoScoredPlayerPageParserTests {
 		}
 	}
 
-	@Test
+	// @Test
 	public void fileTest(@All File file, WhoScoredPlayerPageParser parser) throws IOException {
 		JSoupFileReader jSoupFileReader = new JSoupFileReader(file);
 		parser.setDocument(jSoupFileReader.read());
@@ -48,7 +50,7 @@ public class WhoScoredPlayerPageParserTests {
 		}
 	}
 
-	@Test
+	// @Test
 	public void urlTest(@All URL url, WhoScoredPlayerPageParser parser) throws IOException {
 		JSoupURLReader jSoupFileReader = new JSoupURLReader(url);
 		parser.setDocument(jSoupFileReader.read());
@@ -60,4 +62,42 @@ public class WhoScoredPlayerPageParserTests {
 		}
 	}
 
+	@Test
+	public void createFile(WhoScoredPlayerPageParser parser) throws IOException {
+		File output = new File("players.txt");
+		BufferedWriter writer = new BufferedWriter(new FileWriter(output));
+		File failed = new File("failed.txt");
+		BufferedWriter failedWriter = new BufferedWriter(new FileWriter(failed));
+
+		for (int i = 1; i < 50; ++i) {
+			URL url = new URL("http://www.whoscored.com/Players/" + i + "/");
+
+			try {
+				JSoupURLReader jSoupFileReader = new JSoupURLReader(url);
+				parser.setDocument(jSoupFileReader.read());
+				Set<PlayerInformationParserObject> playerInformationParserObjects = parser.parse();
+
+				logger.info("Information for {}:", url);
+				for (PlayerInformationParserObject playerInformationParserObject : playerInformationParserObjects) {
+					logger.info("{} {}", i, playerInformationParserObject);
+					writer.write(playerInformationParserObject.getName() + ";" +
+							playerInformationParserObject.getNationality() + ";" +
+							playerInformationParserObject.getDateOfBirth() + ";" +
+							playerInformationParserObject.getHeight() + ";" +
+							playerInformationParserObject.getWeight() + ";" +
+							playerInformationParserObject.getShirtNumber() + ";" +
+							playerInformationParserObject.getPositions() + "\n");
+				}
+			} catch (Exception e) {
+				logger.error("Failed at {}:", url);
+				logger.error("Exception:", e);
+				failedWriter.write(url + "\n");
+			}
+		}
+
+		writer.flush();
+		writer.close();
+		failedWriter.flush();
+		failedWriter.close();
+	}
 }
