@@ -8,7 +8,6 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.dromelvan.tools.parser.JSoupDocumentParser;
-import org.dromelvan.tools.parser.JSoupDocumentReader;
 import org.dromelvan.tools.parser.PlayerInformationParserObject;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
@@ -17,19 +16,9 @@ import com.google.inject.Inject;
 
 public class WhoScoredPlayerPageParser extends JSoupDocumentParser<PlayerInformationParserObject> {
 
-	private JSoupDocumentReader jSoupDocumentReader;
-
 	@Inject
 	public WhoScoredPlayerPageParser(WhoScoredProperties whoScoredProperties) {
 		super(whoScoredProperties);
-	}
-
-	public JSoupDocumentReader getjSoupDocumentReader() {
-		return jSoupDocumentReader;
-	}
-
-	public void setjSoupDocumentReader(JSoupDocumentReader jSoupDocumentReader) {
-		this.jSoupDocumentReader = jSoupDocumentReader;
 	}
 
 	@Override
@@ -83,6 +72,7 @@ public class WhoScoredPlayerPageParser extends JSoupDocumentParser<PlayerInforma
 		}
 
 		playerInformationParserObject.setPositions(valueMap.get("Positions:"));
+		playerInformationParserObject.setFullName(valueMap.get("Full Name:"));
 
 		playerInformationParserObjects.add(playerInformationParserObject);
 		return playerInformationParserObjects;

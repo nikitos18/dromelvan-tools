@@ -9,6 +9,7 @@ public class PlayerInformationParserObject extends ParserObject {
 	public int weight = 0;
 	public int shirtNumber = 0;
 	public String positions;
+	public String fullName;
 
 	public PlayerInformationParserObject() {
 	}
@@ -69,9 +70,17 @@ public class PlayerInformationParserObject extends ParserObject {
 		this.positions = positions;
 	}
 
-	@Override
+	public String getFullName() {
+        return fullName;
+    }
+
+    public void setFullName(String fullName) {
+        this.fullName = fullName;
+    }
+
+    @Override
 	public String toString() {
-		return String.format("Name: %s Nationality: %s DOB: %s Height: %d Weight: %d Shirt number: %d Positions: %s",
-				getName(), getNationality(), getDateOfBirth(), getHeight(), getWeight(), getShirtNumber(), getPositions());
+		return String.format("Name: %s Nationality: %s DOB: %s Height: %d Weight: %d Shirt number: %d Positions: %s Full Name: %s",
+				getName(), getNationality(), getDateOfBirth(), getHeight(), getWeight(), getShirtNumber(), getPositions(), getFullName());
 	}
 }

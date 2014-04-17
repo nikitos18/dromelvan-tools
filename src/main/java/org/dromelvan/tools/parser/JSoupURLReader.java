@@ -28,7 +28,7 @@ public class JSoupURLReader extends JSoupDocumentReader {
 			Document document = Jsoup.connect(url.toString())
 					// .data("query", "Java")
 					.userAgent("Chrome")
-					.timeout(3000)
+					.timeout(10000)
 					.get();
 			return document;
 		} catch (IOException e) {
