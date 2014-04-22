@@ -7,6 +7,8 @@ public class PlayerParserObject extends ParserObject {
     private int assists;
     private int rating;
 
+    public PlayerParserObject() {}
+    
     public PlayerParserObject(String name) {
         this.name = name;
     }
