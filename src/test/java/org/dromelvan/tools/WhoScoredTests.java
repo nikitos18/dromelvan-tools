@@ -20,6 +20,7 @@ import org.jsoup.nodes.Document;
 import org.jukito.All;
 import org.jukito.JukitoModule;
 import org.jukito.JukitoRunner;
+import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -62,7 +63,7 @@ public class WhoScoredTests {
 		System.out.println(doc);
 	}
 
-	// @Test
+	@Test
 	public void fileTest(@All File whoScoredFile, WhoScoredMatchStatisticsParser parser) throws IOException {
 		parser.setFile(whoScoredFile);
 		Set<MatchParserObject> matchParserObjects = parser.parse();
