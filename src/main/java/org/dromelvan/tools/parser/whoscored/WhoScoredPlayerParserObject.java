@@ -1,6 +1,6 @@
 package org.dromelvan.tools.parser.whoscored;
 
-import org.dromelvan.tools.parser.PlayerParserObject;
+import org.dromelvan.tools.parser.match.PlayerParserObject;
 
 public class WhoScoredPlayerParserObject extends PlayerParserObject {
 

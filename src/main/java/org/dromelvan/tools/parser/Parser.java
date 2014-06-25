@@ -4,6 +4,6 @@ import java.util.Set;
 
 public interface Parser<T extends ParserObject> {
 
-    public Set<T> parse();
-    
+	public Set<T> parse();
+
 }

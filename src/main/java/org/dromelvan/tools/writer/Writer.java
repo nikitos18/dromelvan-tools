@@ -1,6 +1,6 @@
 package org.dromelvan.tools.writer;
 
-import org.dromelvan.tools.parser.ParserObject;
+import org.dromelvan.tools.parser.old.ParserObject;
 
 public interface Writer<T extends ParserObject> {
 

@@ -1,6 +1,6 @@
 package org.dromelvan.tools.writer;
 
-import org.dromelvan.tools.parser.ParserObject;
+import org.dromelvan.tools.parser.old.ParserObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

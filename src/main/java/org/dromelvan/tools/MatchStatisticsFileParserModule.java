@@ -1,7 +1,7 @@
 package org.dromelvan.tools;
 
-import org.dromelvan.tools.parser.FileParser;
-import org.dromelvan.tools.parser.soccernet.SoccernetMatchStatisticsParser;
+import org.dromelvan.tools.parser.old.FileParser;
+import org.dromelvan.tools.parser.old.soccernet.SoccernetMatchStatisticsParser;
 import org.dromelvan.tools.writer.FileWriter;
 import org.dromelvan.tools.writer.MatchStatisticsJAXBFileWriter;
 import org.slf4j.Logger;

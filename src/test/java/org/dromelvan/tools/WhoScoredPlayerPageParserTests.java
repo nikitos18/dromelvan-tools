@@ -14,10 +14,10 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Set;
 
-import org.dromelvan.tools.parser.JSoupFileReader;
-import org.dromelvan.tools.parser.JSoupURLReader;
-import org.dromelvan.tools.parser.PlayerInformationParserObject;
-import org.dromelvan.tools.parser.whoscored.WhoScoredPlayerPageParser;
+import org.dromelvan.tools.parser.old.JSoupFileReader;
+import org.dromelvan.tools.parser.old.JSoupURLReader;
+import org.dromelvan.tools.parser.old.PlayerInformationParserObject;
+import org.dromelvan.tools.parser.old.whoscored.WhoScoredPlayerPageParser;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;

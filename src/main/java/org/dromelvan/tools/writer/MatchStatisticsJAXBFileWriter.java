@@ -14,12 +14,12 @@ import org.dromelvan.jaxb.PlayerMatchStatistics;
 import org.dromelvan.jaxb.Players;
 import org.dromelvan.jaxb.Substitution;
 import org.dromelvan.jaxb.Substitutions;
-import org.dromelvan.tools.parser.CardParserObject;
-import org.dromelvan.tools.parser.GoalParserObject;
-import org.dromelvan.tools.parser.MatchParserObject;
-import org.dromelvan.tools.parser.PlayerParserObject;
-import org.dromelvan.tools.parser.SubstitutionParserObject;
-import org.dromelvan.tools.parser.TeamParserObject;
+import org.dromelvan.tools.parser.old.CardParserObject;
+import org.dromelvan.tools.parser.old.GoalParserObject;
+import org.dromelvan.tools.parser.old.MatchParserObject;
+import org.dromelvan.tools.parser.old.PlayerParserObject;
+import org.dromelvan.tools.parser.old.SubstitutionParserObject;
+import org.dromelvan.tools.parser.old.TeamParserObject;
 
 public class MatchStatisticsJAXBFileWriter extends JAXBFileWriter<MatchParserObject> implements MatchStatisticsWriter {
 

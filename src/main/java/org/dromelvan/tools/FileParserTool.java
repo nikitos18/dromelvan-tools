@@ -5,8 +5,8 @@ import java.util.Set;
 
 import javax.swing.JFileChooser;
 
-import org.dromelvan.tools.parser.FileParser;
-import org.dromelvan.tools.parser.ParserObject;
+import org.dromelvan.tools.parser.old.FileParser;
+import org.dromelvan.tools.parser.old.ParserObject;
 import org.dromelvan.tools.writer.FileWriter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

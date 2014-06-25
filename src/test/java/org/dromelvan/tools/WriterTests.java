@@ -3,9 +3,9 @@ package org.dromelvan.tools;
 import java.io.File;
 import java.util.Set;
 
-import org.dromelvan.tools.parser.MatchParserObject;
-import org.dromelvan.tools.parser.MatchStatisticsParser;
-import org.dromelvan.tools.parser.soccernet.SoccernetMatchStatisticsParser;
+import org.dromelvan.tools.parser.old.MatchParserObject;
+import org.dromelvan.tools.parser.old.MatchStatisticsParser;
+import org.dromelvan.tools.parser.old.soccernet.SoccernetMatchStatisticsParser;
 import org.dromelvan.tools.writer.MatchStatisticsJAXBFileWriter;
 import org.dromelvan.tools.writer.MatchStatisticsWriter;
 import org.jukito.All;

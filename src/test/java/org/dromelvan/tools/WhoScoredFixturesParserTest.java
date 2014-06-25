@@ -12,11 +12,11 @@ import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import org.dromelvan.tools.parser.JSoupURLReader;
-import org.dromelvan.tools.parser.whoscored.FixtureParserObject;
-import org.dromelvan.tools.parser.whoscored.TeamStandingsParserObject;
-import org.dromelvan.tools.parser.whoscored.WhoScoredTeamFixturesParser;
-import org.dromelvan.tools.parser.whoscored.WhoScoredTeamStandingsParser;
+import org.dromelvan.tools.parser.old.JSoupURLReader;
+import org.dromelvan.tools.parser.old.whoscored.FixtureParserObject;
+import org.dromelvan.tools.parser.old.whoscored.TeamStandingsParserObject;
+import org.dromelvan.tools.parser.old.whoscored.WhoScoredTeamFixturesParser;
+import org.dromelvan.tools.parser.old.whoscored.WhoScoredTeamStandingsParser;
 import org.jsoup.nodes.Document;
 import org.jukito.All;
 import org.jukito.JukitoModule;

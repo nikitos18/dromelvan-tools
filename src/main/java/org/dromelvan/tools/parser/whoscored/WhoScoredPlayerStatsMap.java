@@ -2,8 +2,6 @@ package org.dromelvan.tools.parser.whoscored;
 
 import java.math.BigDecimal;
 import java.util.HashMap;
-import java.util.SortedSet;
-import java.util.TreeSet;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -145,17 +143,17 @@ public class WhoScoredPlayerStatsMap extends HashMap<String, String> {
 
 	@Override
 	public String toString() {
-		SortedSet<String> keys = new TreeSet<String>(keySet());
-		StringBuilder stringBuilder = new StringBuilder();
-
-		for (String key : keys) {
-			stringBuilder.append(key);
-			stringBuilder.append(" == ");
-			stringBuilder.append(get(key));
-			stringBuilder.append(" ");
-		}
-
-		return stringBuilder.toString().trim();
-
+		// SortedSet<String> keys = new TreeSet<String>(keySet());
+		// StringBuilder stringBuilder = new StringBuilder();
+		//
+		// for (String key : keys) {
+		// stringBuilder.append(key);
+		// stringBuilder.append(" == ");
+		// stringBuilder.append(get(key));
+		// stringBuilder.append(" ");
+		// }
+		//
+		// return stringBuilder.toString().trim();
+		return "Stats";
 	}
 }

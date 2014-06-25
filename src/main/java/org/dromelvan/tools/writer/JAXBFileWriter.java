@@ -9,7 +9,7 @@ import javax.xml.bind.Marshaller;
 import javax.xml.validation.Schema;
 import javax.xml.validation.SchemaFactory;
 
-import org.dromelvan.tools.parser.ParserObject;
+import org.dromelvan.tools.parser.old.ParserObject;
 
 import com.google.common.io.Resources;
 
