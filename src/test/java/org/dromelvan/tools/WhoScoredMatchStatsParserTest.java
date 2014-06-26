@@ -53,21 +53,24 @@ public class WhoScoredMatchStatsParserTest {
 
 	@Test
 	public void parsePlayerStatsFileTest(@All File file, WhoScoredPlayerStatsParser whoScoredPlayerStatsParser, WhoScoredMatchEventsParser whoScoredMatchEventsParser) throws MalformedURLException {
+	    System.out.println(file.getName());
+
 		JSoupFileReader jSoupFileReader = new JSoupFileReader(file);
 		Document document = jSoupFileReader.read();
 
 		whoScoredPlayerStatsParser.setDocument(document);
 
 		Set<MatchParserObject> matchParserObjects = whoScoredPlayerStatsParser.parse();
+//		logMatches(matchParserObjects);
 
 		file = new File(file.getParent(), file.getName().replace("- Live Statistics", "Live"));
 		jSoupFileReader = new JSoupFileReader(file);
 		document = jSoupFileReader.read();
 
 		whoScoredMatchEventsParser.setDocument(document);
-		whoScoredMatchEventsParser.parse();
+		matchParserObjects = whoScoredMatchEventsParser.parse();
 
-		// logMatches(matchParserObjects);
+		logMatches(matchParserObjects);
 	}
 
 	private void logMatches(Set<MatchParserObject> matchParserObjects) {
@@ -75,8 +78,8 @@ public class WhoScoredMatchStatsParserTest {
 			TeamParserObject homeTeam = matchParserObject.getHomeTeam();
 			TeamParserObject awayTeam = matchParserObject.getAwayTeam();
 
-			logger.info("Statistics for {} vs {}:", homeTeam.getName(), awayTeam.getName());
-
+		    logger.info("Match {}", matchParserObject);
+			logger.info("Statistics for {} vs {}:", homeTeam, awayTeam);
 			for (PlayerParserObject playerParserObject : homeTeam.getPlayers()) {
 				logger.info("{} player: {}.", homeTeam, playerParserObject);
 			}
@@ -85,10 +88,10 @@ public class WhoScoredMatchStatsParserTest {
 			}
 
 			for (GoalParserObject goalParserObject : homeTeam.getGoals()) {
-				logger.debug("{} goal: {}.", homeTeam, goalParserObject);
+				logger.info("{} goal: {}.", homeTeam, goalParserObject);
 			}
 			for (GoalParserObject goalParserObject : awayTeam.getGoals()) {
-				logger.debug("{} goal: {}.", awayTeam, goalParserObject);
+				logger.info("{} goal: {}.", awayTeam, goalParserObject);
 			}
 
 			for (CardParserObject cardParserObject : homeTeam.getCards()) {

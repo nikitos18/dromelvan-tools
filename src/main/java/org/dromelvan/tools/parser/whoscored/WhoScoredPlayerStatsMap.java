@@ -8,11 +8,12 @@ import java.util.regex.Pattern;
 public class WhoScoredPlayerStatsMap extends HashMap<String, String> {
 
 	/**
-     * 
+     *
      */
 	private static final long serialVersionUID = 1313287906428296801L;
-	private final static Pattern playerPattern = Pattern.compile("\\[\\d*,'(.*)',[\\d\\.]*,\\[\\[(.*)\\]\\],\\d*,'([\\w\\(\\)]*)',\\d*,\\d*,(\\d*),'([\\w\\(\\),]*)',.*\\]", Pattern.DOTALL);
+	private final static Pattern playerPattern = Pattern.compile("\\[(\\d*),'(.*)',[\\d\\.]*,\\[\\[(.*)\\]\\],\\d*,'([\\w\\(\\)]*)',\\d*,\\d*,(\\d*),'([\\w\\(\\),]*)',.*\\]", Pattern.DOTALL);
 	private final static Pattern playerMatchStatisticPattern = Pattern.compile("\\['(.*)',\\['?([^']*)'?\\]\\]");
+	public final static String WHOSCORED_ID = "whoscored_id";
 	public final static String NAME = "name";
 	public final static String PLAYED_POSITION = "played_position";
 	public final static String PLAYABLE_POSITIONS = "playable_positions";
@@ -51,12 +52,13 @@ public class WhoScoredPlayerStatsMap extends HashMap<String, String> {
 	public WhoScoredPlayerStatsMap(String scriptVariable) {
 		Matcher playerMatcher = playerPattern.matcher(scriptVariable);
 		if (playerMatcher.matches()) {
-			put(NAME, playerMatcher.group(1));
+		    put(WHOSCORED_ID, playerMatcher.group(1));
+			put(NAME, playerMatcher.group(2));
 			put(PLAYED_POSITION, playerMatcher.group(3));
 			put(SUBSTITUTION_TIME, playerMatcher.group(4));
 			put(PLAYABLE_POSITIONS, playerMatcher.group(5));
 
-			String[] playerMatchStatistics = playerMatcher.group(2).replace("]],", "]];").split(";");
+			String[] playerMatchStatistics = playerMatcher.group(3).replace("]],", "]];").split(";");
 			for (String playerMatchStatistic : playerMatchStatistics) {
 				Matcher statsMatcher = playerMatchStatisticPattern.matcher(playerMatchStatistic);
 				if (statsMatcher.matches()) {
@@ -94,6 +96,10 @@ public class WhoScoredPlayerStatsMap extends HashMap<String, String> {
 		}
 		return returnValue;
 	}
+
+    public int getWhoScoredId() {
+        return Integer.parseInt(get(WHOSCORED_ID));
+    }
 
 	public String getName() {
 		return get(NAME);

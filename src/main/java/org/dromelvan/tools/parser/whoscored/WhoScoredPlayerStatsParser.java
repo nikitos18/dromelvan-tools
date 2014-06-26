@@ -29,17 +29,23 @@ public class WhoScoredPlayerStatsParser extends JSoupDocumentParser<MatchParserO
 
 	@Override
 	public Set<MatchParserObject> parse() {
-		MatchParserObject matchParserObject = new MatchParserObject();
+		WhoScoredMatchParserObject matchParserObject = new WhoScoredMatchParserObject();
 
 		Elements scriptElements = getDocument().getElementsByTag("script");
+		Pattern matchIdPattern = Pattern.compile(".*parameters: \\{ id: (\\d*) \\}.*", Pattern.DOTALL);
 		Pattern scriptPattern = Pattern.compile("(.*)(var initialData) = \\[\\[(.*)\\], 0\\] ;(.*)", Pattern.DOTALL);
-		Pattern fixturePattern = Pattern.compile("\\[\\d*,\\d*,'([\\w ]*)','([\\w ]*)',.*", Pattern.DOTALL);
+		Pattern fixturePattern = Pattern.compile("\\[(\\d*),(\\d*),'([\\w ]*)','([\\w ]*)','(.*)','.*',\\d*?,'(.*?)',.*", Pattern.DOTALL);
 		Pattern teamPattern = Pattern.compile("[\\[ ]*\\d*,'([\\w ]*)',\\d.*\\]\\]\\]\\],\\[(\\[.*)", Pattern.DOTALL);
 
 		SortedSet<String> keySet = new TreeSet<String>();
 
 		for (Element scriptElement : scriptElements) {
 			for (DataNode node : scriptElement.dataNodes()) {
+			    Matcher matchIdMatcher = matchIdPattern.matcher(node.toString());
+			    if(matchIdMatcher.matches()) {
+			        matchParserObject.setWhoScoredId(Integer.parseInt(matchIdMatcher.group(1)));
+			    }
+
 				Matcher scriptMatcher = scriptPattern.matcher(node.toString());
 				if (scriptMatcher.matches()) {
 
@@ -50,8 +56,11 @@ public class WhoScoredPlayerStatsParser extends JSoupDocumentParser<MatchParserO
 						scriptVariable = scriptVariable.trim();
 						Matcher fixtureMatcher = fixturePattern.matcher(scriptVariable);
 						if (fixtureMatcher.matches()) {
-							matchParserObject.setHomeTeam(new TeamParserObject(fixtureMatcher.group(1)));
-							matchParserObject.setAwayTeam(new TeamParserObject(fixtureMatcher.group(2)));
+							matchParserObject.setHomeTeam(new WhoScoredTeamParserObject(fixtureMatcher.group(3), Integer.parseInt(fixtureMatcher.group(1))));
+							matchParserObject.setAwayTeam(new WhoScoredTeamParserObject(fixtureMatcher.group(4), Integer.parseInt(fixtureMatcher.group(2))));
+
+                            matchParserObject.setDateTime(fixtureMatcher.group(5));
+                            matchParserObject.setTimeElapsed(fixtureMatcher.group(6));
 							continue;
 						} else {
 							Matcher teamMatcher = teamPattern.matcher(scriptVariable);

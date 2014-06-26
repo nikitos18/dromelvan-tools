@@ -4,9 +4,11 @@ import org.dromelvan.tools.parser.match.PlayerParserObject;
 
 public class WhoScoredPlayerParserObject extends PlayerParserObject {
 
+    private int whoScoredId;
 	private WhoScoredPlayerStatsMap whoScoredPlayerStatsMap;
 
 	public WhoScoredPlayerParserObject(WhoScoredPlayerStatsMap whoScoredPlayerStatsMap) {
+	    setWhoScoredId(whoScoredPlayerStatsMap.getWhoScoredId());
 		setName(whoScoredPlayerStatsMap.getName());
 		setParticipated(whoScoredPlayerStatsMap.getParticipated());
 		setRating(whoScoredPlayerStatsMap.getRating());
@@ -15,7 +17,15 @@ public class WhoScoredPlayerParserObject extends PlayerParserObject {
 		this.whoScoredPlayerStatsMap = whoScoredPlayerStatsMap;
 	}
 
-	public WhoScoredPlayerStatsMap getWhoScoredPlayerStatsMap() {
+	public int getWhoScoredId() {
+        return whoScoredId;
+    }
+
+    public void setWhoScoredId(int whoScoredId) {
+        this.whoScoredId = whoScoredId;
+    }
+
+    public WhoScoredPlayerStatsMap getWhoScoredPlayerStatsMap() {
 		return whoScoredPlayerStatsMap;
 	}
 
@@ -25,6 +35,6 @@ public class WhoScoredPlayerParserObject extends PlayerParserObject {
 
 	@Override
 	public String toString() {
-		return String.format("Name: %s Participated: %s Rating: %s Stats: %s", getName(), getParticipated(), getRating(), getWhoScoredPlayerStatsMap());
+		return String.format("Name: %s (%s) Participated: %s Rating: %s Stats: %s", getName(), getWhoScoredId(), getParticipated(), getRating(), getWhoScoredPlayerStatsMap());
 	}
 }
