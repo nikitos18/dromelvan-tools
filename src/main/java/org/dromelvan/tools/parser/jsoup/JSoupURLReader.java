@@ -6,7 +6,7 @@ import java.net.URL;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 
-public class JSoupURLReader extends JSoupDocumentReader {
+public class JSoupURLReader implements JSoupDocumentReader {
 
 	private URL url;
 
@@ -23,17 +23,12 @@ public class JSoupURLReader extends JSoupDocumentReader {
 	}
 
 	@Override
-	public Document read() {
-		try {
-			Document document = Jsoup.connect(url.toString())
-					// .data("query", "Java")
-					.userAgent("Chrome")
-					.timeout(10000)
-					.get();
-			return document;
-		} catch (IOException e) {
-			throw new RuntimeException("Parse failed for url " + getUrl() + ".", e);
-		}
-
+	public Document read() throws IOException {
+		Document document = Jsoup.connect(url.toString())
+				// .data("query", "Java")
+				.userAgent("Chrome")
+				.timeout(10000)
+				.get();
+		return document;
 	}
 }

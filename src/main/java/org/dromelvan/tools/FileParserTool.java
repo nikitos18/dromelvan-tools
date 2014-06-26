@@ -16,69 +16,71 @@ import com.google.inject.Inject;
 
 public class FileParserTool extends D11Tool {
 
-    private FileParser fileParser;
-    private FileWriter writer;
-    public final static String FILE_PARSER_TOOL_DIRECTORY_PREFERENCE = "FILE_PARSER_TOOL_DIRECTORY_PREFERENCE";
-    private final static Logger logger = LoggerFactory.getLogger(FileParserTool.class);
+	private FileParser fileParser;
+	private FileWriter writer;
+	public final static String FILE_PARSER_TOOL_DIRECTORY_PREFERENCE = "FILE_PARSER_TOOL_DIRECTORY_PREFERENCE";
+	private final static Logger logger = LoggerFactory.getLogger(FileParserTool.class);
 
-    public FileParser getFileParser() {
-        return fileParser;
-    }
-    @Inject
-    public void setFileParser(FileParser fileParser) {
-        this.fileParser = fileParser;
-    }
+	public FileParser getFileParser() {
+		return fileParser;
+	}
 
-    public FileWriter getFileWriter() {
-        return writer;
-    }
-    @Inject
-    public void setFileWriter(FileWriter writer) {
-        this.writer = writer;
-    }
+	@Inject
+	public void setFileParser(FileParser fileParser) {
+		this.fileParser = fileParser;
+	}
 
-    @Override
-    public void execute() {
-        File[] files = getFiles();
-        if(files != null
-           && files.length > 0) {
-            for(File file : files) {
-                logger.info("");
-                logger.info("Handling file {} ==>", file.getName());
-                getFileParser().setFile(file);
-                Set<ParserObject> parserObjects = getFileParser().parse();
+	public FileWriter getFileWriter() {
+		return writer;
+	}
 
-                File directory = file.getParentFile();
-                String inputFileExtension = Files.getFileExtension(file.getName());
-                File outputFile = new File(directory, file.getName().replace(inputFileExtension, "xml"));
-                logger.debug("Writing to file {}.", outputFile);
+	@Inject
+	public void setFileWriter(FileWriter writer) {
+		this.writer = writer;
+	}
 
-                for(ParserObject parserObject : parserObjects) {
-                    logger.debug("Writing object {}.", parserObject);
-                    getFileWriter().setFile(outputFile);
-                    getFileWriter().write(parserObject);
-                }
-                logger.info("<== Handled file {}", file.getName());
-            }
-        }
-    }
+	@Override
+	public void execute() {
+		File[] files = getFiles();
+		if (files != null
+				&& files.length > 0) {
+			for (File file : files) {
+				logger.info("");
+				logger.info("Handling file {} ==>", file.getName());
+				getFileParser().setFile(file);
+				Set<ParserObject> parserObjects = getFileParser().parse();
 
-    protected void handleFile(File file) {
-        logger.info("Override handleFile(File) in {}.", getClass().getName());
-    }
+				File directory = file.getParentFile();
+				String inputFileExtension = Files.getFileExtension(file.getName());
+				File outputFile = new File(directory, file.getName().replace(inputFileExtension, "xml"));
+				logger.debug("Writing to file {}.", outputFile);
 
-    protected File[] getFiles() {
-        File[] files = null;
-        JFileChooser fileChooser = new JFileChooser(getPreferences().get(FILE_PARSER_TOOL_DIRECTORY_PREFERENCE, "."));
-        fileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
-        fileChooser.setMultiSelectionEnabled(true);
-        fileChooser.setFileFilter(new D11FileFilter());
-        if(fileChooser.showOpenDialog(null) == JFileChooser.APPROVE_OPTION) {
-            files = fileChooser.getSelectedFiles();
-            if(files.length > 0) {
-                getPreferences().put(FILE_PARSER_TOOL_DIRECTORY_PREFERENCE, files[0].getParent());
-            }
-        }
-        return files;
-    }
+				for (ParserObject parserObject : parserObjects) {
+					logger.debug("Writing object {}.", parserObject);
+					getFileWriter().setFile(outputFile);
+					// getFileWriter().write(parserObject);
+				}
+				logger.info("<== Handled file {}", file.getName());
+			}
+		}
+	}
+
+	protected void handleFile(File file) {
+		logger.info("Override handleFile(File) in {}.", getClass().getName());
+	}
+
+	protected File[] getFiles() {
+		File[] files = null;
+		JFileChooser fileChooser = new JFileChooser(getPreferences().get(FILE_PARSER_TOOL_DIRECTORY_PREFERENCE, "."));
+		fileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
+		fileChooser.setMultiSelectionEnabled(true);
+		fileChooser.setFileFilter(new D11FileFilter());
+		if (fileChooser.showOpenDialog(null) == JFileChooser.APPROVE_OPTION) {
+			files = fileChooser.getSelectedFiles();
+			if (files.length > 0) {
+				getPreferences().put(FILE_PARSER_TOOL_DIRECTORY_PREFERENCE, files[0].getParent());
+			}
+		}
+		return files;
+	}
 }

@@ -6,7 +6,7 @@ import java.io.IOException;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 
-public class JSoupFileReader extends JSoupDocumentReader {
+public class JSoupFileReader implements JSoupDocumentReader {
 
 	private File file;
 
@@ -23,12 +23,7 @@ public class JSoupFileReader extends JSoupDocumentReader {
 	}
 
 	@Override
-	public Document read() {
-		try {
-			return Jsoup.parse(getFile(), "UTF-8");
-		} catch (IOException e) {
-			throw new RuntimeException("Parse failed for file " + getFile().getAbsolutePath() + ".", e);
-		}
-
+	public Document read() throws IOException {
+		return Jsoup.parse(getFile(), "UTF-8");
 	}
 }

@@ -69,6 +69,6 @@ public class MatchParserObject extends ParserObject {
 
 	@Override
 	public String toString() {
-		return String.format("Match: %s vs %s Kick off: %s Time elapsed: %s", getHomeTeam(), getAwayTeam(), getDateTime(), getTimeElapsed());
+		return String.format("Match: %s vs %s Kick off: %s Time lapsed: %s", getHomeTeam(), getAwayTeam(), getDateTime(), getTimeElapsed());
 	}
 }

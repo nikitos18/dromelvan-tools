@@ -1,12 +1,11 @@
 package org.dromelvan.tools;
 
 import java.io.File;
+import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Set;
 
-import org.dromelvan.tools.parser.jsoup.JSoupFileReader;
-import org.dromelvan.tools.parser.jsoup.JSoupURLReader;
 import org.dromelvan.tools.parser.match.CardParserObject;
 import org.dromelvan.tools.parser.match.GoalParserObject;
 import org.dromelvan.tools.parser.match.MatchParserObject;
@@ -14,8 +13,10 @@ import org.dromelvan.tools.parser.match.PlayerParserObject;
 import org.dromelvan.tools.parser.match.SubstitutionParserObject;
 import org.dromelvan.tools.parser.match.TeamParserObject;
 import org.dromelvan.tools.parser.whoscored.WhoScoredMatchEventsParser;
+import org.dromelvan.tools.parser.whoscored.WhoScoredMatchParser;
 import org.dromelvan.tools.parser.whoscored.WhoScoredPlayerStatsParser;
-import org.jsoup.nodes.Document;
+import org.dromelvan.tools.writer.MatchStatisticsJAXBFileWriter;
+import org.dromelvan.tools.writer.MatchStatisticsWriter;
 import org.jukito.All;
 import org.jukito.JukitoModule;
 import org.jukito.JukitoRunner;
@@ -33,44 +34,28 @@ public class WhoScoredMatchStatsParserTest {
 		@Override
 		protected void configureTest() {
 			try {
-				bindManyInstances(URL.class, new URL("http://www.whoscored.com/Matches/720016/LiveStatistics/England-Premier-League-2013-2014-Manchester-City-Everton"));
-				bindManyInstances(File.class, new File("src/test/resources/Manchester City-Everton - Live Statistics.htm"));
+				bindManyInstances(URL.class, new URL("http://www.whoscored.com/Matches/720889/Live/England-Premier-League-2013-2014-Tottenham-Aston-Villa"));
+				bindManyInstances(File.class, new File("src/test/resources/Manchester City-Everton Live.htm"));
+				bind(MatchStatisticsWriter.class).to(MatchStatisticsJAXBFileWriter.class);
 			} catch (MalformedURLException e) {
 			}
 		}
 	}
 
 	// @Test
-	public void parsePlayerStatsURLTest(@All URL url, WhoScoredPlayerStatsParser whoScoredPlayerStatsParser) throws MalformedURLException {
-		JSoupURLReader jSoupURLReader = new JSoupURLReader(url);
-		Document document = jSoupURLReader.read();
-
-		whoScoredPlayerStatsParser.setDocument(document);
-
-		Set<MatchParserObject> matchParserObjects = whoScoredPlayerStatsParser.parse();
+	public void parsePlayerStatsURLTest(@All URL url, WhoScoredPlayerStatsParser whoScoredPlayerStatsParser, WhoScoredMatchEventsParser whoScoredMatchEventsParser) throws IOException {
+		Set<MatchParserObject> matchParserObjects = new WhoScoredMatchParser(whoScoredMatchEventsParser, whoScoredPlayerStatsParser, url).parse();
 		logMatches(matchParserObjects);
 	}
 
 	@Test
-	public void parsePlayerStatsFileTest(@All File file, WhoScoredPlayerStatsParser whoScoredPlayerStatsParser, WhoScoredMatchEventsParser whoScoredMatchEventsParser) throws MalformedURLException {
-	    System.out.println(file.getName());
-
-		JSoupFileReader jSoupFileReader = new JSoupFileReader(file);
-		Document document = jSoupFileReader.read();
-
-		whoScoredPlayerStatsParser.setDocument(document);
-
-		Set<MatchParserObject> matchParserObjects = whoScoredPlayerStatsParser.parse();
-//		logMatches(matchParserObjects);
-
-		file = new File(file.getParent(), file.getName().replace("- Live Statistics", "Live"));
-		jSoupFileReader = new JSoupFileReader(file);
-		document = jSoupFileReader.read();
-
-		whoScoredMatchEventsParser.setDocument(document);
-		matchParserObjects = whoScoredMatchEventsParser.parse();
-
+	public void parsePlayerStatsFileTest(@All File file, WhoScoredPlayerStatsParser whoScoredPlayerStatsParser, WhoScoredMatchEventsParser whoScoredMatchEventsParser, MatchStatisticsWriter writer) throws IOException {
+		Set<MatchParserObject> matchParserObjects = new WhoScoredMatchParser(whoScoredMatchEventsParser, whoScoredPlayerStatsParser, file).parse();
 		logMatches(matchParserObjects);
+		// writer.setFile(new File("foo.xml"));
+		// for (MatchParserObject matchParserObject : matchParserObjects) {
+		// writer.write(matchParserObject);
+		// }
 	}
 
 	private void logMatches(Set<MatchParserObject> matchParserObjects) {
@@ -78,7 +63,7 @@ public class WhoScoredMatchStatsParserTest {
 			TeamParserObject homeTeam = matchParserObject.getHomeTeam();
 			TeamParserObject awayTeam = matchParserObject.getAwayTeam();
 
-		    logger.info("Match {}", matchParserObject);
+			logger.info("Match {}", matchParserObject);
 			logger.info("Statistics for {} vs {}:", homeTeam, awayTeam);
 			for (PlayerParserObject playerParserObject : homeTeam.getPlayers()) {
 				logger.info("{} player: {}.", homeTeam, playerParserObject);
@@ -95,17 +80,17 @@ public class WhoScoredMatchStatsParserTest {
 			}
 
 			for (CardParserObject cardParserObject : homeTeam.getCards()) {
-				logger.debug("{} card: {}.", homeTeam, cardParserObject);
+				logger.info("{} card: {}.", homeTeam, cardParserObject);
 			}
 			for (CardParserObject cardParserObject : awayTeam.getCards()) {
-				logger.debug("{} card: {}.", awayTeam, cardParserObject);
+				logger.info("{} card: {}.", awayTeam, cardParserObject);
 			}
 
 			for (SubstitutionParserObject substitutionParserObject : homeTeam.getSubstitutions()) {
-				logger.debug("{} substitution: {}.", homeTeam, substitutionParserObject);
+				logger.info("{} substitution: {}.", homeTeam, substitutionParserObject);
 			}
 			for (SubstitutionParserObject substitutionParserObject : awayTeam.getSubstitutions()) {
-				logger.debug("{} substitution: {}.", awayTeam, substitutionParserObject);
+				logger.info("{} substitution: {}.", awayTeam, substitutionParserObject);
 			}
 		}
 	}
