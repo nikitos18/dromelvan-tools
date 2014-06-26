@@ -3,7 +3,7 @@ package org.dromelvan.tools.parser.old.skysports;
 import java.util.HashSet;
 import java.util.Set;
 
-import org.dromelvan.tools.parser.old.JSoupDocumentParser;
+import org.dromelvan.tools.parser.jsoup.JSoupDocumentParser;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 

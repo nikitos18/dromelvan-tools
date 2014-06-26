@@ -1,4 +1,4 @@
-package org.dromelvan.tools.parser.old.whoscored;
+package org.dromelvan.tools.parser.whoscored.player;
 
 import java.util.HashMap;
 import java.util.HashSet;
@@ -7,8 +7,8 @@ import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import org.dromelvan.tools.parser.old.JSoupDocumentParser;
-import org.dromelvan.tools.parser.old.PlayerInformationParserObject;
+import org.dromelvan.tools.parser.jsoup.JSoupDocumentParser;
+import org.dromelvan.tools.parser.whoscored.WhoScoredProperties;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 

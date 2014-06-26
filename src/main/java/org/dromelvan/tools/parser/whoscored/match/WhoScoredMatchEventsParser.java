@@ -1,4 +1,4 @@
-package org.dromelvan.tools.parser.whoscored;
+package org.dromelvan.tools.parser.whoscored.match;
 
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -10,6 +10,7 @@ import java.util.regex.Pattern;
 import org.dromelvan.tools.parser.jsoup.JSoupDocumentParser;
 import org.dromelvan.tools.parser.match.CardParserObject.CardType;
 import org.dromelvan.tools.parser.match.MatchParserObject;
+import org.dromelvan.tools.parser.whoscored.WhoScoredProperties;
 import org.jsoup.nodes.DataNode;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
@@ -32,24 +33,7 @@ public class WhoScoredMatchEventsParser extends JSoupDocumentParser<MatchParserO
 		return parse(new WhoScoredMatchParserObject());
 	}
 
-	public URL getPlayerStatsURL() {
-		Elements aElements = getDocument().getElementsByTag("a");
-		for (Element aElement : aElements) {
-			if (aElement.text() != null
-					&& aElement.text().equalsIgnoreCase("player statistics")) {
-				String urlString = "http://www.whoscored.com" + aElement.attr("href");
-				try {
-					URL url = new URL(urlString);
-					return url;
-				} catch (MalformedURLException e) {
-					logger.error("Malformed URL exception when getting player stats URL: {}.", urlString);
-				}
-			}
-		}
-		return null;
-	}
-
-	public Set<MatchParserObject> parse(WhoScoredMatchParserObject whoScoredMatchParserObject) {
+	public Set<MatchParserObject> parse(WhoScoredMatchParserObject matchParserObject) {
 		Elements scriptElements = getDocument().getElementsByTag("script");
 		Pattern matchIdPattern = Pattern.compile(".*var liveMatchUpdater = .*parameters: \\{.*id: (\\d*).*\\}.*", Pattern.DOTALL);
 		Pattern scriptPattern = Pattern.compile("(.*)var initialMatchData = \\[\\[(.*), \\[(.*)", Pattern.DOTALL);
@@ -64,10 +48,10 @@ public class WhoScoredMatchEventsParser extends JSoupDocumentParser<MatchParserO
 				Matcher matchIdMatcher = matchIdPattern.matcher(node.toString());
 				if (matchIdMatcher.matches()) {
 					int whoScoredId = Integer.parseInt(matchIdMatcher.group(1));
-					if (whoScoredMatchParserObject.getWhoScoredId() == 0) {
-						whoScoredMatchParserObject.setWhoScoredId(whoScoredId);
-					} else if (whoScoredMatchParserObject.getWhoScoredId() != whoScoredId) {
-						logger.error("Provided WhoScoredMatchParserObject had whoScoredId={} but parsed document had whoScoredId={}", whoScoredMatchParserObject.getWhoScoredId(), whoScoredId);
+					if (matchParserObject.getWhoScoredId() == 0) {
+						matchParserObject.setWhoScoredId(whoScoredId);
+					} else if (matchParserObject.getWhoScoredId() != whoScoredId) {
+						logger.error("Provided WhoScoredMatchParserObject had whoScoredId={} but parsed document had whoScoredId={}", matchParserObject.getWhoScoredId(), whoScoredId);
 					}
 				}
 
@@ -79,17 +63,17 @@ public class WhoScoredMatchEventsParser extends JSoupDocumentParser<MatchParserO
 						Matcher fixtureMatcher = fixturePattern.matcher(scriptVariable);
 						Matcher matchEventsMatcher = matchEventsPattern.matcher(scriptVariable);
 						if (fixtureMatcher.matches()) {
-							if (whoScoredMatchParserObject.getHomeTeam() == null) {
-								whoScoredMatchParserObject.setHomeTeam(new WhoScoredTeamParserObject(fixtureMatcher.group(3), Integer.parseInt(fixtureMatcher.group(1))));
+							if (matchParserObject.getHomeTeam() == null) {
+								matchParserObject.setHomeTeam(new WhoScoredTeamParserObject(fixtureMatcher.group(3), Integer.parseInt(fixtureMatcher.group(1))));
 							}
-							if (whoScoredMatchParserObject.getAwayTeam() == null) {
-								whoScoredMatchParserObject.setAwayTeam(new WhoScoredTeamParserObject(fixtureMatcher.group(4), Integer.parseInt(fixtureMatcher.group(2))));
+							if (matchParserObject.getAwayTeam() == null) {
+								matchParserObject.setAwayTeam(new WhoScoredTeamParserObject(fixtureMatcher.group(4), Integer.parseInt(fixtureMatcher.group(2))));
 							}
-							if (whoScoredMatchParserObject.getDateTime() == null) {
-								whoScoredMatchParserObject.setDateTime(fixtureMatcher.group(5));
+							if (matchParserObject.getDateTime() == null) {
+								matchParserObject.setDateTime(fixtureMatcher.group(5));
 							}
-							if (whoScoredMatchParserObject.getTimeElapsed() == null) {
-								whoScoredMatchParserObject.setTimeElapsed(fixtureMatcher.group(6));
+							if (matchParserObject.getTimeElapsed() == null) {
+								matchParserObject.setTimeElapsed(fixtureMatcher.group(6));
 							}
 						} else if (matchEventsMatcher.matches()) {
 							for (String eventVariable : matchEventsMatcher.group(1).split("\n")) {
@@ -105,7 +89,7 @@ public class WhoScoredMatchEventsParser extends JSoupDocumentParser<MatchParserO
 											goalMatcher.group(4).equalsIgnoreCase("penalty-goal"),
 											goalMatcher.group(4).equalsIgnoreCase("owngoal"));
 
-									WhoScoredTeamParserObject team = whoScoredMatchParserObject.getTeamForGoal(goalParserObject);
+									WhoScoredTeamParserObject team = matchParserObject.getTeamForGoal(goalParserObject);
 									if (team == null) {
 										logger.error("Could not find team for goal {}.", goalParserObject);
 									} else {
@@ -114,14 +98,14 @@ public class WhoScoredMatchEventsParser extends JSoupDocumentParser<MatchParserO
 								} else if (cardMatcher.matches()) {
 									CardType cardType = (cardMatcher.group(2).equalsIgnoreCase("yellow") ? CardType.YELLOW : CardType.RED);
 									WhoScoredCardParserObject cardParserObject = new WhoScoredCardParserObject(cardMatcher.group(1), Integer.parseInt(cardMatcher.group(4)), Integer.parseInt(cardMatcher.group(3)), cardType);
-									whoScoredMatchParserObject.getTeamForPlayer(cardParserObject.getPlayerWhoScoredId()).getCards().add(cardParserObject);
+									matchParserObject.getTeamForPlayer(cardParserObject.getPlayerWhoScoredId()).getCards().add(cardParserObject);
 								} else if (substitutionMatcher.matches()) {
 									WhoScoredSubstitutionParserObject substitutionParserObject = new WhoScoredSubstitutionParserObject(substitutionMatcher.group(1),
 											Integer.parseInt(substitutionMatcher.group(4)),
 											substitutionMatcher.group(2),
 											Integer.parseInt(substitutionMatcher.group(5)),
 											Integer.parseInt(substitutionMatcher.group(3)));
-									whoScoredMatchParserObject.getTeamForPlayer(substitutionParserObject.getPlayerOutWhoScoredId()).getSubstitutions().add(substitutionParserObject);
+									matchParserObject.getTeamForPlayer(substitutionParserObject.getPlayerOutWhoScoredId()).getSubstitutions().add(substitutionParserObject);
 								}
 							}
 						}
@@ -129,8 +113,28 @@ public class WhoScoredMatchEventsParser extends JSoupDocumentParser<MatchParserO
 				}
 			}
 		}
+
+		getParserProperties().map(matchParserObject);
+
 		Set<MatchParserObject> matchParserObjects = new HashSet<MatchParserObject>();
-		matchParserObjects.add(whoScoredMatchParserObject);
+		matchParserObjects.add(matchParserObject);
 		return matchParserObjects;
+	}
+
+	public URL getPlayerStatsURL() {
+		Elements aElements = getDocument().getElementsByTag("a");
+		for (Element aElement : aElements) {
+			if (aElement.text() != null
+					&& aElement.text().equalsIgnoreCase("player statistics")) {
+				String urlString = "http://www.whoscored.com" + aElement.attr("href");
+				try {
+					URL url = new URL(urlString);
+					return url;
+				} catch (MalformedURLException e) {
+					logger.error("Malformed URL exception when getting player stats URL: {}.", urlString);
+				}
+			}
+		}
+		return null;
 	}
 }

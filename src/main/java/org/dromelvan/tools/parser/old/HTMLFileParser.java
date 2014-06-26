@@ -1,7 +1,11 @@
 package org.dromelvan.tools.parser.old;
 
+import java.io.IOException;
 import java.util.Set;
 
+import org.dromelvan.tools.parser.ParserObject;
+import org.dromelvan.tools.parser.ParserProperties;
+import org.dromelvan.tools.parser.jsoup.JSoupFileReader;
 import org.jsoup.nodes.Document;
 
 public abstract class HTMLFileParser<T extends ParserObject> extends AbstractFileParser<T> {
@@ -13,7 +17,7 @@ public abstract class HTMLFileParser<T extends ParserObject> extends AbstractFil
 	}
 
 	@Override
-	public Set<T> parse() {
+	public Set<T> parse() throws IOException {
 		JSoupFileReader reader = new JSoupFileReader(getFile());
 		setDocument(reader.read());
 		Set<T> parserObjects = parseDocument();
@@ -21,7 +25,7 @@ public abstract class HTMLFileParser<T extends ParserObject> extends AbstractFil
 		return parserObjects;
 	}
 
-	protected abstract Set<T> parseDocument();
+	protected abstract Set<T> parseDocument() throws IOException;
 
 	public Document getDocument() {
 		return document;

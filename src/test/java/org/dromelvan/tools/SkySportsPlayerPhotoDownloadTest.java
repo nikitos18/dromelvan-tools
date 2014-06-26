@@ -3,13 +3,13 @@ package org.dromelvan.tools;
 import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.net.MalformedURLException;
 import java.net.URL;
 
-import org.dromelvan.tools.parser.old.JSoupFileReader;
-import org.dromelvan.tools.parser.old.JSoupURLReader;
+import org.dromelvan.tools.parser.jsoup.JSoupFileReader;
+import org.dromelvan.tools.parser.jsoup.JSoupURLReader;
 import org.dromelvan.tools.parser.old.skysports.PlayerIdParserObject;
 import org.dromelvan.tools.parser.old.skysports.SkySportsTeamLinkParser;
 import org.dromelvan.tools.parser.old.skysports.SkySportsTeamPlayerIdParser;
@@ -33,7 +33,7 @@ public class SkySportsPlayerPhotoDownloadTest {
 	}
 
 	@Test
-	public void downloadImagesFromAllTeams(@All File file, SkySportsTeamLinkParser skySportsTeamLinkParser, SkySportsTeamPlayerIdParser skySportsTeamPlayerIdParser) throws MalformedURLException {
+	public void downloadImagesFromAllTeams(@All File file, SkySportsTeamLinkParser skySportsTeamLinkParser, SkySportsTeamPlayerIdParser skySportsTeamPlayerIdParser) throws IOException {
 		JSoupFileReader jSoupFileReader = new JSoupFileReader(file);
 		Document document = jSoupFileReader.read();
 
@@ -71,7 +71,7 @@ public class SkySportsPlayerPhotoDownloadTest {
 	}
 
 	// @Test
-	public void downloadImagesFromFile(@All File file, SkySportsTeamPlayerIdParser skySportsTeamPlayerIdParser) {
+	public void downloadImagesFromFile(@All File file, SkySportsTeamPlayerIdParser skySportsTeamPlayerIdParser) throws IOException {
 		JSoupFileReader jSoupFileReader = new JSoupFileReader(file);
 		Document document = jSoupFileReader.read();
 

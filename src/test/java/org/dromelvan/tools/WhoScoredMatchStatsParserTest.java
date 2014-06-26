@@ -12,9 +12,9 @@ import org.dromelvan.tools.parser.match.MatchParserObject;
 import org.dromelvan.tools.parser.match.PlayerParserObject;
 import org.dromelvan.tools.parser.match.SubstitutionParserObject;
 import org.dromelvan.tools.parser.match.TeamParserObject;
-import org.dromelvan.tools.parser.whoscored.WhoScoredMatchEventsParser;
-import org.dromelvan.tools.parser.whoscored.WhoScoredMatchParser;
-import org.dromelvan.tools.parser.whoscored.WhoScoredPlayerStatsParser;
+import org.dromelvan.tools.parser.whoscored.match.WhoScoredMatchEventsParser;
+import org.dromelvan.tools.parser.whoscored.match.WhoScoredMatchParser;
+import org.dromelvan.tools.parser.whoscored.match.WhoScoredPlayerStatsParser;
 import org.dromelvan.tools.writer.MatchStatisticsJAXBFileWriter;
 import org.dromelvan.tools.writer.MatchStatisticsWriter;
 import org.jukito.All;
@@ -28,7 +28,7 @@ import org.slf4j.LoggerFactory;
 @RunWith(JukitoRunner.class)
 public class WhoScoredMatchStatsParserTest {
 
-	private final static Logger logger = LoggerFactory.getLogger(WhoScoredTests.class);
+	private final static Logger logger = LoggerFactory.getLogger(WhoScoredMatchStatsParserTest.class);
 
 	public static class Module extends JukitoModule {
 		@Override

@@ -1,4 +1,6 @@
-package org.dromelvan.tools.parser.old;
+package org.dromelvan.tools.parser.whoscored.player;
+
+import org.dromelvan.tools.parser.ParserObject;
 
 public class PlayerInformationParserObject extends ParserObject {
 
@@ -71,14 +73,14 @@ public class PlayerInformationParserObject extends ParserObject {
 	}
 
 	public String getFullName() {
-        return fullName;
-    }
+		return fullName;
+	}
 
-    public void setFullName(String fullName) {
-        this.fullName = fullName;
-    }
+	public void setFullName(String fullName) {
+		this.fullName = fullName;
+	}
 
-    @Override
+	@Override
 	public String toString() {
 		return String.format("Name: %s Nationality: %s DOB: %s Height: %d Weight: %d Shirt number: %d Positions: %s Full Name: %s",
 				getName(), getNationality(), getDateOfBirth(), getHeight(), getWeight(), getShirtNumber(), getPositions(), getFullName());

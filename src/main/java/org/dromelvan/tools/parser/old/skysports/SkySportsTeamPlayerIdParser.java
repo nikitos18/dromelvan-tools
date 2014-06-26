@@ -5,7 +5,7 @@ import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import org.dromelvan.tools.parser.old.JSoupDocumentParser;
+import org.dromelvan.tools.parser.jsoup.JSoupDocumentParser;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 

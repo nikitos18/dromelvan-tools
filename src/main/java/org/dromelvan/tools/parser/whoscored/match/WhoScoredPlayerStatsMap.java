@@ -1,4 +1,4 @@
-package org.dromelvan.tools.parser.whoscored;
+package org.dromelvan.tools.parser.whoscored.match;
 
 import java.math.BigDecimal;
 import java.util.HashMap;

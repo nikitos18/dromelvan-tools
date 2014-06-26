@@ -1,12 +1,13 @@
 package org.dromelvan.tools;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.Set;
 
 import javax.swing.JFileChooser;
 
+import org.dromelvan.tools.parser.ParserObject;
 import org.dromelvan.tools.parser.old.FileParser;
-import org.dromelvan.tools.parser.old.ParserObject;
 import org.dromelvan.tools.writer.FileWriter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -48,19 +49,23 @@ public class FileParserTool extends D11Tool {
 				logger.info("");
 				logger.info("Handling file {} ==>", file.getName());
 				getFileParser().setFile(file);
-				Set<ParserObject> parserObjects = getFileParser().parse();
+				try {
+					Set<ParserObject> parserObjects = getFileParser().parse();
 
-				File directory = file.getParentFile();
-				String inputFileExtension = Files.getFileExtension(file.getName());
-				File outputFile = new File(directory, file.getName().replace(inputFileExtension, "xml"));
-				logger.debug("Writing to file {}.", outputFile);
+					File directory = file.getParentFile();
+					String inputFileExtension = Files.getFileExtension(file.getName());
+					File outputFile = new File(directory, file.getName().replace(inputFileExtension, "xml"));
+					logger.debug("Writing to file {}.", outputFile);
 
-				for (ParserObject parserObject : parserObjects) {
-					logger.debug("Writing object {}.", parserObject);
-					getFileWriter().setFile(outputFile);
-					// getFileWriter().write(parserObject);
+					for (ParserObject parserObject : parserObjects) {
+						logger.debug("Writing object {}.", parserObject);
+						getFileWriter().setFile(outputFile);
+						// getFileWriter().write(parserObject);
+					}
+					logger.info("<== Handled file {}", file.getName());
+				} catch (IOException e) {
+					logger.error("IOException in execute: ", e);
 				}
-				logger.info("<== Handled file {}", file.getName());
 			}
 		}
 	}

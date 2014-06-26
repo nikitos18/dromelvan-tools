@@ -1,6 +1,6 @@
 package org.dromelvan.tools.parser.old.skysports;
 
-import org.dromelvan.tools.parser.old.ParserObject;
+import org.dromelvan.tools.parser.ParserObject;
 
 public class PlayerIdParserObject extends ParserObject {
 
