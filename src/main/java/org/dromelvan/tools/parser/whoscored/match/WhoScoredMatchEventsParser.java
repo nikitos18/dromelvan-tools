@@ -1,5 +1,6 @@
 package org.dromelvan.tools.parser.whoscored.match;
 
+import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.HashSet;
@@ -29,7 +30,7 @@ public class WhoScoredMatchEventsParser extends JSoupDocumentParser<MatchParserO
 	}
 
 	@Override
-	public Set<MatchParserObject> parse() {
+	public Set<MatchParserObject> parse() throws IOException {
 		return parse(new WhoScoredMatchParserObject());
 	}
 

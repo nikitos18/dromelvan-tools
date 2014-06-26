@@ -46,10 +46,12 @@ public class D11Tools {
             return;
         }
 
+        Class clazz = null;
         Module module = null;
         if(this.tool != null) {
             if(this.tool.equals("match")) {
-                module = new MatchStatisticsFileParserModule();
+                clazz = WhoScoredMatchParserTool.class;
+                module = new WhoScoredMatchParserModule();
             } else if(this.tool.equals("transfers")) {
                 logger.info("Transfer tool not implemented yet.");
                 return;
@@ -63,7 +65,7 @@ public class D11Tools {
         }
 
         Injector injector = Guice.createInjector(module);
-        FileParserTool fileParserTool = injector.getInstance(FileParserTool.class);
-        fileParserTool.execute();
+        D11Tool d11Tool = injector.getInstance(clazz);
+        d11Tool.execute();
     }
 }

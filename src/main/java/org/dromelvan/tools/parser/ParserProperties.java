@@ -128,17 +128,17 @@ public class ParserProperties extends Properties {
 
 	protected String mapName(String prefix, String name) {
 		String nameKey = prefix + "." + name.replace(' ', '_');
-		logger.info("Mapping key {}.", nameKey);
+		logger.debug("Mapping key {}.", nameKey);
 		for (Object key : keySet()) {
 			if (Pattern.compile((String) key).matcher(nameKey).matches()) {
 				nameKey = key.toString();
-				logger.info("Key matched regexp {}.", nameKey);
+				logger.debug("Key matched regexp {}.", nameKey);
 			}
 		}
 
 		String mappedName = getProperty(nameKey);
 		if (mappedName != null) {
-			logger.info("Mapped name {} to {}.", name, mappedName);
+			logger.debug("Mapped name {} to {}.", name, mappedName);
 			name = mappedName;
 		}
 		return name;

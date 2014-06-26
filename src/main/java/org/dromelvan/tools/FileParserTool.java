@@ -7,8 +7,10 @@ import java.util.Set;
 import javax.swing.JFileChooser;
 
 import org.dromelvan.tools.parser.ParserObject;
-import org.dromelvan.tools.parser.old.FileParser;
+import org.dromelvan.tools.parser.jsoup.JSoupDocumentParser;
+import org.dromelvan.tools.parser.jsoup.JSoupFileReader;
 import org.dromelvan.tools.writer.FileWriter;
+import org.jsoup.nodes.Document;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -17,18 +19,18 @@ import com.google.inject.Inject;
 
 public class FileParserTool extends D11Tool {
 
-	private FileParser fileParser;
+	private JSoupDocumentParser parser;
 	private FileWriter writer;
 	public final static String FILE_PARSER_TOOL_DIRECTORY_PREFERENCE = "FILE_PARSER_TOOL_DIRECTORY_PREFERENCE";
 	private final static Logger logger = LoggerFactory.getLogger(FileParserTool.class);
 
-	public FileParser getFileParser() {
-		return fileParser;
+	public JSoupDocumentParser getParser() {
+		return parser;
 	}
 
 	@Inject
-	public void setFileParser(FileParser fileParser) {
-		this.fileParser = fileParser;
+	public void setFileParser(JSoupDocumentParser fileParser) {
+		this.parser = fileParser;
 	}
 
 	public FileWriter getFileWriter() {
@@ -48,9 +50,13 @@ public class FileParserTool extends D11Tool {
 			for (File file : files) {
 				logger.info("");
 				logger.info("Handling file {} ==>", file.getName());
-				getFileParser().setFile(file);
+
 				try {
-					Set<ParserObject> parserObjects = getFileParser().parse();
+	                JSoupFileReader jSoupFileReader = new JSoupFileReader(file);
+	                Document document = jSoupFileReader.read();
+	                getParser().setDocument(document);
+
+					Set<ParserObject> parserObjects = getParser().parse();
 
 					File directory = file.getParentFile();
 					String inputFileExtension = Files.getFileExtension(file.getName());

@@ -12,9 +12,7 @@ import org.dromelvan.tools.parser.match.MatchParserObject;
 import org.dromelvan.tools.parser.match.PlayerParserObject;
 import org.dromelvan.tools.parser.match.SubstitutionParserObject;
 import org.dromelvan.tools.parser.match.TeamParserObject;
-import org.dromelvan.tools.parser.whoscored.match.WhoScoredMatchEventsParser;
 import org.dromelvan.tools.parser.whoscored.match.WhoScoredMatchParser;
-import org.dromelvan.tools.parser.whoscored.match.WhoScoredPlayerStatsParser;
 import org.dromelvan.tools.writer.MatchStatisticsJAXBFileWriter;
 import org.dromelvan.tools.writer.MatchStatisticsWriter;
 import org.jukito.All;
@@ -42,15 +40,17 @@ public class WhoScoredMatchStatsParserTest {
 		}
 	}
 
-	// @Test
-	public void parsePlayerStatsURLTest(@All URL url, WhoScoredPlayerStatsParser whoScoredPlayerStatsParser, WhoScoredMatchEventsParser whoScoredMatchEventsParser) throws IOException {
-		Set<MatchParserObject> matchParserObjects = new WhoScoredMatchParser(whoScoredMatchEventsParser, whoScoredPlayerStatsParser, url).parse();
+	@Test
+	public void parsePlayerStatsURLTest(@All URL url, WhoScoredMatchParser whoScoredMatchParser) throws IOException {
+	    whoScoredMatchParser.setURL(url);
+		Set<MatchParserObject> matchParserObjects = whoScoredMatchParser.parse();
 		logMatches(matchParserObjects);
 	}
 
-	@Test
-	public void parsePlayerStatsFileTest(@All File file, WhoScoredPlayerStatsParser whoScoredPlayerStatsParser, WhoScoredMatchEventsParser whoScoredMatchEventsParser, MatchStatisticsWriter writer) throws IOException {
-		Set<MatchParserObject> matchParserObjects = new WhoScoredMatchParser(whoScoredMatchEventsParser, whoScoredPlayerStatsParser, file).parse();
+	//@Test
+	public void parsePlayerStatsFileTest(@All File file, WhoScoredMatchParser whoScoredMatchParser) throws IOException {
+	    whoScoredMatchParser.setFile(file);
+		Set<MatchParserObject> matchParserObjects = whoScoredMatchParser.parse();
 		logMatches(matchParserObjects);
 		// writer.setFile(new File("foo.xml"));
 		// for (MatchParserObject matchParserObject : matchParserObjects) {

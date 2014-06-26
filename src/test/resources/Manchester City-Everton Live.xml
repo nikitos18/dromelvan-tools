@@ -1,0 +1,340 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<match xmlns="http://jaxb.dromelvan.org">
+    <homeTeam>
+        <name>Manchester City</name>
+        <players>
+            <playerMatchStatistics>
+                <player>Joe Hart</player>
+                <participated>2</participated>
+                <assists>0</assists>
+                <rating>7</rating>
+            </playerMatchStatistics>
+            <playerMatchStatistics>
+                <player>Aleksandar Kolarov</player>
+                <participated>2</participated>
+                <assists>0</assists>
+                <rating>7</rating>
+            </playerMatchStatistics>
+            <playerMatchStatistics>
+                <player>Joleon Lescott</player>
+                <participated>2</participated>
+                <assists>0</assists>
+                <rating>6</rating>
+            </playerMatchStatistics>
+            <playerMatchStatistics>
+                <player>Vincent Kompany</player>
+                <participated>2</participated>
+                <assists>0</assists>
+                <rating>6</rating>
+            </playerMatchStatistics>
+            <playerMatchStatistics>
+                <player>Pablo Zabaleta</player>
+                <participated>2</participated>
+                <assists>0</assists>
+                <rating>8</rating>
+            </playerMatchStatistics>
+            <playerMatchStatistics>
+                <player>Yaya Toure</player>
+                <participated>2</participated>
+                <assists>1</assists>
+                <rating>8</rating>
+            </playerMatchStatistics>
+            <playerMatchStatistics>
+                <player>James Milner</player>
+                <participated>2</participated>
+                <assists>0</assists>
+                <rating>7</rating>
+            </playerMatchStatistics>
+            <playerMatchStatistics>
+                <player>David Silva</player>
+                <participated>2</participated>
+                <assists>1</assists>
+                <rating>8</rating>
+            </playerMatchStatistics>
+            <playerMatchStatistics>
+                <player>Fernandinho</player>
+                <participated>2</participated>
+                <assists>0</assists>
+                <rating>7</rating>
+            </playerMatchStatistics>
+            <playerMatchStatistics>
+                <player>Sergio Aguero</player>
+                <participated>2</participated>
+                <assists>0</assists>
+                <rating>7</rating>
+            </playerMatchStatistics>
+            <playerMatchStatistics>
+                <player>Alvaro Negredo</player>
+                <participated>2</participated>
+                <assists>0</assists>
+                <rating>8</rating>
+            </playerMatchStatistics>
+            <playerMatchStatistics>
+                <player>Samir Nasri</player>
+                <participated>2</participated>
+                <assists>0</assists>
+                <rating>6</rating>
+            </playerMatchStatistics>
+            <playerMatchStatistics>
+                <player>Edin Dzeko</player>
+                <participated>2</participated>
+                <assists>0</assists>
+                <rating>0</rating>
+            </playerMatchStatistics>
+            <playerMatchStatistics>
+                <player>Costel Pantilimon</player>
+                <participated>2</participated>
+                <assists>0</assists>
+                <rating>0</rating>
+            </playerMatchStatistics>
+            <playerMatchStatistics>
+                <player>Matija Nastasic</player>
+                <participated>2</participated>
+                <assists>0</assists>
+                <rating>6</rating>
+            </playerMatchStatistics>
+            <playerMatchStatistics>
+                <player>Gael Clichy</player>
+                <participated>2</participated>
+                <assists>0</assists>
+                <rating>6</rating>
+            </playerMatchStatistics>
+            <playerMatchStatistics>
+                <player>Jesus Navas</player>
+                <participated>2</participated>
+                <assists>0</assists>
+                <rating>0</rating>
+            </playerMatchStatistics>
+            <playerMatchStatistics>
+                <player>Micah Richards</player>
+                <participated>2</participated>
+                <assists>0</assists>
+                <rating>0</rating>
+            </playerMatchStatistics>
+        </players>
+        <goals>
+            <goal>
+                <player>Alvaro Negredo</player>
+                <penalty>false</penalty>
+                <ownGoal>false</ownGoal>
+                <time>17</time>
+            </goal>
+            <goal>
+                <player>Sergio Aguero</player>
+                <penalty>false</penalty>
+                <ownGoal>false</ownGoal>
+                <time>45</time>
+            </goal>
+            <goal>
+                <player>Tim Howard</player>
+                <penalty>false</penalty>
+                <ownGoal>true</ownGoal>
+                <time>69</time>
+            </goal>
+        </goals>
+        <cards>
+            <card>
+                <player>Vincent Kompany</player>
+                <type>yellow</type>
+                <time>23</time>
+            </card>
+            <card>
+                <player>James Milner</player>
+                <type>yellow</type>
+                <time>45</time>
+            </card>
+            <card>
+                <player>David Silva</player>
+                <type>yellow</type>
+                <time>74</time>
+            </card>
+            <card>
+                <player>Pablo Zabaleta</player>
+                <type>yellow</type>
+                <time>78</time>
+            </card>
+            <card>
+                <player>Fernandinho</player>
+                <type>yellow</type>
+                <time>89</time>
+            </card>
+        </cards>
+        <substitutions>
+            <substitution>
+                <playerOut>Vincent Kompany</playerOut>
+                <playerIn>Matija Nastasic</playerIn>
+                <time>34</time>
+            </substitution>
+            <substitution>
+                <playerOut>Aleksandar Kolarov</playerOut>
+                <playerIn>Gael Clichy</playerIn>
+                <time>58</time>
+            </substitution>
+            <substitution>
+                <playerOut>Sergio Aguero</playerOut>
+                <playerIn>Samir Nasri</playerIn>
+                <time>79</time>
+            </substitution>
+        </substitutions>
+    </homeTeam>
+    <awayTeam>
+        <name>Everton</name>
+        <players>
+            <playerMatchStatistics>
+                <player>Tim Howard</player>
+                <participated>2</participated>
+                <assists>0</assists>
+                <rating>7</rating>
+            </playerMatchStatistics>
+            <playerMatchStatistics>
+                <player>Seamus Coleman</player>
+                <participated>2</participated>
+                <assists>0</assists>
+                <rating>7</rating>
+            </playerMatchStatistics>
+            <playerMatchStatistics>
+                <player>Sylvain Distin</player>
+                <participated>2</participated>
+                <assists>0</assists>
+                <rating>7</rating>
+            </playerMatchStatistics>
+            <playerMatchStatistics>
+                <player>Phil Jagielka</player>
+                <participated>2</participated>
+                <assists>1</assists>
+                <rating>8</rating>
+            </playerMatchStatistics>
+            <playerMatchStatistics>
+                <player>Leighton Baines</player>
+                <participated>2</participated>
+                <assists>0</assists>
+                <rating>6</rating>
+            </playerMatchStatistics>
+            <playerMatchStatistics>
+                <player>Ross Barkley</player>
+                <participated>2</participated>
+                <assists>0</assists>
+                <rating>7</rating>
+            </playerMatchStatistics>
+            <playerMatchStatistics>
+                <player>Leon Osman</player>
+                <participated>2</participated>
+                <assists>0</assists>
+                <rating>6</rating>
+            </playerMatchStatistics>
+            <playerMatchStatistics>
+                <player>Steven Naismith</player>
+                <participated>2</participated>
+                <assists>0</assists>
+                <rating>7</rating>
+            </playerMatchStatistics>
+            <playerMatchStatistics>
+                <player>Kevin Mirallas</player>
+                <participated>2</participated>
+                <assists>0</assists>
+                <rating>6</rating>
+            </playerMatchStatistics>
+            <playerMatchStatistics>
+                <player>James McCarthy</player>
+                <participated>2</participated>
+                <assists>0</assists>
+                <rating>7</rating>
+            </playerMatchStatistics>
+            <playerMatchStatistics>
+                <player>Romelu Lukaku</player>
+                <participated>2</participated>
+                <assists>0</assists>
+                <rating>7</rating>
+            </playerMatchStatistics>
+            <playerMatchStatistics>
+                <player>Nikica Jelavic</player>
+                <participated>2</participated>
+                <assists>0</assists>
+                <rating>0</rating>
+            </playerMatchStatistics>
+            <playerMatchStatistics>
+                <player>Joel Robles</player>
+                <participated>2</participated>
+                <assists>0</assists>
+                <rating>0</rating>
+            </playerMatchStatistics>
+            <playerMatchStatistics>
+                <player>Gerard Deulofeu</player>
+                <participated>2</participated>
+                <assists>0</assists>
+                <rating>6</rating>
+            </playerMatchStatistics>
+            <playerMatchStatistics>
+                <player>John Stones</player>
+                <participated>2</participated>
+                <assists>0</assists>
+                <rating>0</rating>
+            </playerMatchStatistics>
+            <playerMatchStatistics>
+                <player>Johnny Heitinga</player>
+                <participated>2</participated>
+                <assists>0</assists>
+                <rating>0</rating>
+            </playerMatchStatistics>
+            <playerMatchStatistics>
+                <player>Arouna Kone</player>
+                <participated>2</participated>
+                <assists>0</assists>
+                <rating>6</rating>
+            </playerMatchStatistics>
+            <playerMatchStatistics>
+                <player>Darron Gibson</player>
+                <participated>2</participated>
+                <assists>0</assists>
+                <rating>6</rating>
+            </playerMatchStatistics>
+        </players>
+        <goals>
+            <goal>
+                <player>Romelu Lukaku</player>
+                <penalty>false</penalty>
+                <ownGoal>false</ownGoal>
+                <time>16</time>
+            </goal>
+        </goals>
+        <cards>
+            <card>
+                <player>Sylvain Distin</player>
+                <type>yellow</type>
+                <time>69</time>
+            </card>
+            <card>
+                <player>Tim Howard</player>
+                <type>yellow</type>
+                <time>70</time>
+            </card>
+            <card>
+                <player>Seamus Coleman</player>
+                <type>yellow</type>
+                <time>80</time>
+            </card>
+            <card>
+                <player>Steven Naismith</player>
+                <type>yellow</type>
+                <time>87</time>
+            </card>
+        </cards>
+        <substitutions>
+            <substitution>
+                <playerOut>Leon Osman</playerOut>
+                <playerIn>Darron Gibson</playerIn>
+                <time>63</time>
+            </substitution>
+            <substitution>
+                <playerOut>Kevin Mirallas</playerOut>
+                <playerIn>Gerard Deulofeu</playerIn>
+                <time>63</time>
+            </substitution>
+            <substitution>
+                <playerOut>Romelu Lukaku</playerOut>
+                <playerIn>Arouna Kone</playerIn>
+                <time>82</time>
+            </substitution>
+        </substitutions>
+    </awayTeam>
+</match>
