@@ -27,9 +27,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 @RunWith(JukitoRunner.class)
-public class WhoScoredFixturesParserTest {
+public class WhoScoredFixturesParserTests {
 
-	private final static Logger logger = LoggerFactory.getLogger(WhoScoredFixturesParserTest.class);
+	private final static Logger logger = LoggerFactory.getLogger(WhoScoredFixturesParserTests.class);
 
 	public static class Module extends JukitoModule {
 		@Override

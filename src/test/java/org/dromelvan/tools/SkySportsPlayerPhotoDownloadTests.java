@@ -22,7 +22,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 @RunWith(JukitoRunner.class)
-public class SkySportsPlayerPhotoDownloadTest {
+public class SkySportsPlayerPhotoDownloadTests {
 
 	public static class Module extends JukitoModule {
 		@Override

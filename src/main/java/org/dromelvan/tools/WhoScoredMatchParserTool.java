@@ -19,7 +19,7 @@ public class WhoScoredMatchParserTool extends D11Tool {
 
     private WhoScoredMatchParser parser;
     private MatchStatisticsJAXBFileWriter writer;
-    public final static String FILE_PARSER_TOOL_DIRECTORY_PREFERENCE = "FILE_PARSER_TOOL_DIRECTORY_PREFERENCE";
+    public final static String WHOSCORED_MATCH_PARSER_TOOL_DIRECTORY_PREFERENCE = "WHOSCORED_MATCH_PARSER_TOOL_DIRECTORY_PREFERENCE";
     private final static Logger logger = LoggerFactory.getLogger(WhoScoredMatchParserTool.class);
 
     @Inject
@@ -61,14 +61,14 @@ public class WhoScoredMatchParserTool extends D11Tool {
 
     protected File[] getFiles() {
         File[] files = null;
-        JFileChooser fileChooser = new JFileChooser(getPreferences().get(FILE_PARSER_TOOL_DIRECTORY_PREFERENCE, "."));
+        JFileChooser fileChooser = new JFileChooser(getPreferences().get(WHOSCORED_MATCH_PARSER_TOOL_DIRECTORY_PREFERENCE, "."));
         fileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
         fileChooser.setMultiSelectionEnabled(true);
         fileChooser.setFileFilter(new D11FileFilter());
         if (fileChooser.showOpenDialog(null) == JFileChooser.APPROVE_OPTION) {
             files = fileChooser.getSelectedFiles();
             if (files.length > 0) {
-                getPreferences().put(FILE_PARSER_TOOL_DIRECTORY_PREFERENCE, files[0].getParent());
+                getPreferences().put(WHOSCORED_MATCH_PARSER_TOOL_DIRECTORY_PREFERENCE, files[0].getParent());
             }
         }
         return files;

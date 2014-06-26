@@ -24,9 +24,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 @RunWith(JukitoRunner.class)
-public class WhoScoredMatchStatsParserTest {
+public class WhoScoredMatchParserTests {
 
-	private final static Logger logger = LoggerFactory.getLogger(WhoScoredMatchStatsParserTest.class);
+	private final static Logger logger = LoggerFactory.getLogger(WhoScoredMatchParserTests.class);
 
 	public static class Module extends JukitoModule {
 		@Override
@@ -47,7 +47,7 @@ public class WhoScoredMatchStatsParserTest {
 		logMatches(matchParserObjects);
 	}
 
-	//@Test
+	@Test
 	public void parsePlayerStatsFileTest(@All File file, WhoScoredMatchParser whoScoredMatchParser) throws IOException {
 	    whoScoredMatchParser.setFile(file);
 		Set<MatchParserObject> matchParserObjects = whoScoredMatchParser.parse();
