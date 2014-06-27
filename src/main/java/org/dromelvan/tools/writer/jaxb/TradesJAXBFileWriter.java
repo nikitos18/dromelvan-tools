@@ -1,5 +1,7 @@
 package org.dromelvan.tools.writer.jaxb;
 
+import java.util.Set;
+
 import javax.xml.bind.JAXBElement;
 
 import org.dromelvan.jaxb.trades.ObjectFactory;
@@ -14,15 +16,17 @@ public class TradesJAXBFileWriter extends JAXBFileWriter<TradeParserObject> {
 	}
 
 	@Override
-	protected JAXBElement buildDocument(TradeParserObject matchParserObject) {
+	protected JAXBElement buildDocument(Set<TradeParserObject> tradeParserObjects) {
 		Trades trades = new Trades();
 
-		Trade trade = new Trade();
-		trade.setD11Team(matchParserObject.getD11Team());
-		trade.setPlayerOut(matchParserObject.getPlayerOut());
-		trade.setPlayerIn(matchParserObject.getPlayerIn());
-		trade.setFee(matchParserObject.getFee());
-		trades.getTrade().add(trade);
+		for (TradeParserObject tradeParserObject : tradeParserObjects) {
+			Trade trade = new Trade();
+			trade.setD11Team(tradeParserObject.getD11Team());
+			trade.setPlayerOut(tradeParserObject.getPlayerOut());
+			trade.setPlayerIn(tradeParserObject.getPlayerIn());
+			trade.setFee(tradeParserObject.getFee());
+			trades.getTrade().add(trade);
+		}
 
 		ObjectFactory objectFactory = new ObjectFactory();
 		return objectFactory.createTrades(trades);

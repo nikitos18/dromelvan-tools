@@ -50,11 +50,9 @@ public abstract class FileParserTool<T extends FileParser, U extends FileWriter,
 					File outputFile = new File(directory, file.getName().replace(inputFileExtension, "xml"));
 					logger.debug("Writing to file {}.", outputFile);
 
-					for (ParserObject parserObject : parserObjects) {
-						logger.debug("Writing object {}.", parserObject);
-						getFileWriter().setFile(outputFile);
-						getFileWriter().write(parserObject);
-					}
+					getFileWriter().setFile(outputFile);
+					getFileWriter().write(parserObjects);
+
 				} catch (IOException e) {
 					logger.error("IOException in execute: ", e);
 				}

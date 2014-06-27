@@ -1,5 +1,7 @@
 package org.dromelvan.tools.writer.jaxb;
 
+import java.util.Set;
+
 import javax.xml.bind.JAXBElement;
 
 import org.dromelvan.jaxb.Card;
@@ -28,9 +30,10 @@ public class MatchStatisticsJAXBFileWriter extends JAXBFileWriter<MatchParserObj
 	}
 
 	@Override
-	protected JAXBElement buildDocument(MatchParserObject matchParserObject) {
+	protected JAXBElement buildDocument(Set<MatchParserObject> matchParserObjects) {
 		PLMatch plMatch = new PLMatch();
 
+		MatchParserObject matchParserObject = matchParserObjects.iterator().next();
 		plMatch.setHomeTeam(buildTeam(matchParserObject.getHomeTeam()));
 		plMatch.setAwayTeam(buildTeam(matchParserObject.getAwayTeam()));
 

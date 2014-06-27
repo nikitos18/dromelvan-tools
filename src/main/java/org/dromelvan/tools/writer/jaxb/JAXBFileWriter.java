@@ -1,6 +1,7 @@
 package org.dromelvan.tools.writer.jaxb;
 
 import java.net.URL;
+import java.util.Set;
 
 import javax.xml.XMLConstants;
 import javax.xml.bind.JAXBContext;
@@ -26,10 +27,10 @@ public abstract class JAXBFileWriter<T extends ParserObject> extends AbstractFil
 		this.xmlRootClass = xmlRootClass;
 	}
 
-	protected abstract JAXBElement buildDocument(T parserObject);
+	protected abstract JAXBElement buildDocument(Set<T> parserObject);
 
 	@Override
-	public void write(T parserObject) {
+	public void write(Set<T> parserObject) {
 		URL url = Resources.getResource(getXmlRootClass(), getXmlRootClass().getSimpleName() + ".xsd");
 		SchemaFactory schemaFactory = SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
 
