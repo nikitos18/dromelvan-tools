@@ -26,7 +26,7 @@
         <dependency>
             <groupId>org.dromelvan</groupId>
             <artifactId>dromelvan-jaxb</artifactId>
-            <version>1.0</version>
+            <version>1.1-SNAPSHOT</version>
         </dependency>        
         <dependency>
             <groupId>org.jsoup</groupId>

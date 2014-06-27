@@ -1,7 +1,7 @@
 package org.dromelvan.tools;
 
-import org.dromelvan.tools.transfer.TransferParserModule;
-import org.dromelvan.tools.transfer.TransferParserTool;
+import org.dromelvan.tools.trade.TradeParserModule;
+import org.dromelvan.tools.trade.TradeParserTool;
 import org.dromelvan.tools.whoscored.WhoScoredMatchParserModule;
 import org.dromelvan.tools.whoscored.WhoScoredMatchParserTool;
 import org.slf4j.Logger;
@@ -56,15 +56,15 @@ public class D11Tools {
 			if (this.tool.equals("match")) {
 				clazz = WhoScoredMatchParserTool.class;
 				module = new WhoScoredMatchParserModule();
-			} else if (this.tool.equals("transfers")) {
-				clazz = TransferParserTool.class;
-				module = new TransferParserModule();
+			} else if (this.tool.equals("trades")) {
+				clazz = TradeParserTool.class;
+				module = new TradeParserModule();
 			}
 		}
 
 		if (this.tools
 				|| module == null) {
-			logger.info("Available tools: match, transfers.");
+			logger.info("Available tools: match, trades.");
 			return;
 		}
 

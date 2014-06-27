@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<trades xmlns="http://trades.jaxb.dromelvan.org">
+    <trade>
+        <d11Team>D11Team2</d11Team>
+        <playerOut>PlayerOut4</playerOut>
+        <playerIn>PlayerIn4</playerIn>
+        <fee>20</fee>
+    </trade>
+</trades>

@@ -1,15 +1,15 @@
-package org.dromelvan.tools.parser.transfer;
+package org.dromelvan.tools.parser.trade;
 
 import org.dromelvan.tools.parser.ParserObject;
 
-public class TransferParserObject extends ParserObject {
+public class TradeParserObject extends ParserObject {
 
 	private String d11Team;
 	private String playerOut;
 	private String playerIn;
 	private int fee;
 
-	public TransferParserObject(String d11Team, String playerOut, String playerIn, int fee) {
+	public TradeParserObject(String d11Team, String playerOut, String playerIn, int fee) {
 		this.d11Team = d11Team;
 		this.playerOut = playerOut;
 		this.playerIn = playerIn;
@@ -50,7 +50,7 @@ public class TransferParserObject extends ParserObject {
 
 	@Override
 	public String toString() {
-		return "TransferParserObject [d11Team=" + d11Team + ", playerOut=" + playerOut + ", playerIn=" + playerIn + ", fee=" + fee + "]";
+		return "TradeParserObject [d11Team=" + d11Team + ", playerOut=" + playerOut + ", playerIn=" + playerIn + ", fee=" + fee + "]";
 	}
 
 }
