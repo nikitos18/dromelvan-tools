@@ -1,5 +1,6 @@
 package org.dromelvan.tools.writer.jaxb;
 
+import java.math.BigInteger;
 import java.util.Set;
 
 import javax.xml.bind.JAXBElement;
@@ -18,6 +19,8 @@ public class TradesJAXBFileWriter extends JAXBFileWriter<TradeParserObject> {
 	@Override
 	protected JAXBElement buildDocument(Set<TradeParserObject> tradeParserObjects) {
 		Trades trades = new Trades();
+
+		trades.setTradeDay(new BigInteger(System.getProperty("tradeDay")));
 
 		for (TradeParserObject tradeParserObject : tradeParserObjects) {
 			Trade trade = new Trade();
