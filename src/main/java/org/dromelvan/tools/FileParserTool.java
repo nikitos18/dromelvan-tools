@@ -6,7 +6,7 @@ import java.util.Set;
 
 import javax.swing.JFileChooser;
 
-import org.dromelvan.tools.parser.Parser;
+import org.dromelvan.tools.parser.FileParser;
 import org.dromelvan.tools.parser.ParserObject;
 import org.dromelvan.tools.writer.FileWriter;
 import org.slf4j.Logger;
@@ -14,7 +14,7 @@ import org.slf4j.LoggerFactory;
 
 import com.google.common.io.Files;
 
-public abstract class FileParserTool<T extends Parser, U extends FileWriter, V extends ParserObject> extends D11Tool {
+public abstract class FileParserTool<T extends FileParser, U extends FileWriter, V extends ParserObject> extends D11Tool {
 
 	private final T parser;
 	private final U fileWriter;
@@ -63,7 +63,11 @@ public abstract class FileParserTool<T extends Parser, U extends FileWriter, V e
 		}
 	}
 
-	protected abstract Set<V> parseFile(File file) throws IOException;
+	protected Set<V> parseFile(File file) throws IOException {
+		getParser().setFile(file);
+		Set<V> parserObjects = getParser().parse();
+		return parserObjects;
+	}
 
 	protected File[] getFiles() {
 		File[] files = null;

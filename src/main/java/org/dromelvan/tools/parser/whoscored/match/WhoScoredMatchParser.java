@@ -8,7 +8,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Set;
 
-import org.dromelvan.tools.parser.Parser;
+import org.dromelvan.tools.parser.FileParser;
 import org.dromelvan.tools.parser.jsoup.JSoupDocumentReader;
 import org.dromelvan.tools.parser.jsoup.JSoupFileReader;
 import org.dromelvan.tools.parser.jsoup.JSoupURLReader;
@@ -19,7 +19,7 @@ import org.slf4j.LoggerFactory;
 
 import com.google.inject.Inject;
 
-public class WhoScoredMatchParser implements Parser<MatchParserObject> {
+public class WhoScoredMatchParser implements FileParser<MatchParserObject> {
 
 	private final WhoScoredMatchEventsParser whoScoredMatchEventsParser;
 	private final WhoScoredPlayerStatsParser whoScoredPlayerStatsParser;
@@ -40,6 +40,7 @@ public class WhoScoredMatchParser implements Parser<MatchParserObject> {
 		this.playerStatsReader = new JSoupURLReader(playerStatsUrl);
 	}
 
+	@Override
 	public void setFile(File file) {
 		this.matchEventsReader = new JSoupFileReader(file);
 
