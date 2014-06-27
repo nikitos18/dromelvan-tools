@@ -1,4 +1,4 @@
-package org.dromelvan.tools.writer;
+package org.dromelvan.tools.writer.jaxb;
 
 import javax.xml.bind.JAXBElement;
 
@@ -21,7 +21,7 @@ import org.dromelvan.tools.parser.match.PlayerParserObject;
 import org.dromelvan.tools.parser.match.SubstitutionParserObject;
 import org.dromelvan.tools.parser.match.TeamParserObject;
 
-public class MatchStatisticsJAXBFileWriter extends JAXBFileWriter<MatchParserObject> implements MatchStatisticsWriter {
+public class MatchStatisticsJAXBFileWriter extends JAXBFileWriter<MatchParserObject> {
 
 	public MatchStatisticsJAXBFileWriter() {
 		setXmlRootClass(PLMatch.class);

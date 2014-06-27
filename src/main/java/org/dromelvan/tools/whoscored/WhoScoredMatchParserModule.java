@@ -1,4 +1,4 @@
-package org.dromelvan.tools;
+package org.dromelvan.tools.whoscored;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

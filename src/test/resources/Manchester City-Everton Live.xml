@@ -34,7 +34,7 @@
                 <rating>8</rating>
             </playerMatchStatistics>
             <playerMatchStatistics>
-                <player>Yaya Toure</player>
+                <player>Yaya Touré</player>
                 <participated>2</participated>
                 <assists>1</assists>
                 <rating>8</rating>
@@ -58,13 +58,13 @@
                 <rating>7</rating>
             </playerMatchStatistics>
             <playerMatchStatistics>
-                <player>Sergio Aguero</player>
+                <player>Sergio Agüero</player>
                 <participated>2</participated>
                 <assists>0</assists>
                 <rating>7</rating>
             </playerMatchStatistics>
             <playerMatchStatistics>
-                <player>Alvaro Negredo</player>
+                <player>Álvaro Negredo</player>
                 <participated>2</participated>
                 <assists>0</assists>
                 <rating>8</rating>
@@ -94,13 +94,13 @@
                 <rating>6</rating>
             </playerMatchStatistics>
             <playerMatchStatistics>
-                <player>Gael Clichy</player>
+                <player>Gaël Clichy</player>
                 <participated>2</participated>
                 <assists>0</assists>
                 <rating>6</rating>
             </playerMatchStatistics>
             <playerMatchStatistics>
-                <player>Jesus Navas</player>
+                <player>Jesús Navas</player>
                 <participated>2</participated>
                 <assists>0</assists>
                 <rating>0</rating>
@@ -114,13 +114,13 @@
         </players>
         <goals>
             <goal>
-                <player>Alvaro Negredo</player>
+                <player>Álvaro Negredo</player>
                 <penalty>false</penalty>
                 <ownGoal>false</ownGoal>
                 <time>17</time>
             </goal>
             <goal>
-                <player>Sergio Aguero</player>
+                <player>Sergio Agüero</player>
                 <penalty>false</penalty>
                 <ownGoal>false</ownGoal>
                 <time>45</time>
@@ -167,11 +167,11 @@
             </substitution>
             <substitution>
                 <playerOut>Aleksandar Kolarov</playerOut>
-                <playerIn>Gael Clichy</playerIn>
+                <playerIn>Gaël Clichy</playerIn>
                 <time>58</time>
             </substitution>
             <substitution>
-                <playerOut>Sergio Aguero</playerOut>
+                <playerOut>Sergio Agüero</playerOut>
                 <playerIn>Samir Nasri</playerIn>
                 <time>79</time>
             </substitution>
@@ -277,7 +277,7 @@
                 <rating>0</rating>
             </playerMatchStatistics>
             <playerMatchStatistics>
-                <player>Arouna Kone</player>
+                <player>Arouna Koné</player>
                 <participated>2</participated>
                 <assists>0</assists>
                 <rating>6</rating>
@@ -332,7 +332,7 @@
             </substitution>
             <substitution>
                 <playerOut>Romelu Lukaku</playerOut>
-                <playerIn>Arouna Kone</playerIn>
+                <playerIn>Arouna Koné</playerIn>
                 <time>82</time>
             </substitution>
         </substitutions>

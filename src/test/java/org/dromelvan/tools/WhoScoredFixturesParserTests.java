@@ -13,10 +13,10 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.dromelvan.tools.parser.jsoup.JSoupURLReader;
-import org.dromelvan.tools.parser.whoscored.fixtures.FixtureParserObject;
-import org.dromelvan.tools.parser.whoscored.fixtures.TeamStandingsParserObject;
-import org.dromelvan.tools.parser.whoscored.fixtures.WhoScoredTeamFixturesParser;
-import org.dromelvan.tools.parser.whoscored.fixtures.WhoScoredTeamStandingsParser;
+import org.dromelvan.tools.util.parser.whoscored.fixtures.FixtureParserObject;
+import org.dromelvan.tools.util.parser.whoscored.fixtures.TeamStandingsParserObject;
+import org.dromelvan.tools.util.parser.whoscored.fixtures.WhoScoredTeamFixturesParser;
+import org.dromelvan.tools.util.parser.whoscored.fixtures.WhoScoredTeamStandingsParser;
 import org.jsoup.nodes.Document;
 import org.jukito.All;
 import org.jukito.JukitoModule;

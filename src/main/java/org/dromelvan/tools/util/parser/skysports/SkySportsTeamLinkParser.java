@@ -1,4 +1,4 @@
-package org.dromelvan.tools.parser.skysports;
+package org.dromelvan.tools.util.parser.skysports;
 
 import java.util.HashSet;
 import java.util.Set;

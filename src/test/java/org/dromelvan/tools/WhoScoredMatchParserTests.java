@@ -13,8 +13,6 @@ import org.dromelvan.tools.parser.match.PlayerParserObject;
 import org.dromelvan.tools.parser.match.SubstitutionParserObject;
 import org.dromelvan.tools.parser.match.TeamParserObject;
 import org.dromelvan.tools.parser.whoscored.match.WhoScoredMatchParser;
-import org.dromelvan.tools.writer.MatchStatisticsJAXBFileWriter;
-import org.dromelvan.tools.writer.MatchStatisticsWriter;
 import org.jukito.All;
 import org.jukito.JukitoModule;
 import org.jukito.JukitoRunner;
@@ -34,7 +32,6 @@ public class WhoScoredMatchParserTests {
 			try {
 				bindManyInstances(URL.class, new URL("http://www.whoscored.com/Matches/720889/Live/England-Premier-League-2013-2014-Tottenham-Aston-Villa"));
 				bindManyInstances(File.class, new File("src/test/resources/Manchester City-Everton Live.htm"));
-				bind(MatchStatisticsWriter.class).to(MatchStatisticsJAXBFileWriter.class);
 			} catch (MalformedURLException e) {
 			}
 		}
@@ -42,20 +39,16 @@ public class WhoScoredMatchParserTests {
 
 	@Test
 	public void parsePlayerStatsURLTest(@All URL url, WhoScoredMatchParser whoScoredMatchParser) throws IOException {
-	    whoScoredMatchParser.setURL(url);
+		whoScoredMatchParser.setURL(url);
 		Set<MatchParserObject> matchParserObjects = whoScoredMatchParser.parse();
 		logMatches(matchParserObjects);
 	}
 
 	@Test
 	public void parsePlayerStatsFileTest(@All File file, WhoScoredMatchParser whoScoredMatchParser) throws IOException {
-	    whoScoredMatchParser.setFile(file);
+		whoScoredMatchParser.setFile(file);
 		Set<MatchParserObject> matchParserObjects = whoScoredMatchParser.parse();
 		logMatches(matchParserObjects);
-		// writer.setFile(new File("foo.xml"));
-		// for (MatchParserObject matchParserObject : matchParserObjects) {
-		// writer.write(matchParserObject);
-		// }
 	}
 
 	private void logMatches(Set<MatchParserObject> matchParserObjects) {

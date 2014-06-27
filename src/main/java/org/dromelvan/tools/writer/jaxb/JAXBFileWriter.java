@@ -1,4 +1,4 @@
-package org.dromelvan.tools.writer;
+package org.dromelvan.tools.writer.jaxb;
 
 import java.net.URL;
 
@@ -10,6 +10,7 @@ import javax.xml.validation.Schema;
 import javax.xml.validation.SchemaFactory;
 
 import org.dromelvan.tools.parser.ParserObject;
+import org.dromelvan.tools.writer.AbstractFileWriter;
 
 import com.google.common.io.Resources;
 

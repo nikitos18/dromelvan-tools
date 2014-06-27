@@ -6,40 +6,31 @@ import java.util.Set;
 
 import javax.swing.JFileChooser;
 
+import org.dromelvan.tools.parser.Parser;
 import org.dromelvan.tools.parser.ParserObject;
-import org.dromelvan.tools.parser.jsoup.JSoupDocumentParser;
-import org.dromelvan.tools.parser.jsoup.JSoupFileReader;
 import org.dromelvan.tools.writer.FileWriter;
-import org.jsoup.nodes.Document;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.google.common.io.Files;
-import com.google.inject.Inject;
 
-public class FileParserTool extends D11Tool {
+public abstract class FileParserTool<T extends Parser, U extends FileWriter, V extends ParserObject> extends D11Tool {
 
-	private JSoupDocumentParser parser;
-	private FileWriter writer;
-	public final static String FILE_PARSER_TOOL_DIRECTORY_PREFERENCE = "FILE_PARSER_TOOL_DIRECTORY_PREFERENCE";
+	private final T parser;
+	private final U fileWriter;
 	private final static Logger logger = LoggerFactory.getLogger(FileParserTool.class);
 
-	public JSoupDocumentParser getParser() {
+	public FileParserTool(T parser, U fileWriter) {
+		this.parser = parser;
+		this.fileWriter = fileWriter;
+	}
+
+	public T getParser() {
 		return parser;
 	}
 
-	@Inject
-	public void setFileParser(JSoupDocumentParser fileParser) {
-		this.parser = fileParser;
-	}
-
-	public FileWriter getFileWriter() {
-		return writer;
-	}
-
-	@Inject
-	public void setFileWriter(FileWriter writer) {
-		this.writer = writer;
+	public U getFileWriter() {
+		return fileWriter;
 	}
 
 	@Override
@@ -52,11 +43,7 @@ public class FileParserTool extends D11Tool {
 				logger.info("Handling file {} ==>", file.getName());
 
 				try {
-	                JSoupFileReader jSoupFileReader = new JSoupFileReader(file);
-	                Document document = jSoupFileReader.read();
-	                getParser().setDocument(document);
-
-					Set<ParserObject> parserObjects = getParser().parse();
+					Set<V> parserObjects = parseFile(file);
 
 					File directory = file.getParentFile();
 					String inputFileExtension = Files.getFileExtension(file.getName());
@@ -66,32 +53,31 @@ public class FileParserTool extends D11Tool {
 					for (ParserObject parserObject : parserObjects) {
 						logger.debug("Writing object {}.", parserObject);
 						getFileWriter().setFile(outputFile);
-						// getFileWriter().write(parserObject);
+						getFileWriter().write(parserObject);
 					}
-					logger.info("<== Handled file {}", file.getName());
 				} catch (IOException e) {
 					logger.error("IOException in execute: ", e);
 				}
+				logger.info("<== Handled file {}", file.getName());
 			}
 		}
 	}
 
-	protected void handleFile(File file) {
-		logger.info("Override handleFile(File) in {}.", getClass().getName());
-	}
+	protected abstract Set<V> parseFile(File file) throws IOException;
 
 	protected File[] getFiles() {
 		File[] files = null;
-		JFileChooser fileChooser = new JFileChooser(getPreferences().get(FILE_PARSER_TOOL_DIRECTORY_PREFERENCE, "."));
+		JFileChooser fileChooser = new JFileChooser(getPreferences().get(getClass().getName() + "_DIRECTORY_PREFERENCE", "."));
 		fileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
 		fileChooser.setMultiSelectionEnabled(true);
 		fileChooser.setFileFilter(new D11FileFilter());
 		if (fileChooser.showOpenDialog(null) == JFileChooser.APPROVE_OPTION) {
 			files = fileChooser.getSelectedFiles();
 			if (files.length > 0) {
-				getPreferences().put(FILE_PARSER_TOOL_DIRECTORY_PREFERENCE, files[0].getParent());
+				getPreferences().put(getClass().getName() + "_DIRECTORY_PREFERENCE", files[0].getParent());
 			}
 		}
 		return files;
 	}
+
 }

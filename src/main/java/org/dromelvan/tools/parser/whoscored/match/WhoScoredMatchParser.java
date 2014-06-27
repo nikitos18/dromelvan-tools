@@ -55,7 +55,7 @@ public class WhoScoredMatchParser implements Parser<MatchParserObject> {
 		try {
 			document = playerStatsReader.read();
 		} catch (FileNotFoundException e) {
-			logger.info("Fetching player stats file from URL: {}.", whoScoredMatchEventsParser.getPlayerStatsURL());
+			logger.debug("Fetching player stats file from URL: {}.", whoScoredMatchEventsParser.getPlayerStatsURL());
 			JSoupURLReader jSoupURLReader = new JSoupURLReader(whoScoredMatchEventsParser.getPlayerStatsURL());
 			document = jSoupURLReader.read();
 

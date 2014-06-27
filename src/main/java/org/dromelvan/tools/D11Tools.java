@@ -1,5 +1,7 @@
 package org.dromelvan.tools;
 
+import org.dromelvan.tools.whoscored.WhoScoredMatchParserModule;
+import org.dromelvan.tools.whoscored.WhoScoredMatchParserTool;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
