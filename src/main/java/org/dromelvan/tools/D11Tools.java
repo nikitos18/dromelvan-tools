@@ -20,6 +20,8 @@ public class D11Tools {
 	private boolean help;
 	@Parameter(names = { "-t", "-tool" }, description = "The tool to run.", required = true)
 	private String tool;
+    @Parameter(names = { "-i", "-id" }, description = "Id of whatever persistent object will be manipulated.", required = false)
+    private String id;
 	@Parameter(names = { "-tools" }, description = "List of available tools.", help = true)
 	private boolean tools;
 
@@ -59,6 +61,9 @@ public class D11Tools {
 			} else if (this.tool.equals("trades")) {
 				clazz = TradeParserTool.class;
 				module = new TradeParserModule();
+				if(this.id != null) {
+				    System.setProperty("tradeDay", this.id);
+				}
 			}
 		}
 
