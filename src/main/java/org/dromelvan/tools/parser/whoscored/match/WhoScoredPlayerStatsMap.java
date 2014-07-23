@@ -52,11 +52,11 @@ public class WhoScoredPlayerStatsMap extends HashMap<String, String> {
 	public WhoScoredPlayerStatsMap(String scriptVariable) {
 		Matcher playerMatcher = playerPattern.matcher(scriptVariable);
 		if (playerMatcher.matches()) {
-		    put(WHOSCORED_ID, playerMatcher.group(1));
+			put(WHOSCORED_ID, playerMatcher.group(1));
 			put(NAME, playerMatcher.group(2));
-			put(PLAYED_POSITION, playerMatcher.group(3));
-			put(SUBSTITUTION_TIME, playerMatcher.group(4));
-			put(PLAYABLE_POSITIONS, playerMatcher.group(5));
+			put(PLAYED_POSITION, playerMatcher.group(4));
+			put(SUBSTITUTION_TIME, playerMatcher.group(5));
+			put(PLAYABLE_POSITIONS, playerMatcher.group(6));
 
 			String[] playerMatchStatistics = playerMatcher.group(3).replace("]],", "]];").split(";");
 			for (String playerMatchStatistic : playerMatchStatistics) {
@@ -97,9 +97,9 @@ public class WhoScoredPlayerStatsMap extends HashMap<String, String> {
 		return returnValue;
 	}
 
-    public int getWhoScoredId() {
-        return Integer.parseInt(get(WHOSCORED_ID));
-    }
+	public int getWhoScoredId() {
+		return Integer.parseInt(get(WHOSCORED_ID));
+	}
 
 	public String getName() {
 		return get(NAME);
@@ -114,6 +114,7 @@ public class WhoScoredPlayerStatsMap extends HashMap<String, String> {
 		String rating = get(RATING);
 		if (rating != null) {
 			BigDecimal bigDecimal = new BigDecimal(rating);
+			bigDecimal = bigDecimal.movePointRight(2);
 			bigDecimal = bigDecimal.setScale(0, BigDecimal.ROUND_HALF_UP);
 			return bigDecimal.intValue();
 		}
