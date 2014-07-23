@@ -1,5 +1,6 @@
 package org.dromelvan.tools.writer.jaxb;
 
+import java.math.BigInteger;
 import java.util.Set;
 
 import javax.xml.bind.JAXBElement;
@@ -52,6 +53,7 @@ public class MatchStatisticsJAXBFileWriter extends JAXBFileWriter<MatchParserObj
 		for (PlayerParserObject playerParserObject : teamParserObject.getPlayers()) {
 			PlayerMatchStatistics playerMatchStatistics = new PlayerMatchStatistics();
 			playerMatchStatistics.setPlayer(playerParserObject.getName());
+			playerMatchStatistics.setWhoScoredId(BigInteger.valueOf(playerParserObject.getWhoScoredId()));
 			playerMatchStatistics.setParticipated(playerParserObject.getParticipated());
 			playerMatchStatistics.setAssists(playerParserObject.getAssists());
 			playerMatchStatistics.setRating(playerParserObject.getRating());
@@ -61,6 +63,7 @@ public class MatchStatisticsJAXBFileWriter extends JAXBFileWriter<MatchParserObj
 		for (GoalParserObject goalParserObject : teamParserObject.getGoals()) {
 			Goal goal = new Goal();
 			goal.setPlayer(goalParserObject.getPlayer());
+			goal.setWhoScoredId(BigInteger.valueOf(goalParserObject.getWhoScoredId()));
 			goal.setTime(goalParserObject.getTime());
 			goal.setPenalty(goalParserObject.isPenalty());
 			goal.setOwnGoal(goalParserObject.isOwnGoal());
@@ -70,6 +73,7 @@ public class MatchStatisticsJAXBFileWriter extends JAXBFileWriter<MatchParserObj
 		for (CardParserObject cardParserObject : teamParserObject.getCards()) {
 			Card card = new Card();
 			card.setPlayer(cardParserObject.getPlayer());
+			card.setWhoScoredId(BigInteger.valueOf(cardParserObject.getWhoScoredId()));
 			card.setTime(cardParserObject.getTime());
 			card.setType((cardParserObject.getCardType() == CardParserObject.CardType.YELLOW ? CardType.YELLOW : CardType.RED));
 			plTeam.getCards().getCard().add(card);
@@ -79,6 +83,8 @@ public class MatchStatisticsJAXBFileWriter extends JAXBFileWriter<MatchParserObj
 			Substitution substitution = new Substitution();
 			substitution.setPlayerOut(substitutionParserObject.getPlayerOut());
 			substitution.setPlayerIn(substitutionParserObject.getPlayerIn());
+			substitution.setPlayerOutWhoScoredId(BigInteger.valueOf(substitutionParserObject.getPlayerOutWhoScoredId()));
+			substitution.setPlayerInWhoScoredId(BigInteger.valueOf(substitutionParserObject.getPlayerInWhoScoredId()));
 			substitution.setTime(substitutionParserObject.getTime());
 			plTeam.getSubstitutions().getSubstitution().add(substitution);
 		}

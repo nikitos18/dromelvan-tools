@@ -5,6 +5,7 @@ import org.dromelvan.tools.parser.ParserObject;
 public class PlayerParserObject extends ParserObject {
 
 	private String name;
+	private int whoScoredId;
 	private int participated;
 	private int goals;
 	private int assists;
@@ -23,6 +24,14 @@ public class PlayerParserObject extends ParserObject {
 
 	public void setName(String name) {
 		this.name = name;
+	}
+
+	public int getWhoScoredId() {
+		return whoScoredId;
+	}
+
+	public void setWhoScoredId(int whoScoredId) {
+		this.whoScoredId = whoScoredId;
 	}
 
 	public int getParticipated() {

@@ -7,7 +7,7 @@ public class WhoScoredCardParserObject extends CardParserObject {
 	private int playerWhoScoredId;
 
 	public WhoScoredCardParserObject(String player, int playerWhoScoredId, int time, CardType cardType) {
-		super(player, time, cardType);
+		super(player, playerWhoScoredId, time, cardType);
 		this.playerWhoScoredId = playerWhoScoredId;
 	}
 

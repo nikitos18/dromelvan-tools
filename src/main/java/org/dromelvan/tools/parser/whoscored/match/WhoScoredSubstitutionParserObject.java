@@ -8,23 +8,27 @@ public class WhoScoredSubstitutionParserObject extends SubstitutionParserObject 
 	private int playerInWhoScoredId;
 
 	public WhoScoredSubstitutionParserObject(String playerOut, int playerOutWhoScoredId, String playerIn, int playerInWhoScoredId, int time) {
-		super(playerOut, playerIn, time);
+		super(playerOut, playerIn, playerOutWhoScoredId, playerInWhoScoredId, time);
 		this.playerOutWhoScoredId = playerOutWhoScoredId;
 		this.playerInWhoScoredId = playerInWhoScoredId;
 	}
 
+	@Override
 	public int getPlayerOutWhoScoredId() {
 		return playerOutWhoScoredId;
 	}
 
+	@Override
 	public void setPlayerOutWhoScoredId(int playerOutWhoScoredId) {
 		this.playerOutWhoScoredId = playerOutWhoScoredId;
 	}
 
+	@Override
 	public int getPlayerInWhoScoredId() {
 		return playerInWhoScoredId;
 	}
 
+	@Override
 	public void setPlayerInWhoScoredId(int playerInWhoScoredId) {
 		this.playerInWhoScoredId = playerInWhoScoredId;
 	}
