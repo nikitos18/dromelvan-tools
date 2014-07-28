@@ -22,6 +22,7 @@ public class ParserProperties extends Properties {
      */
 	private static final long serialVersionUID = -9177030338967107482L;
 	private boolean verifyNames = false;
+	private boolean mapNames = true;
 	private final Properties playerNames = new Properties();
 	private final Properties teamNames = new Properties();
 	private final static Logger logger = LoggerFactory.getLogger(ParserProperties.class);
@@ -51,9 +52,19 @@ public class ParserProperties extends Properties {
 		this.verifyNames = verifyNames;
 	}
 
+	public boolean isMapNames() {
+		return mapNames;
+	}
+
+	public void setMapNames(boolean mapNames) {
+		this.mapNames = mapNames;
+	}
+
 	public void map(MatchParserObject matchParserObject) {
-		map(matchParserObject.getHomeTeam());
-		map(matchParserObject.getAwayTeam());
+		if (isMapNames()) {
+			map(matchParserObject.getHomeTeam());
+			map(matchParserObject.getAwayTeam());
+		}
 	}
 
 	protected void map(TeamParserObject teamParserObject) {
