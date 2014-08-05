@@ -6,9 +6,9 @@ import org.slf4j.LoggerFactory;
 
 public abstract class AbstractWriter<T extends ParserObject> implements Writer<T> {
 
-    private final static Logger logger = LoggerFactory.getLogger(AbstractWriter.class);
+	private final static Logger logger = LoggerFactory.getLogger(AbstractWriter.class);
 
-    public AbstractWriter() {
-        logger.debug("Using writer {}.", getClass().getSimpleName());
-    }
+	public AbstractWriter() {
+		logger.debug("Using writer {}.", getClass().getSimpleName());
+	}
 }

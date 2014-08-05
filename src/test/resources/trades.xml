@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<trades xmlns="http://trades.jaxb.dromelvan.org" tradeDay="45">
+    <trade>
+        <d11Team>D11Team2</d11Team>
+        <playerOut>PlayerOut4</playerOut>
+        <playerIn>PlayerIn4</playerIn>
+        <fee>20</fee>
+    </trade>
+    <trade>
+        <d11Team>D11Team2</d11Team>
+        <playerOut>PlayerOut5</playerOut>
+        <playerIn>PlayerIn5</playerIn>
+        <fee>25</fee>
+    </trade>
+    <trade>
+        <d11Team>D11Team1</d11Team>
+        <playerOut>PlayerOut1</playerOut>
+        <playerIn>PlayerIn1</playerIn>
+        <fee>250</fee>
+    </trade>
+    <trade>
+        <d11Team>D11Team2</d11Team>
+        <playerOut>PlayerOut6</playerOut>
+        <playerIn>PlayerIn6</playerIn>
+        <fee>30</fee>
+    </trade>
+    <trade>
+        <d11Team>D11Team1</d11Team>
+        <playerOut>PlayerOut2</playerOut>
+        <playerIn>PlayerIn2</playerIn>
+        <fee>155</fee>
+    </trade>
+    <trade>
+        <d11Team>D11Team1</d11Team>
+        <playerOut>PlayerOut3</playerOut>
+        <playerIn>PlayerIn3</playerIn>
+        <fee>50</fee>
+    </trade>
+</trades>

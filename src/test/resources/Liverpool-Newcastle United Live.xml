@@ -1,0 +1,319 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<match xmlns="http://jaxb.dromelvan.org">
+    <homeTeam>
+        <name>Liverpool</name>
+        <players>
+            <playerMatchStatistics>
+                <player>Simon Mignolet</player>
+                <participated>2</participated>
+                <assists>0</assists>
+                <rating>7</rating>
+            </playerMatchStatistics>
+            <playerMatchStatistics>
+                <player>Jon Flanagan</player>
+                <participated>2</participated>
+                <assists>0</assists>
+                <rating>6</rating>
+            </playerMatchStatistics>
+            <playerMatchStatistics>
+                <player>Glen Johnson</player>
+                <participated>2</participated>
+                <assists>0</assists>
+                <rating>6</rating>
+            </playerMatchStatistics>
+            <playerMatchStatistics>
+                <player>Daniel Agger</player>
+                <participated>2</participated>
+                <assists>0</assists>
+                <rating>8</rating>
+            </playerMatchStatistics>
+            <playerMatchStatistics>
+                <player>Martin Skrtel</player>
+                <participated>2</participated>
+                <assists>0</assists>
+                <rating>7</rating>
+            </playerMatchStatistics>
+            <playerMatchStatistics>
+                <player>Joe Allen</player>
+                <participated>2</participated>
+                <assists>0</assists>
+                <rating>7</rating>
+            </playerMatchStatistics>
+            <playerMatchStatistics>
+                <player>Jordan Henderson</player>
+                <participated>2</participated>
+                <assists>0</assists>
+                <rating>7</rating>
+            </playerMatchStatistics>
+            <playerMatchStatistics>
+                <player>Steven Gerrard</player>
+                <participated>2</participated>
+                <assists>2</assists>
+                <rating>9</rating>
+            </playerMatchStatistics>
+            <playerMatchStatistics>
+                <player>Raheem Sterling</player>
+                <participated>2</participated>
+                <assists>0</assists>
+                <rating>8</rating>
+            </playerMatchStatistics>
+            <playerMatchStatistics>
+                <player>Daniel Sturridge</player>
+                <participated>2</participated>
+                <assists>0</assists>
+                <rating>7</rating>
+            </playerMatchStatistics>
+            <playerMatchStatistics>
+                <player>Luis Suárez</player>
+                <participated>2</participated>
+                <assists>0</assists>
+                <rating>7</rating>
+            </playerMatchStatistics>
+            <playerMatchStatistics>
+                <player>Iago Aspas</player>
+                <participated>2</participated>
+                <assists>0</assists>
+                <rating>0</rating>
+            </playerMatchStatistics>
+            <playerMatchStatistics>
+                <player>Mamadou Sakho</player>
+                <participated>2</participated>
+                <assists>0</assists>
+                <rating>0</rating>
+            </playerMatchStatistics>
+            <playerMatchStatistics>
+                <player>Lucas Leiva</player>
+                <participated>2</participated>
+                <assists>0</assists>
+                <rating>6</rating>
+            </playerMatchStatistics>
+            <playerMatchStatistics>
+                <player>Aly Cissokho</player>
+                <participated>2</participated>
+                <assists>0</assists>
+                <rating>7</rating>
+            </playerMatchStatistics>
+            <playerMatchStatistics>
+                <player>Philippe Coutinho</player>
+                <participated>2</participated>
+                <assists>0</assists>
+                <rating>6</rating>
+            </playerMatchStatistics>
+            <playerMatchStatistics>
+                <player>Bradley Jones</player>
+                <participated>2</participated>
+                <assists>0</assists>
+                <rating>0</rating>
+            </playerMatchStatistics>
+            <playerMatchStatistics>
+                <player>Kolo Touré</player>
+                <participated>2</participated>
+                <assists>0</assists>
+                <rating>0</rating>
+            </playerMatchStatistics>
+        </players>
+        <goals>
+            <goal>
+                <player>Daniel Agger</player>
+                <penalty>false</penalty>
+                <ownGoal>false</ownGoal>
+                <time>63</time>
+            </goal>
+            <goal>
+                <player>Daniel Sturridge</player>
+                <penalty>false</penalty>
+                <ownGoal>false</ownGoal>
+                <time>65</time>
+            </goal>
+        </goals>
+        <cards>
+            <card>
+                <player>Lucas Leiva</player>
+                <type>yellow</type>
+                <time>89</time>
+            </card>
+        </cards>
+        <substitutions>
+            <substitution>
+                <playerOut>Jon Flanagan</playerOut>
+                <playerIn>Aly Cissokho</playerIn>
+                <time>45</time>
+            </substitution>
+            <substitution>
+                <playerOut>Joe Allen</playerOut>
+                <playerIn>Philippe Coutinho</playerIn>
+                <time>59</time>
+            </substitution>
+            <substitution>
+                <playerOut>Daniel Sturridge</playerOut>
+                <playerIn>Lucas Leiva</playerIn>
+                <time>80</time>
+            </substitution>
+        </substitutions>
+    </homeTeam>
+    <awayTeam>
+        <name>Newcastle United</name>
+        <players>
+            <playerMatchStatistics>
+                <player>Tim Krul</player>
+                <participated>2</participated>
+                <assists>0</assists>
+                <rating>6</rating>
+            </playerMatchStatistics>
+            <playerMatchStatistics>
+                <player>Massadio Haidara</player>
+                <participated>2</participated>
+                <assists>0</assists>
+                <rating>7</rating>
+            </playerMatchStatistics>
+            <playerMatchStatistics>
+                <player>Fabricio Coloccini</player>
+                <participated>2</participated>
+                <assists>0</assists>
+                <rating>7</rating>
+            </playerMatchStatistics>
+            <playerMatchStatistics>
+                <player>Michael Williamson</player>
+                <participated>2</participated>
+                <assists>0</assists>
+                <rating>7</rating>
+            </playerMatchStatistics>
+            <playerMatchStatistics>
+                <player>Steven Taylor</player>
+                <participated>2</participated>
+                <assists>0</assists>
+                <rating>6</rating>
+            </playerMatchStatistics>
+            <playerMatchStatistics>
+                <player>Mathieu Debuchy</player>
+                <participated>2</participated>
+                <assists>0</assists>
+                <rating>7</rating>
+            </playerMatchStatistics>
+            <playerMatchStatistics>
+                <player>Cheick Tioté</player>
+                <participated>2</participated>
+                <assists>0</assists>
+                <rating>6</rating>
+            </playerMatchStatistics>
+            <playerMatchStatistics>
+                <player>Vurnon Anita</player>
+                <participated>2</participated>
+                <assists>0</assists>
+                <rating>7</rating>
+            </playerMatchStatistics>
+            <playerMatchStatistics>
+                <player>Yoan Gouffran</player>
+                <participated>2</participated>
+                <assists>0</assists>
+                <rating>6</rating>
+            </playerMatchStatistics>
+            <playerMatchStatistics>
+                <player>Moussa Sissoko</player>
+                <participated>2</participated>
+                <assists>0</assists>
+                <rating>7</rating>
+            </playerMatchStatistics>
+            <playerMatchStatistics>
+                <player>Shola Ameobi</player>
+                <participated>2</participated>
+                <assists>0</assists>
+                <rating>6</rating>
+            </playerMatchStatistics>
+            <playerMatchStatistics>
+                <player>Mapou Yanga-Mbiwa</player>
+                <participated>2</participated>
+                <assists>0</assists>
+                <rating>0</rating>
+            </playerMatchStatistics>
+            <playerMatchStatistics>
+                <player>Luuk de Jong</player>
+                <participated>2</participated>
+                <assists>0</assists>
+                <rating>6</rating>
+            </playerMatchStatistics>
+            <playerMatchStatistics>
+                <player>Davide Santon</player>
+                <participated>2</participated>
+                <assists>0</assists>
+                <rating>0</rating>
+            </playerMatchStatistics>
+            <playerMatchStatistics>
+                <player>Sammy Ameobi</player>
+                <participated>2</participated>
+                <assists>0</assists>
+                <rating>7</rating>
+            </playerMatchStatistics>
+            <playerMatchStatistics>
+                <player>Paul Dummett</player>
+                <participated>2</participated>
+                <assists>0</assists>
+                <rating>5</rating>
+            </playerMatchStatistics>
+            <playerMatchStatistics>
+                <player>Lubomir Satka</player>
+                <participated>2</participated>
+                <assists>0</assists>
+                <rating>0</rating>
+            </playerMatchStatistics>
+            <playerMatchStatistics>
+                <player>Robert Elliot</player>
+                <participated>2</participated>
+                <assists>0</assists>
+                <rating>0</rating>
+            </playerMatchStatistics>
+        </players>
+        <goals>
+            <goal>
+                <player>Martin Skrtel</player>
+                <penalty>false</penalty>
+                <ownGoal>true</ownGoal>
+                <time>20</time>
+            </goal>
+        </goals>
+        <cards>
+            <card>
+                <player>Mathieu Debuchy</player>
+                <type>yellow</type>
+                <time>35</time>
+            </card>
+            <card>
+                <player>Vurnon Anita</player>
+                <type>yellow</type>
+                <time>63</time>
+            </card>
+            <card>
+                <player>Yoan Gouffran</player>
+                <type>yellow</type>
+                <time>65</time>
+            </card>
+            <card>
+                <player>Shola Ameobi</player>
+                <type>yellow</type>
+                <time>66</time>
+            </card>
+            <card>
+                <player>Paul Dummett</player>
+                <type>red</type>
+                <time>87</time>
+            </card>
+        </cards>
+        <substitutions>
+            <substitution>
+                <playerOut>Steven Taylor</playerOut>
+                <playerIn>Luuk de Jong</playerIn>
+                <time>73</time>
+            </substitution>
+            <substitution>
+                <playerOut>Yoan Gouffran</playerOut>
+                <playerIn>Sammy Ameobi</playerIn>
+                <time>78</time>
+            </substitution>
+            <substitution>
+                <playerOut>Cheick Tioté</playerOut>
+                <playerIn>Paul Dummett</playerIn>
+                <time>82</time>
+            </substitution>
+        </substitutions>
+    </awayTeam>
+</match>
