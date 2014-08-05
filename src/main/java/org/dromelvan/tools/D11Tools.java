@@ -74,7 +74,7 @@ public class D11Tools {
 		}
 
 		Injector injector = Guice.createInjector(module);
-		D11Tool d11Tool = injector.getInstance(clazz);
+		D11Tool d11Tool = (D11Tool)injector.getInstance(clazz);
 		d11Tool.execute();
 	}
 }
