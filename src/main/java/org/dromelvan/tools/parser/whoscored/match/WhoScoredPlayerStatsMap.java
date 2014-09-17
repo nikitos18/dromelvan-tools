@@ -13,6 +13,7 @@ public class WhoScoredPlayerStatsMap extends HashMap<String, String> {
 	private static final long serialVersionUID = 1313287906428296801L;
 	private final static Pattern playerPattern = Pattern.compile("\\[(\\d*),'(.*)',[\\d\\.]*,\\[\\[(.*)\\]\\],\\d*,'([\\w\\(\\)]*)',\\d*,\\d*,(\\d*),'([\\w\\(\\),]*)',.*\\]", Pattern.DOTALL);
 	private final static Pattern playerMatchStatisticPattern = Pattern.compile("\\['(.*)',\\['?([^']*)'?\\]\\]");
+	private final static Pattern statNamePattern = Pattern.compile("[a-z][a-z_\\d]*");
 	public final static String WHOSCORED_ID = "whoscored_id";
 	public final static String NAME = "name";
 	public final static String PLAYED_POSITION = "played_position";
@@ -49,6 +50,42 @@ public class WhoScoredPlayerStatsMap extends HashMap<String, String> {
 	public final static String GOALS_CONCEDED_TOTAL = "goals_conceded_total";
 	private boolean valid = false;
 
+    public WhoScoredPlayerStatsMap(String[] playerStats) {
+        put(WHOSCORED_ID, playerStats[1]);
+        put(NAME, playerStats[2]);
+
+        int i = 4;
+        for(; i < playerStats.length; ++i) {
+            Matcher statNameMatcher = statNamePattern.matcher(playerStats[i]);
+            if(statNameMatcher.matches()) {
+                put(playerStats[i], playerStats[i + 1]);
+                ++i;
+            } else {
+                break;
+            }
+        }
+
+        put(PLAYED_POSITION, playerStats[i + 1]);
+        put(SUBSTITUTION_TIME, playerStats[i + 4]);
+        put(PLAYABLE_POSITIONS, playerStats[i + 5]);
+
+        for(i = i + 6; i < playerStats.length - 3; ++i) {
+            put(PLAYABLE_POSITIONS, get(PLAYABLE_POSITIONS) + "," + playerStats[i]);
+        }
+
+        int totalPass = getIntegerValue(TOTAL_PASS);
+        int accuratePass = getIntegerValue(ACCURATE_PASS);
+        if (totalPass > 0) {
+            double accuratePassPercentage = ((double) accuratePass / (double) totalPass) * 1000;
+            put(ACCURATE_PASS_PERCENTAGE, String.valueOf((int) accuratePassPercentage));
+        }
+        put(SUCCESSFUL_TOUCH, String.valueOf(getIntegerValue(TOUCHES) - getIntegerValue(UNSUCCESSFUL_TOUCH)));
+
+        setValid(true);
+
+        System.out.println(getName() + " (" + getWhoScoredId() + ") " + getRating() + " " + get(PLAYED_POSITION) + " " + get(SUBSTITUTION_TIME) + " " + get(PLAYABLE_POSITIONS));
+    }
+
 	public WhoScoredPlayerStatsMap(String scriptVariable) {
 		Matcher playerMatcher = playerPattern.matcher(scriptVariable);
 		if (playerMatcher.matches()) {
@@ -65,7 +102,6 @@ public class WhoScoredPlayerStatsMap extends HashMap<String, String> {
 					String key = statsMatcher.group(1);
 					String value = statsMatcher.group(2);
 					put(key, value);
-
 				}
 			}
 

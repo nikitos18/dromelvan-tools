@@ -40,7 +40,7 @@ public class WhoScoredMatchEventsParser extends JSoupDocumentParser<MatchParserO
 		Pattern fixturePattern = Pattern.compile("\\[(\\d*),(\\d*),'(.*?)','(.*?)','(.*?)','.*?',\\d*,'(.*?)',(.*)\\]", Pattern.DOTALL);
 		Pattern matchEventsPattern = Pattern.compile("\\[\\[(.*?)\\]\\]", Pattern.DOTALL);
 		Pattern goalPattern = Pattern.compile(".*\\['(.*?)',('(.*?)')?,'(goal|owngoal|penalty-goal)','.*?',('OG'|'Pen.')?,(\\d*),(\\d*),(\\d*)\\].*", Pattern.DOTALL);
-		Pattern cardPattern = Pattern.compile(".*\\['(.*?)',,'(yellow|red)',,,(\\d*),(\\d*),(\\d*)\\].*", Pattern.DOTALL);
+		Pattern cardPattern = Pattern.compile(".*\\['(.*?)',,'(yellow|secondyellow|red)',,,(\\d*),(\\d*),(\\d*)\\].*", Pattern.DOTALL);
 		Pattern substitutionPattern = Pattern.compile(".*\\['(.*?)','(.*?)','subst',,,(\\d*),(\\d*),(\\d*)\\].*", Pattern.DOTALL);
 
 		for (Element scriptElement : scriptElements) {
