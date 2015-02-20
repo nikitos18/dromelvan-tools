@@ -36,7 +36,7 @@ public class WhoScoredMatchEventsParser extends JSoupDocumentParser<MatchParserO
 	public Set<MatchParserObject> parse(WhoScoredMatchParserObject matchParserObject) {
 		Elements scriptElements = getDocument().getElementsByTag("script");
 		Pattern matchIdPattern = Pattern.compile(".*var liveMatchUpdater = .*parameters: \\{.*id: (\\d*).*\\}.*", Pattern.DOTALL);
-		Pattern scriptPattern = Pattern.compile("(.*)var initialMatchData = \\[\\[(.*), \\[(.*)", Pattern.DOTALL);
+		Pattern scriptPattern = Pattern.compile("(.*)var initialMatchDataForScrappers = \\[\\[(.*), \\[(.*)", Pattern.DOTALL);
 		Pattern fixturePattern = Pattern.compile("\\[(\\d*),(\\d*),'(.*?)','(.*?)','(.*?)','.*?',\\d*,'(.*?)',(.*)\\]", Pattern.DOTALL);
 		Pattern matchEventsPattern = Pattern.compile("\\[\\[(.*?)\\]\\]", Pattern.DOTALL);
 		Pattern goalPattern = Pattern.compile(".*\\['(.*?)',('(.*?)')?,'(goal|owngoal|penalty-goal)','.*?',('OG'|'Pen.')?,(\\d*),(\\d*),(\\d*)\\].*", Pattern.DOTALL);
