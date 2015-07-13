@@ -20,24 +20,24 @@ public class SkySportsTeamPlayerIdParser extends JSoupDocumentParser<PlayerIdPar
 
 	@Override
 	public Set<PlayerIdParserObject> parse() {
-		Set<PlayerIdParserObject> playerPhotoParserObjects = new HashSet<PlayerIdParserObject>();
+		Set<PlayerIdParserObject> playerIdParserObjects = new HashSet<PlayerIdParserObject>();
 
 		Pattern playerLinkPattern = Pattern.compile("/football/player/([\\d]*)/(.*)");
 
-		Elements elements = getDocument().select("div.v5-squad-list");
+		Elements elements = getDocument().select("div.squad-list-cat");
 		for (Element element : elements) {
 			Elements playerElements = element.select("a");
 			for (Element playerElement : playerElements) {
 				Matcher matcher = playerLinkPattern.matcher(playerElement.attr("href"));
 				if (matcher.matches()) {
-					String name = playerElement.attr("title");
+					String name = playerElement.text();
 					String id = matcher.group(1);
-					PlayerIdParserObject playerPhotoParserObject = new PlayerIdParserObject(name, id);
-					playerPhotoParserObjects.add(playerPhotoParserObject);
+					PlayerIdParserObject playerIdParserObject = new PlayerIdParserObject(name, id);
+					playerIdParserObjects.add(playerIdParserObject);
 				}
 			}
 		}
 
-		return playerPhotoParserObjects;
+		return playerIdParserObjects;
 	}
 }

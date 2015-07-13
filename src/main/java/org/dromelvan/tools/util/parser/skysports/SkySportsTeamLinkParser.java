@@ -20,14 +20,19 @@ public class SkySportsTeamLinkParser extends JSoupDocumentParser<TeamLinkParserO
 	public Set<TeamLinkParserObject> parse() {
 		Set<TeamLinkParserObject> teamLinkParserObjects = new HashSet<TeamLinkParserObject>();
 
-		Elements elements = getDocument().select("div.-3cols");
-		Elements teamLinks = elements.first().select("a");
-
-		for (Element teamLink : teamLinks) {
-			String name = teamLink.text();
-			String link = teamLink.attr("href");
-			TeamLinkParserObject teamLinkParserObject = new TeamLinkParserObject(name, link);
-			teamLinkParserObjects.add(teamLinkParserObject);
+		Elements optGroupElements = getDocument().select("optgroup");
+		for(Element optGroupElement : optGroupElements) {
+		    String label = optGroupElement.attr("label");
+		    if(label.equals("Premier League") || label.equals("Championship")) {
+		        System.out.println("Parsing: " + label);
+		        Elements optionElements = optGroupElement.select("option");
+		        for(Element optionElement : optionElements) {
+		            String name = optionElement.text();
+		            String link = optionElement.attr("value");
+		            TeamLinkParserObject teamLinkParserObject = new TeamLinkParserObject(name, link);
+		            teamLinkParserObjects.add(teamLinkParserObject);
+		        }
+		    }
 		}
 		return teamLinkParserObjects;
 	}
