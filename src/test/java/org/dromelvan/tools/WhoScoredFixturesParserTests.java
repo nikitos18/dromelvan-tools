@@ -6,13 +6,20 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.text.SimpleDateFormat;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import org.dromelvan.tools.parser.jsoup.JSoupFileReader;
 import org.dromelvan.tools.parser.jsoup.JSoupURLReader;
+import org.dromelvan.tools.parser.whoscored.MatchDayParserObject;
+import org.dromelvan.tools.parser.whoscored.MatchParserObject;
+import org.dromelvan.tools.parser.whoscored.SeasonParserObject;
+import org.dromelvan.tools.parser.whoscored.fixtures.WhoScoredFixturesParser;
 import org.dromelvan.tools.util.parser.whoscored.fixtures.FixtureParserObject;
 import org.dromelvan.tools.util.parser.whoscored.fixtures.TeamStandingsParserObject;
 import org.dromelvan.tools.util.parser.whoscored.fixtures.WhoScoredTeamFixturesParser;
@@ -35,13 +42,47 @@ public class WhoScoredFixturesParserTests {
 		@Override
 		protected void configureTest() {
 			try {
+			    bindManyInstances(File.class, new File("src/test/resources/whoscored-month-fixtures-1508.html"));
 				bindManyInstances(URL.class, new URL("http://www.whoscored.com/Regions/252/Tournaments/2"));
 			} catch (MalformedURLException e) {
 			}
 		}
 	}
 
-	@Test
+    @Test
+    public void parseMonthFixturesFile(@All File monthFixturesFile, WhoScoredFixturesParser whoScoredFixturesParser) throws IOException {
+        logger.info("Parsing {}...", monthFixturesFile);
+
+        JSoupFileReader reader = new JSoupFileReader(monthFixturesFile);
+        Document document = reader.read();
+
+
+        int lastMatchDay = 419;
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        StringBuilder sqlStringBuilder = new StringBuilder();
+
+        whoScoredFixturesParser.setDocument(document);
+        Set<SeasonParserObject> seasonParserObjects = whoScoredFixturesParser.parse();
+
+        for(SeasonParserObject seasonParserObject : seasonParserObjects) {
+            for(MatchDayParserObject matchDayParserObject : seasonParserObject.getMatchDayParserObjects()) {
+                sqlStringBuilder.append(String.format("insert into mod_omgang (tavling_id, namn, datum) values (24,'%s','%s');", "Omgång " + matchDayParserObject.getMatchDayNumber(), simpleDateFormat.format(matchDayParserObject.getDate())));
+                sqlStringBuilder.append("\n");
+
+                Collections.sort(matchDayParserObject.getMatchParserObjects());
+                for(MatchParserObject matchParserObject : matchDayParserObject.getMatchParserObjects()) {
+                    sqlStringBuilder.append(String.format("insert into mod_match (omgang_id, hemmalag_id, bortalag_id, datum) values (%d, %d, %d, '%s');",
+                                                          matchParserObject.getMatchDayNumber() + lastMatchDay, matchParserObject.getHomeTeamId(), matchParserObject.getAwayTeamId(), simpleDateFormat.format(matchParserObject.getDate())));
+                    sqlStringBuilder.append("\n");
+
+                }
+            }
+        }
+
+        System.out.println(sqlStringBuilder);
+    }
+
+	//@Test
 	public void parseFixtures(@All URL competitionURL, WhoScoredTeamStandingsParser whoScoredTeamStandingsParser, WhoScoredTeamFixturesParser whoScoredTeamFixturesParser) throws MalformedURLException, IOException {
 		JSoupURLReader jSoupURLReader = new JSoupURLReader(competitionURL);
 		Document document = jSoupURLReader.read();
