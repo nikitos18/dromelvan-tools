@@ -24,6 +24,8 @@ import org.dromelvan.tools.util.parser.whoscored.fixtures.FixtureParserObject;
 import org.dromelvan.tools.util.parser.whoscored.fixtures.TeamStandingsParserObject;
 import org.dromelvan.tools.util.parser.whoscored.fixtures.WhoScoredTeamFixturesParser;
 import org.dromelvan.tools.util.parser.whoscored.fixtures.WhoScoredTeamStandingsParser;
+import org.joda.time.LocalDate;
+import org.joda.time.format.DateTimeFormat;
 import org.jsoup.nodes.Document;
 import org.jukito.All;
 import org.jukito.JukitoModule;
@@ -42,47 +44,52 @@ public class WhoScoredFixturesParserTests {
 		@Override
 		protected void configureTest() {
 			try {
-			    bindManyInstances(File.class, new File("src/test/resources/whoscored-month-fixtures-1508.html"));
+				bindManyInstances(File.class, new File("src/test/resources/whoscored-month-fixtures-1508.html"));
 				bindManyInstances(URL.class, new URL("http://www.whoscored.com/Regions/252/Tournaments/2"));
 			} catch (MalformedURLException e) {
 			}
 		}
 	}
 
-    @Test
-    public void parseMonthFixturesFile(@All File monthFixturesFile, WhoScoredFixturesParser whoScoredFixturesParser) throws IOException {
-        logger.info("Parsing {}...", monthFixturesFile);
+	// @Test
+	public void joda() {
+		// System.out.println(LocalDate.parse("Saturday, Aug 8 2015", DateTimeFormat.forPattern("")).getYear());
+		System.out.println(LocalDate.parse("Saturday, Jan 8 2015", DateTimeFormat.forPattern("E, MMM dd yyyy")).getMonthOfYear());
+	}
 
-        JSoupFileReader reader = new JSoupFileReader(monthFixturesFile);
-        Document document = reader.read();
+	@Test
+	public void parseMonthFixturesFile(@All File monthFixturesFile, WhoScoredFixturesParser whoScoredFixturesParser) throws IOException {
+		logger.info("Parsing {}...", monthFixturesFile);
 
+		JSoupFileReader reader = new JSoupFileReader(monthFixturesFile);
+		Document document = reader.read();
 
-        int lastMatchDay = 419;
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
-        StringBuilder sqlStringBuilder = new StringBuilder();
+		int lastMatchDay = 419;
+		SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+		StringBuilder sqlStringBuilder = new StringBuilder();
 
-        whoScoredFixturesParser.setDocument(document);
-        Set<SeasonParserObject> seasonParserObjects = whoScoredFixturesParser.parse();
+		whoScoredFixturesParser.setDocument(document);
+		Set<SeasonParserObject> seasonParserObjects = whoScoredFixturesParser.parse();
 
-        for(SeasonParserObject seasonParserObject : seasonParserObjects) {
-            for(MatchDayParserObject matchDayParserObject : seasonParserObject.getMatchDayParserObjects()) {
-                sqlStringBuilder.append(String.format("insert into mod_omgang (tavling_id, namn, datum) values (24,'%s','%s');", "Omgång " + matchDayParserObject.getMatchDayNumber(), simpleDateFormat.format(matchDayParserObject.getDate())));
-                sqlStringBuilder.append("\n");
+		for (SeasonParserObject seasonParserObject : seasonParserObjects) {
+			for (MatchDayParserObject matchDayParserObject : seasonParserObject.getMatchDayParserObjects()) {
+				sqlStringBuilder.append(String.format("insert into mod_omgang (tavling_id, namn, datum) values (24,'%s','%s');", "Omgång " + matchDayParserObject.getMatchDayNumber(), simpleDateFormat.format(matchDayParserObject.getDate())));
+				sqlStringBuilder.append("\n");
 
-                Collections.sort(matchDayParserObject.getMatchParserObjects());
-                for(MatchParserObject matchParserObject : matchDayParserObject.getMatchParserObjects()) {
-                    sqlStringBuilder.append(String.format("insert into mod_match (omgang_id, hemmalag_id, bortalag_id, datum) values (%d, %d, %d, '%s');",
-                                                          matchParserObject.getMatchDayNumber() + lastMatchDay, matchParserObject.getHomeTeamId(), matchParserObject.getAwayTeamId(), simpleDateFormat.format(matchParserObject.getDate())));
-                    sqlStringBuilder.append("\n");
+				Collections.sort(matchDayParserObject.getMatchParserObjects());
+				for (MatchParserObject matchParserObject : matchDayParserObject.getMatchParserObjects()) {
+					sqlStringBuilder.append(String.format("insert into mod_match (omgang_id, hemmalag_id, bortalag_id, datum) values (%d, %d, %d, '%s');",
+							matchParserObject.getMatchDayNumber() + lastMatchDay, matchParserObject.getHomeTeamId(), matchParserObject.getAwayTeamId(), simpleDateFormat.format(matchParserObject.getDate())));
+					sqlStringBuilder.append("\n");
 
-                }
-            }
-        }
+				}
+			}
+		}
 
-        System.out.println(sqlStringBuilder);
-    }
+		System.out.println(sqlStringBuilder);
+	}
 
-	//@Test
+	// @Test
 	public void parseFixtures(@All URL competitionURL, WhoScoredTeamStandingsParser whoScoredTeamStandingsParser, WhoScoredTeamFixturesParser whoScoredTeamFixturesParser) throws MalformedURLException, IOException {
 		JSoupURLReader jSoupURLReader = new JSoupURLReader(competitionURL);
 		Document document = jSoupURLReader.read();
