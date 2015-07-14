@@ -6,9 +6,9 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.text.SimpleDateFormat;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 import java.util.regex.Matcher;
@@ -24,9 +24,10 @@ import org.dromelvan.tools.util.parser.whoscored.fixtures.FixtureParserObject;
 import org.dromelvan.tools.util.parser.whoscored.fixtures.TeamStandingsParserObject;
 import org.dromelvan.tools.util.parser.whoscored.fixtures.WhoScoredTeamFixturesParser;
 import org.dromelvan.tools.util.parser.whoscored.fixtures.WhoScoredTeamStandingsParser;
-import org.joda.time.LocalDate;
 import org.joda.time.format.DateTimeFormat;
+import org.joda.time.format.DateTimeFormatter;
 import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
 import org.jukito.All;
 import org.jukito.JukitoModule;
 import org.jukito.JukitoRunner;
@@ -44,7 +45,8 @@ public class WhoScoredFixturesParserTests {
 		@Override
 		protected void configureTest() {
 			try {
-				bindManyInstances(File.class, new File("src/test/resources/whoscored-month-fixtures-1508.html"));
+				bindManyInstances(File.class, new File("src/test/resources/whoscored-fixtures-2015-2016.html"));
+				// bindManyInstances(File.class, new File("src/test/resources/whoscored-month-fixtures-1605.html"));
 				bindManyInstances(URL.class, new URL("http://www.whoscored.com/Regions/252/Tournaments/2"));
 			} catch (MalformedURLException e) {
 			}
@@ -52,9 +54,36 @@ public class WhoScoredFixturesParserTests {
 	}
 
 	// @Test
-	public void joda() {
-		// System.out.println(LocalDate.parse("Saturday, Aug 8 2015", DateTimeFormat.forPattern("")).getYear());
-		System.out.println(LocalDate.parse("Saturday, Jan 8 2015", DateTimeFormat.forPattern("E, MMM dd yyyy")).getMonthOfYear());
+	public void merge() throws IOException {
+		File[] files = new File[] {
+				new File("src/test/resources/whoscored-month-fixtures-1508.html"),
+				new File("src/test/resources/whoscored-month-fixtures-1509.html"),
+				new File("src/test/resources/whoscored-month-fixtures-1510.html"),
+				new File("src/test/resources/whoscored-month-fixtures-1511.html"),
+				new File("src/test/resources/whoscored-month-fixtures-1512.html"),
+				new File("src/test/resources/whoscored-month-fixtures-1601.html"),
+				new File("src/test/resources/whoscored-month-fixtures-1602.html"),
+				new File("src/test/resources/whoscored-month-fixtures-1603.html"),
+				new File("src/test/resources/whoscored-month-fixtures-1604.html"),
+				new File("src/test/resources/whoscored-month-fixtures-1605.html")
+		};
+
+		BufferedWriter writer = new BufferedWriter(new FileWriter(new File("output.html")));
+		writer.write("<html>\n");
+		writer.write("<body>\n");
+
+		for (File file : files) {
+			JSoupFileReader reader = new JSoupFileReader(file);
+			Document document = reader.read();
+
+			Element element = document.select("table#tournament-fixture").first();
+			writer.write(element.toString() + "\n");
+		}
+
+		writer.write("</body>\n");
+		writer.write("</html>\n");
+		writer.flush();
+		writer.close();
 	}
 
 	@Test
@@ -65,28 +94,34 @@ public class WhoScoredFixturesParserTests {
 		Document document = reader.read();
 
 		int lastMatchDay = 419;
-		SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+		DateTimeFormatter dateTimeFormatter = DateTimeFormat.forPattern("yyyy-MM-dd");
+
 		StringBuilder sqlStringBuilder = new StringBuilder();
 
 		whoScoredFixturesParser.setDocument(document);
 		Set<SeasonParserObject> seasonParserObjects = whoScoredFixturesParser.parse();
+		Set<String> whoScoredIds = new HashSet<String>();
 
 		for (SeasonParserObject seasonParserObject : seasonParserObjects) {
 			for (MatchDayParserObject matchDayParserObject : seasonParserObject.getMatchDayParserObjects()) {
-				sqlStringBuilder.append(String.format("insert into mod_omgang (tavling_id, namn, datum) values (24,'%s','%s');", "Omgång " + matchDayParserObject.getMatchDayNumber(), simpleDateFormat.format(matchDayParserObject.getDate())));
+				sqlStringBuilder.append(String.format("insert into mod_omgang (tavling_id, namn, datum) values (24,'%s','%s');", "Omgång " + matchDayParserObject.getMatchDayNumber(), matchDayParserObject.getLocalDate().toString(dateTimeFormatter)));
 				sqlStringBuilder.append("\n");
 
 				Collections.sort(matchDayParserObject.getMatchParserObjects());
 				for (MatchParserObject matchParserObject : matchDayParserObject.getMatchParserObjects()) {
 					sqlStringBuilder.append(String.format("insert into mod_match (omgang_id, hemmalag_id, bortalag_id, datum) values (%d, %d, %d, '%s');",
-							matchParserObject.getMatchDayNumber() + lastMatchDay, matchParserObject.getHomeTeamId(), matchParserObject.getAwayTeamId(), simpleDateFormat.format(matchParserObject.getDate())));
+							matchParserObject.getMatchDayNumber() + lastMatchDay, matchParserObject.getHomeTeamId(), matchParserObject.getAwayTeamId(), matchParserObject.getLocalDate().toString(dateTimeFormatter)));
 					sqlStringBuilder.append("\n");
-
+					whoScoredIds.add(matchParserObject.getWhoScoredId());
 				}
 			}
 		}
 
-		System.out.println(sqlStringBuilder);
+		BufferedWriter writer = new BufferedWriter(new FileWriter(new File("output.sql")));
+		writer.write(sqlStringBuilder.toString());
+		writer.flush();
+		writer.close();
+		System.out.println(whoScoredIds.size());
 	}
 
 	// @Test

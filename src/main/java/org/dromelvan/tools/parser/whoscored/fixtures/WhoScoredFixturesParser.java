@@ -1,7 +1,6 @@
 package org.dromelvan.tools.parser.whoscored.fixtures;
 
 import java.io.IOException;
-import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -33,33 +32,32 @@ public class WhoScoredFixturesParser extends JSoupDocumentParser<SeasonParserObj
 	public Set<SeasonParserObject> parse() throws IOException {
 		SeasonParserObject seasonParserObject = new SeasonParserObject();
 		MatchDayParserObject matchDayParserObject = null;
-		// SimpleDateFormat simpleDateFormat = new SimpleDateFormat("EEE, MMM d yyyy");
 		DateTimeFormatter dateTimeFormatter = DateTimeFormat.forPattern("E, MMM dd yyyy");
 
-		Elements tableElements = getDocument().select("table#tournament-fixture");
+		Elements tableElements = getDocument().select("table.fixture");
 
 		for (Element tableElement : tableElements) {
 			Elements tableRowElements = tableElement.getElementsByTag("tr");
 
-			Date date = null;
+			LocalDate localDate = null;
 
 			for (int i = 0; i < tableRowElements.size(); ++i) {
 				Element tableRowElement = tableRowElements.get(i);
 
 				if (tableRowElement.hasClass("rowgroupheader")) {
-					date = LocalDate.parse(tableRowElement.text(), dateTimeFormatter).toDate();
+					localDate = LocalDate.parse(tableRowElement.text(), dateTimeFormatter);
 					if (matchDayParserObject == null || matchDayParserObject.getMatchParserObjects().size() >= 10) {
 						matchDayParserObject = new MatchDayParserObject();
-						matchDayParserObject.setDate(date);
+						matchDayParserObject.setLocalDate(localDate);
 						seasonParserObject.getMatchDayParserObjects().add(matchDayParserObject);
 						matchDayParserObject.setMatchDayNumber(seasonParserObject.getMatchDayParserObjects().size());
-						logger.debug("Added match day for date {}.", matchDayParserObject.getDate());
+						logger.debug("Added match day for date {}.", matchDayParserObject.getLocalDate());
 					}
 				} else if (tableRowElement.hasClass("item")) {
 					MatchParserObject matchParserObject = new MatchParserObject();
 					matchParserObject.setWhoScoredId(tableRowElement.attr("data-id"));
 					matchParserObject.setMatchDayNumber(matchDayParserObject.getMatchDayNumber());
-					matchParserObject.setDate(date);
+					matchParserObject.setLocalDate(localDate);
 					matchParserObject.setTime(tableRowElement.select("td.time").first().text());
 					matchParserObject.setWhoScoredHomeTeamId(Integer.parseInt(tableRowElement.select("td.team.home").first().attr("data-id")));
 					matchParserObject.setHomeTeamName(tableRowElement.select("td.team.home").first().text());
