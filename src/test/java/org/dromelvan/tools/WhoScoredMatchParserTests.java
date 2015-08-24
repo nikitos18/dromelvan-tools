@@ -6,11 +6,8 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Set;
 
-import org.dromelvan.tools.parser.match.CardParserObject;
-import org.dromelvan.tools.parser.match.GoalParserObject;
 import org.dromelvan.tools.parser.match.MatchParserObject;
 import org.dromelvan.tools.parser.match.PlayerParserObject;
-import org.dromelvan.tools.parser.match.SubstitutionParserObject;
 import org.dromelvan.tools.parser.match.TeamParserObject;
 import org.dromelvan.tools.parser.whoscored.match.WhoScoredMatchParser;
 import org.jukito.All;
@@ -31,13 +28,13 @@ public class WhoScoredMatchParserTests {
 		protected void configureTest() {
 			try {
 				bindManyInstances(URL.class, new URL("http://www.whoscored.com/Matches/720889/Live/England-Premier-League-2013-2014-Tottenham-Aston-Villa"));
-				bindManyInstances(File.class, new File("src/test/resources/Manchester City-Everton Live.htm"));
+				bindManyInstances(File.class, new File("src/test/resources/Sunderland-Norwich.html"));
 			} catch (MalformedURLException e) {
 			}
 		}
 	}
 
-	@Test
+	//@Test
 	public void parsePlayerStatsURLTest(@All URL url, WhoScoredMatchParser whoScoredMatchParser) throws IOException {
 		whoScoredMatchParser.setURL(url);
 		Set<MatchParserObject> matchParserObjects = whoScoredMatchParser.parse();
@@ -58,13 +55,14 @@ public class WhoScoredMatchParserTests {
 
 			logger.info("Match {}", matchParserObject);
 			logger.info("Statistics for {} vs {}:", homeTeam, awayTeam);
+
 			for (PlayerParserObject playerParserObject : homeTeam.getPlayers()) {
 				logger.info("{} player: {}.", homeTeam, playerParserObject);
 			}
 			for (PlayerParserObject playerParserObject : awayTeam.getPlayers()) {
 				logger.info("{} player: {}.", awayTeam, playerParserObject);
 			}
-
+/*
 			for (GoalParserObject goalParserObject : homeTeam.getGoals()) {
 				logger.info("{} goal: {}.", homeTeam, goalParserObject);
 			}
@@ -85,6 +83,7 @@ public class WhoScoredMatchParserTests {
 			for (SubstitutionParserObject substitutionParserObject : awayTeam.getSubstitutions()) {
 				logger.info("{} substitution: {}.", awayTeam, substitutionParserObject);
 			}
+*/
 		}
 	}
 }

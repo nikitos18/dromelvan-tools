@@ -2,16 +2,15 @@ package org.dromelvan.tools.parser.whoscored.match;
 
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import org.dromelvan.tools.parser.jsoup.JSoupDocumentParser;
 import org.dromelvan.tools.parser.match.CardParserObject.CardType;
 import org.dromelvan.tools.parser.match.MatchParserObject;
 import org.dromelvan.tools.parser.whoscored.WhoScoredProperties;
-import org.jsoup.nodes.DataNode;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 import org.slf4j.Logger;
@@ -34,85 +33,78 @@ public class WhoScoredMatchEventsParser extends JSoupDocumentParser<MatchParserO
 	}
 
 	public Set<MatchParserObject> parse(WhoScoredMatchParserObject matchParserObject) {
-		Elements scriptElements = getDocument().getElementsByTag("script");
-		Pattern matchIdPattern = Pattern.compile(".*var liveMatchUpdater = .*parameters: \\{.*id: (\\d*).*\\}.*", Pattern.DOTALL);
-		Pattern scriptPattern = Pattern.compile("(.*)var initialMatchDataForScrappers = \\[\\[(.*), \\[(.*)", Pattern.DOTALL);
-		Pattern fixturePattern = Pattern.compile("\\[(\\d*),(\\d*),'(.*?)','(.*?)','(.*?)','.*?',\\d*,'(.*?)',(.*)\\]", Pattern.DOTALL);
-		Pattern matchEventsPattern = Pattern.compile("\\[\\[(.*?)\\]\\]", Pattern.DOTALL);
-		Pattern goalPattern = Pattern.compile(".*\\['(.*?)',('(.*?)')?,'(goal|owngoal|penalty-goal)','.*?',('OG'|'Pen.')?,(\\d*),(\\d*),(\\d*)\\].*", Pattern.DOTALL);
-		Pattern cardPattern = Pattern.compile(".*\\['(.*?)',,'(yellow|secondyellow|red)',,,(\\d*),(\\d*),(\\d*)\\].*", Pattern.DOTALL);
-		Pattern substitutionPattern = Pattern.compile(".*\\['(.*?)','(.*?)','subst',,,(\\d*),(\\d*),(\\d*)\\].*", Pattern.DOTALL);
+	    Elements keyIncidentsElements = getDocument().getElementsByClass("match-centre-key-incidents");
+	    for(Element keyIncidentsElement : keyIncidentsElements) {
+	        Elements cellElements = keyIncidentsElement.getElementsByTag("td");
 
-		for (Element scriptElement : scriptElements) {
-			for (DataNode node : scriptElement.dataNodes()) {
-				Matcher matchIdMatcher = matchIdPattern.matcher(node.toString());
-				if (matchIdMatcher.matches()) {
-					int whoScoredId = Integer.parseInt(matchIdMatcher.group(1));
-					if (matchParserObject.getWhoScoredId() == 0) {
-						matchParserObject.setWhoScoredId(whoScoredId);
-					} else if (matchParserObject.getWhoScoredId() != whoScoredId) {
-						logger.error("Provided WhoScoredMatchParserObject had whoScoredId={} but parsed document had whoScoredId={}", matchParserObject.getWhoScoredId(), whoScoredId);
-					}
-				}
+	        for(Element cellElement: cellElements) {
+	            // We'll just assume that we won't get more than one goal/assist per minute.
+	            Element goalElement = cellElement.getElementsByAttributeValue("data-type", "16").first();
+	            Element assistElement = cellElement.getElementsByAttributeValue("data-type", "1").first();
 
-				Matcher scriptMatcher = scriptPattern.matcher(node.toString());
-				if (scriptMatcher.matches()) {
-					String[] scriptVariables = scriptMatcher.group(2).split("\n, ");
-					for (String scriptVariable : scriptVariables) {
-						scriptVariable = scriptVariable.trim();
-						Matcher fixtureMatcher = fixturePattern.matcher(scriptVariable);
-						Matcher matchEventsMatcher = matchEventsPattern.matcher(scriptVariable);
-						if (fixtureMatcher.matches()) {
-							if (matchParserObject.getHomeTeam() == null) {
-								matchParserObject.setHomeTeam(new WhoScoredTeamParserObject(fixtureMatcher.group(3), Integer.parseInt(fixtureMatcher.group(1))));
-							}
-							if (matchParserObject.getAwayTeam() == null) {
-								matchParserObject.setAwayTeam(new WhoScoredTeamParserObject(fixtureMatcher.group(4), Integer.parseInt(fixtureMatcher.group(2))));
-							}
-							if (matchParserObject.getDateTime() == null) {
-								matchParserObject.setDateTime(fixtureMatcher.group(5));
-							}
-							if (matchParserObject.getTimeElapsed() == null) {
-								matchParserObject.setTimeElapsed(fixtureMatcher.group(6));
-							}
-						} else if (matchEventsMatcher.matches()) {
-							for (String eventVariable : matchEventsMatcher.group(1).split("\n")) {
-								Matcher goalMatcher = goalPattern.matcher(eventVariable);
-								Matcher cardMatcher = cardPattern.matcher(eventVariable);
-								Matcher substitutionMatcher = substitutionPattern.matcher(eventVariable);
-								if (goalMatcher.matches()) {
-									WhoScoredGoalParserObject goalParserObject = new WhoScoredGoalParserObject(goalMatcher.group(1),
-											Integer.parseInt(goalMatcher.group(7)),
-											goalMatcher.group(3),
-											Integer.parseInt(goalMatcher.group(8)),
-											Integer.parseInt(goalMatcher.group(6)),
-											goalMatcher.group(4).equalsIgnoreCase("penalty-goal"),
-											goalMatcher.group(4).equalsIgnoreCase("owngoal"));
+	            List<Element> cardElements = getMatchEventElements(cellElement, "17");
+	            List<Element> substitutionOffElements = getMatchEventElements(cellElement, "18");
+	            List<Element> substitutionOnElements = getMatchEventElements(cellElement, "19");
 
-									WhoScoredTeamParserObject team = matchParserObject.getTeamForGoal(goalParserObject);
-									if (team == null) {
-										logger.error("Could not find team for goal {}.", goalParserObject);
-									} else {
-										team.getGoals().add(goalParserObject);
-									}
-								} else if (cardMatcher.matches()) {
-									CardType cardType = (cardMatcher.group(2).equalsIgnoreCase("yellow") ? CardType.YELLOW : CardType.RED);
-									WhoScoredCardParserObject cardParserObject = new WhoScoredCardParserObject(cardMatcher.group(1), Integer.parseInt(cardMatcher.group(4)), Integer.parseInt(cardMatcher.group(3)), cardType);
-									matchParserObject.getTeamForPlayer(cardParserObject.getPlayerWhoScoredId()).getCards().add(cardParserObject);
-								} else if (substitutionMatcher.matches()) {
-									WhoScoredSubstitutionParserObject substitutionParserObject = new WhoScoredSubstitutionParserObject(substitutionMatcher.group(1),
-											Integer.parseInt(substitutionMatcher.group(4)),
-											substitutionMatcher.group(2),
-											Integer.parseInt(substitutionMatcher.group(5)),
-											Integer.parseInt(substitutionMatcher.group(3)));
-									matchParserObject.getTeamForPlayer(substitutionParserObject.getPlayerOutWhoScoredId()).getSubstitutions().add(substitutionParserObject);
-								}
-							}
-						}
-					}
-				}
-			}
-		}
+	            if(goalElement != null) {
+	                String player = goalElement.getElementsByClass("player-name").text();
+
+	                Element dataElement = goalElement.getElementsByClass("incident-icon").first();
+	                int playerId = Integer.parseInt(dataElement.attr("data-player-id"));
+	                int time = Integer.parseInt(dataElement.attr("data-minute")) + 1;
+	                boolean penalty = dataElement.hasAttr("data-event-satisfier-penaltyscored");
+	                boolean ownGoal = dataElement.hasAttr("data-event-satisfier-goalown");
+
+	                String assistPlayer = "";
+	                int assistPlayerId = 0;
+
+	                if(assistElement != null) {
+	                    assistPlayer = assistElement.getElementsByClass("player-name").text();
+	                    Element assistDataElement = assistElement.getElementsByClass("incident-icon").first();
+	                    assistPlayerId = Integer.parseInt(assistDataElement.attr("data-player-id"));
+	                }
+	                WhoScoredGoalParserObject goalParserObject = new WhoScoredGoalParserObject(player, playerId, assistPlayer, assistPlayerId, time, penalty, ownGoal);
+
+                    WhoScoredTeamParserObject team = matchParserObject.getTeamForGoal(goalParserObject);
+                    if (team == null) {
+                        logger.error("Could not find team for goal {}.", goalParserObject);
+                    } else {
+                        team.getGoals().add(goalParserObject);
+                    }
+	            }
+	            if(!cardElements.isEmpty()) {
+	                for(Element cardElement : cardElements) {
+    	                String player = cardElement.getElementsByClass("player-name").text();
+    	                Element dataElement = cardElement.getElementsByClass("incident-icon").first();
+
+                        int playerId = Integer.parseInt(dataElement.attr("data-player-id"));
+                        int time = Integer.parseInt(dataElement.attr("data-minute")) + 1;
+    	                CardType cardType = (dataElement.hasAttr("data-event-satisfier-yellowcard") ? CardType.YELLOW : CardType.RED);
+
+                        WhoScoredCardParserObject cardParserObject = new WhoScoredCardParserObject(player, playerId, time, cardType);
+                        matchParserObject.getTeamForPlayer(cardParserObject.getPlayerWhoScoredId()).getCards().add(cardParserObject);
+	                }
+	            }
+	            if(!substitutionOffElements.isEmpty()) {
+	                for(int i = 0; i < substitutionOffElements.size(); ++i) {
+	                    Element substitutionOffElement = substitutionOffElements.get(i);
+	                    Element substitutionOnElement = substitutionOnElements.get(i);
+
+    	                Element playerOutDataElement = substitutionOffElement.getElementsByClass("incident-icon").first();
+    	                Element playerInDataElement = substitutionOnElement.getElementsByClass("incident-icon").first();
+
+    	                String playerOut = substitutionOffElement.getElementsByClass("player-name").text();
+    	                int playerOutId = Integer.parseInt(playerOutDataElement.attr("data-player-id"));
+    	                String playerIn = substitutionOnElement.getElementsByClass("player-name").text();
+    	                int playerInId = Integer.parseInt(playerInDataElement.attr("data-player-id"));
+    	                int time = Integer.parseInt(playerOutDataElement.attr("data-minute")) + 1;
+
+    	                WhoScoredSubstitutionParserObject substitutionParserObject = new WhoScoredSubstitutionParserObject(playerOut, playerOutId, playerIn, playerInId, time);
+    	                matchParserObject.getTeamForPlayer(substitutionParserObject.getPlayerOutWhoScoredId()).getSubstitutions().add(substitutionParserObject);
+	                }
+	            }
+	        }
+	    }
 
 		getParserProperties().map(matchParserObject);
 
@@ -136,5 +128,14 @@ public class WhoScoredMatchEventsParser extends JSoupDocumentParser<MatchParserO
 			}
 		}
 		return null;
+	}
+
+	private List<Element> getMatchEventElements(Element cellElement, String dataType) {
+	    List<Element> matchEventElements = new ArrayList<Element>();
+	    Elements keyIncidentElements = cellElement.getElementsByAttributeValue("data-type", dataType);
+	    for(Element keyIncidentElement : keyIncidentElements) {
+	        matchEventElements.addAll(keyIncidentElement.getElementsByClass("match-centre-header-team-key-incident"));
+	    }
+	    return matchEventElements;
 	}
 }
