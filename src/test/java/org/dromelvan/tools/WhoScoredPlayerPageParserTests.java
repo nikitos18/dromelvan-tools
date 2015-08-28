@@ -16,8 +16,8 @@ import java.util.Set;
 
 import org.dromelvan.tools.parser.jsoup.JSoupFileReader;
 import org.dromelvan.tools.parser.jsoup.JSoupURLReader;
-import org.dromelvan.tools.util.parser.whoscored.player.PlayerInformationParserObject;
-import org.dromelvan.tools.util.parser.whoscored.player.WhoScoredPlayerPageParser;
+import org.dromelvan.tools.parser.whoscored.player.PlayerInformationParserObject;
+import org.dromelvan.tools.parser.whoscored.player.WhoScoredPlayerPageParser;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;

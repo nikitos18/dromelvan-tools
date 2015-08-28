@@ -1,4 +1,4 @@
-package org.dromelvan.tools.util.parser.whoscored.player;
+package org.dromelvan.tools.parser.whoscored.player;
 
 import org.dromelvan.tools.parser.ParserObject;
 

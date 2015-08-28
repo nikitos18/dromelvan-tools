@@ -11,10 +11,10 @@ import java.net.URL;
 
 import org.dromelvan.tools.parser.jsoup.JSoupFileReader;
 import org.dromelvan.tools.parser.jsoup.JSoupURLReader;
-import org.dromelvan.tools.util.parser.skysports.PlayerIdParserObject;
-import org.dromelvan.tools.util.parser.skysports.SkySportsTeamLinkParser;
-import org.dromelvan.tools.util.parser.skysports.SkySportsTeamPlayerIdParser;
-import org.dromelvan.tools.util.parser.skysports.TeamLinkParserObject;
+import org.dromelvan.tools.parser.skysports.PlayerIdParserObject;
+import org.dromelvan.tools.parser.skysports.SkySportsTeamLinkParser;
+import org.dromelvan.tools.parser.skysports.SkySportsTeamPlayerIdParser;
+import org.dromelvan.tools.parser.skysports.TeamLinkParserObject;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jukito.All;

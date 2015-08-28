@@ -1,4 +1,4 @@
-package org.dromelvan.tools.util.parser.whoscored.fixtures;
+package org.dromelvan.tools.parser.whoscored.fixtures;
 
 import java.util.HashSet;
 import java.util.Set;
