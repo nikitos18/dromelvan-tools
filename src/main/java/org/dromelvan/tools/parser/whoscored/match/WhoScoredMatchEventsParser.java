@@ -7,6 +7,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import org.dromelvan.tools.parser.javascript.JavaScriptParser;
 import org.dromelvan.tools.parser.jsoup.JSoupDocumentParser;
 import org.dromelvan.tools.parser.match.CardParserObject.CardType;
 import org.dromelvan.tools.parser.match.MatchParserObject;
@@ -32,7 +33,25 @@ public class WhoScoredMatchEventsParser extends JSoupDocumentParser<MatchParserO
 		return parse(new WhoScoredMatchParserObject());
 	}
 
-	public Set<MatchParserObject> parse(WhoScoredMatchParserObject matchParserObject) {
+    public Set<MatchParserObject> parse(WhoScoredMatchParserObject whoScoredMatchParserObject) {
+        return parseJavaScript(whoScoredMatchParserObject);
+    }
+
+	public Set<MatchParserObject> parseJavaScript(WhoScoredMatchParserObject matchParserObject) {
+        JavaScriptParser javaScriptParser = new JavaScriptParser();
+        WhoScoredMatchEventsJavaScriptVariables whoScoredMatchEventsJavaScriptVariables = new WhoScoredMatchEventsJavaScriptVariables(javaScriptParser.parse(getDocument()));
+
+
+
+
+        getParserProperties().map(matchParserObject);
+
+        Set<MatchParserObject> matchParserObjects = new HashSet<MatchParserObject>();
+        matchParserObjects.add(matchParserObject);
+        return matchParserObjects;
+	}
+
+	public Set<MatchParserObject> parseDom(WhoScoredMatchParserObject matchParserObject) {
 	    Elements keyIncidentsElements = getDocument().getElementsByClass("match-centre-key-incidents");
 	    for(Element keyIncidentsElement : keyIncidentsElements) {
 	        Elements cellElements = keyIncidentsElement.getElementsByTag("td");
