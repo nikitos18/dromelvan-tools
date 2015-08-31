@@ -5,6 +5,7 @@ import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import org.dromelvan.tools.parser.javascript.JavaScriptVariables;
 import org.dromelvan.tools.parser.jsoup.JSoupDocumentParser;
 import org.dromelvan.tools.parser.whoscored.WhoScoredProperties;
 import org.jsoup.nodes.DataNode;
@@ -13,7 +14,7 @@ import org.jsoup.select.Elements;
 
 import com.google.inject.Inject;
 
-public class WhoScoredTeamFixturesParser extends JSoupDocumentParser<FixtureParserObject> {
+public class WhoScoredTeamFixturesParser extends JSoupDocumentParser<FixtureParserObject, JavaScriptVariables> {
 
 	@Inject
 	public WhoScoredTeamFixturesParser(WhoScoredProperties whoScoredProperties) {

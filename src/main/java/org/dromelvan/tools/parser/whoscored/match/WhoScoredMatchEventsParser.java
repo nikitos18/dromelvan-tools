@@ -7,7 +7,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import org.dromelvan.tools.parser.javascript.JavaScriptParser;
 import org.dromelvan.tools.parser.jsoup.JSoupDocumentParser;
 import org.dromelvan.tools.parser.match.CardParserObject.CardType;
 import org.dromelvan.tools.parser.match.MatchParserObject;
@@ -20,7 +19,7 @@ import org.slf4j.LoggerFactory;
 
 import com.google.inject.Inject;
 
-public class WhoScoredMatchEventsParser extends JSoupDocumentParser<MatchParserObject> {
+public class WhoScoredMatchEventsParser extends JSoupDocumentParser<MatchParserObject, WhoScoredMatchEventsJavaScriptVariables> {
 
 	private final static Logger logger = LoggerFactory.getLogger(WhoScoredMatchEventsParser.class);
 
@@ -39,8 +38,7 @@ public class WhoScoredMatchEventsParser extends JSoupDocumentParser<MatchParserO
 	}
 
 	public Set<MatchParserObject> parseJavaScript(WhoScoredMatchParserObject matchParserObject) {
-		JavaScriptParser javaScriptParser = new JavaScriptParser();
-		WhoScoredMatchEventsJavaScriptVariables whoScoredMatchEventsJavaScriptVariables = new WhoScoredMatchEventsJavaScriptVariables(javaScriptParser.parse(getDocument()));
+		WhoScoredMatchEventsJavaScriptVariables whoScoredMatchEventsJavaScriptVariables = getJavaScriptVariables();
 
 		for (WhoScoredGoalParserObject whoScoredGoalParserObject : whoScoredMatchEventsJavaScriptVariables.getGoalParserObjects()) {
 			TeamParserObject teamParserObject = matchParserObject.getTeamForPlayer(whoScoredGoalParserObject.getPlayerWhoScoredId());
@@ -62,6 +60,23 @@ public class WhoScoredMatchEventsParser extends JSoupDocumentParser<MatchParserO
 		Set<MatchParserObject> matchParserObjects = new HashSet<MatchParserObject>();
 		matchParserObjects.add(matchParserObject);
 		return matchParserObjects;
+	}
+
+	public URL getPlayerStatsURL() {
+		Elements aElements = getDocument().getElementsByTag("a");
+		for (Element aElement : aElements) {
+			if (aElement.text() != null
+					&& aElement.text().equalsIgnoreCase("player statistics")) {
+				String urlString = "http://www.whoscored.com" + aElement.attr("href");
+				try {
+					URL url = new URL(urlString);
+					return url;
+				} catch (MalformedURLException e) {
+					logger.error("Malformed URL exception when getting player stats URL: {}.", urlString);
+				}
+			}
+		}
+		return null;
 	}
 
 	public Set<MatchParserObject> parseDom(WhoScoredMatchParserObject matchParserObject) {
@@ -143,23 +158,6 @@ public class WhoScoredMatchEventsParser extends JSoupDocumentParser<MatchParserO
 		Set<MatchParserObject> matchParserObjects = new HashSet<MatchParserObject>();
 		matchParserObjects.add(matchParserObject);
 		return matchParserObjects;
-	}
-
-	public URL getPlayerStatsURL() {
-		Elements aElements = getDocument().getElementsByTag("a");
-		for (Element aElement : aElements) {
-			if (aElement.text() != null
-					&& aElement.text().equalsIgnoreCase("player statistics")) {
-				String urlString = "http://www.whoscored.com" + aElement.attr("href");
-				try {
-					URL url = new URL(urlString);
-					return url;
-				} catch (MalformedURLException e) {
-					logger.error("Malformed URL exception when getting player stats URL: {}.", urlString);
-				}
-			}
-		}
-		return null;
 	}
 
 	private List<Element> getMatchEventElements(Element cellElement, String dataType) {

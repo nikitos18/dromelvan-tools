@@ -16,13 +16,18 @@ import org.jsoup.nodes.Element;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class JavaScriptParser {
+import com.google.inject.Inject;
+import com.google.inject.Provider;
+
+public class JavaScriptParser<T extends JavaScriptVariables> {
 
 	private ScriptEngine scriptEngine = new ScriptEngineManager().getEngineByName("JavaScript");
+	@Inject
+	private Provider<T> javaScriptVariablesProvider;
 	private final static Logger logger = LoggerFactory.getLogger(JavaScriptParser.class);
 
-	public JavaScriptVariables parse(Document document) {
-		JavaScriptVariables javaScriptVariables = new JavaScriptVariables();
+	public T parse(Document document) {
+		T javaScriptVariables = javaScriptVariablesProvider.get();
 
 		for (Element element : document.getElementsByTag("script")) {
 			try {
@@ -39,6 +44,7 @@ public class JavaScriptParser {
 			javaScriptVariables.put(key, parseValue(value));
 		}
 
+		javaScriptVariables.init();
 		return javaScriptVariables;
 	}
 

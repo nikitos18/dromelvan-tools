@@ -35,9 +35,8 @@ public class WhoScoredMatchEventsJavaScriptVariables extends JavaScriptVariables
 	private Map<Integer, String> playerIdNameDictionary = new HashMap<Integer, String>();
 	private Map<Integer, Map<Integer, Map>> incidentEvents = new HashMap<Integer, Map<Integer, Map>>();
 
-	public WhoScoredMatchEventsJavaScriptVariables(Map map) {
-		super(map);
-
+	@Override
+	public void init() {
 		List<String> playerNames = (List<String>) getMatchCentreData().get("playerIdNameDictionary");
 		for (int i = 0; i < playerNames.size(); ++i) {
 			String playerName = playerNames.get(i);
@@ -64,8 +63,6 @@ public class WhoScoredMatchEventsJavaScriptVariables extends JavaScriptVariables
 			int eventId = (Integer) incidentEvent.get("eventId");
 			teamEvents.put(eventId, incidentEvent);
 		}
-
-		System.out.println(getMatchCentreData().keySet());
 	}
 
 	public int getMatchId() {
@@ -79,24 +76,6 @@ public class WhoScoredMatchEventsJavaScriptVariables extends JavaScriptVariables
 
 	public Map<Integer, String> getPlayerIdNameDictionary() {
 		return playerIdNameDictionary;
-	}
-
-	private List<Map> getIncidentEventsByType(int type) {
-		List<Map> incidentEventsByType = new ArrayList<Map>();
-		List<Map> allIncidentEvents = new ArrayList<Map>();
-
-		for (Map teamIncidentEvents : incidentEvents.values()) {
-			allIncidentEvents.addAll(teamIncidentEvents.values());
-		}
-
-		for (Map incidentEvent : allIncidentEvents) {
-			Map typeMap = (Map) incidentEvent.get("type");
-			if (type == (int) typeMap.get("value")) {
-				incidentEventsByType.add(incidentEvent);
-			}
-		}
-
-		return incidentEventsByType;
 	}
 
 	public List<WhoScoredGoalParserObject> getGoalParserObjects() {
@@ -169,5 +148,23 @@ public class WhoScoredMatchEventsJavaScriptVariables extends JavaScriptVariables
 
 	private Map getMatchCentreData() {
 		return (Map) get(MATCH_CENTRE_DATA);
+	}
+
+	private List<Map> getIncidentEventsByType(int type) {
+		List<Map> incidentEventsByType = new ArrayList<Map>();
+		List<Map> allIncidentEvents = new ArrayList<Map>();
+
+		for (Map teamIncidentEvents : incidentEvents.values()) {
+			allIncidentEvents.addAll(teamIncidentEvents.values());
+		}
+
+		for (Map incidentEvent : allIncidentEvents) {
+			Map typeMap = (Map) incidentEvent.get("type");
+			if (type == (int) typeMap.get("value")) {
+				incidentEventsByType.add(incidentEvent);
+			}
+		}
+
+		return incidentEventsByType;
 	}
 }

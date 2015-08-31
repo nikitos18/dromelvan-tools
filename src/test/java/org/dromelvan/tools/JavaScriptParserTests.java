@@ -28,14 +28,13 @@ public class JavaScriptParserTests {
 	}
 
 	@Test
-	public void test(@All File file) throws IOException {
+	public void test(@All File file, JavaScriptParser<WhoScoredMatchEventsJavaScriptVariables> javaScriptParser) throws IOException {
 		logger.info("Reading file: " + file);
 
 		JSoupFileReader reader = new JSoupFileReader(file);
 		Document document = reader.read();
 
-		JavaScriptParser javaScriptParser = new JavaScriptParser();
-		WhoScoredMatchEventsJavaScriptVariables whoScoredMatchEventsJavaScriptVariables = new WhoScoredMatchEventsJavaScriptVariables(javaScriptParser.parse(document));
+		WhoScoredMatchEventsJavaScriptVariables whoScoredMatchEventsJavaScriptVariables = javaScriptParser.parse(document);
 
 		System.out.println("matchId: " + whoScoredMatchEventsJavaScriptVariables.getMatchId());
 		System.out.println("Date: " + whoScoredMatchEventsJavaScriptVariables.getDateTime());

@@ -16,4 +16,8 @@ public class JavaScriptVariables extends HashMap {
 	public JavaScriptVariables(Map map) {
 		super(map);
 	}
+
+	public void init() {
+	}
+
 }
