@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.dromelvan.tools.parser.javascript.JavaScriptVariables;
+import org.dromelvan.tools.parser.match.CardParserObject.CardType;
 import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
@@ -34,35 +35,34 @@ public class WhoScoredMatchEventsJavaScriptVariables extends JavaScriptVariables
 	private Map<Integer, String> playerIdNameDictionary = new HashMap<Integer, String>();
 	private Map<Integer, Map<Integer, Map>> incidentEvents = new HashMap<Integer, Map<Integer, Map>>();
 
-
 	public WhoScoredMatchEventsJavaScriptVariables(Map map) {
 		super(map);
 
-        List<String> playerNames = (List<String>)getMatchCentreData().get("playerIdNameDictionary");
-        for(int i = 0; i < playerNames.size(); ++i) {
-            String playerName = playerNames.get(i);
-            if(playerName != null) {
-                playerIdNameDictionary.put(i, playerName);
-            }
-        }
+		List<String> playerNames = (List<String>) getMatchCentreData().get("playerIdNameDictionary");
+		for (int i = 0; i < playerNames.size(); ++i) {
+			String playerName = playerNames.get(i);
+			if (playerName != null) {
+				playerIdNameDictionary.put(i, playerName);
+			}
+		}
 
-        List<Map> incidentEventList = new ArrayList<Map>();
-        Map home = (Map)getMatchCentreData().get("home");
-        Map away = (Map)getMatchCentreData().get("away");
+		List<Map> incidentEventList = new ArrayList<Map>();
+		Map home = (Map) getMatchCentreData().get("home");
+		Map away = (Map) getMatchCentreData().get("away");
 
-        incidentEventList.addAll((List<Map>)home.get("incidentEvents"));
-        incidentEventList.addAll((List<Map>)away.get("incidentEvents"));
+		incidentEventList.addAll((List<Map>) home.get("incidentEvents"));
+		incidentEventList.addAll((List<Map>) away.get("incidentEvents"));
 
-		for(Map incidentEvent : incidentEventList) {
-		    int teamId = (Integer)incidentEvent.get("teamId");
-		    Map<Integer,Map> teamEvents = incidentEvents.get(teamId);
-		    if(teamEvents == null) {
-		        teamEvents = new HashMap<Integer, Map>();
-		        incidentEvents.put(teamId, teamEvents);
-		    }
+		for (Map incidentEvent : incidentEventList) {
+			int teamId = (Integer) incidentEvent.get("teamId");
+			Map<Integer, Map> teamEvents = incidentEvents.get(teamId);
+			if (teamEvents == null) {
+				teamEvents = new HashMap<Integer, Map>();
+				incidentEvents.put(teamId, teamEvents);
+			}
 
-            int eventId = (Integer)incidentEvent.get("eventId");
-		    teamEvents.put(eventId, incidentEvent);
+			int eventId = (Integer) incidentEvent.get("eventId");
+			teamEvents.put(eventId, incidentEvent);
 		}
 
 		System.out.println(getMatchCentreData().keySet());
@@ -78,58 +78,93 @@ public class WhoScoredMatchEventsJavaScriptVariables extends JavaScriptVariables
 	}
 
 	public Map<Integer, String> getPlayerIdNameDictionary() {
-	    return playerIdNameDictionary;
+		return playerIdNameDictionary;
 	}
 
 	private List<Map> getIncidentEventsByType(int type) {
-	    List<Map> incidentEventsByType = new ArrayList<Map>();
-	    List<Map> allIncidentEvents = new ArrayList<Map>();
+		List<Map> incidentEventsByType = new ArrayList<Map>();
+		List<Map> allIncidentEvents = new ArrayList<Map>();
 
-	    for(Map teamIncidentEvents : incidentEvents.values()) {
-	        allIncidentEvents.addAll(teamIncidentEvents.values());
-	    }
+		for (Map teamIncidentEvents : incidentEvents.values()) {
+			allIncidentEvents.addAll(teamIncidentEvents.values());
+		}
 
-	    for(Map incidentEvent : allIncidentEvents) {
-	        Map typeMap = (Map)incidentEvent.get("type");
-	        if(type == (int)typeMap.get("value")) {
-	            incidentEventsByType.add(incidentEvent);
-	        }
-	    }
+		for (Map incidentEvent : allIncidentEvents) {
+			Map typeMap = (Map) incidentEvent.get("type");
+			if (type == (int) typeMap.get("value")) {
+				incidentEventsByType.add(incidentEvent);
+			}
+		}
 
-	    return incidentEventsByType;
+		return incidentEventsByType;
 	}
 
 	public List<WhoScoredGoalParserObject> getGoalParserObjects() {
-	    List<WhoScoredGoalParserObject> whoScoredGoalParserObjects = new ArrayList<WhoScoredGoalParserObject>();
-	    for(Map goalEvent : getIncidentEventsByType(TYPE_GOAL)) {
-	        int playerWhoScoredId = (int)goalEvent.get("playerId");
-	        String player = playerIdNameDictionary.get(playerWhoScoredId);
-	        int time = (int)goalEvent.get("minute") + 1;
-	        boolean ownGoal = (goalEvent.get("isOwnGoal") == null ? false : (boolean)goalEvent.get("isOwnGoal"));
+		List<WhoScoredGoalParserObject> whoScoredGoalParserObjects = new ArrayList<WhoScoredGoalParserObject>();
 
-            boolean penalty = false;
-	        List<Map> qualifiers = (List<Map>)goalEvent.get("qualifiers");
-	        for(Map qualifier : qualifiers) {
-	            Map typeMap = (Map)qualifier.get("type");
-	            int value = (int)typeMap.get("value");
-	            if(value == TYPE_PENALTY) {
-	                penalty = true;
-	                break;
-	            }
-	        }
+		for (Map goalEvent : getIncidentEventsByType(TYPE_GOAL)) {
+			int playerWhoScoredId = (int) goalEvent.get("playerId");
+			String player = playerIdNameDictionary.get(playerWhoScoredId);
+			int time = (int) goalEvent.get("minute") + 1;
+			boolean ownGoal = (goalEvent.get("isOwnGoal") == null ? false : (boolean) goalEvent.get("isOwnGoal"));
 
-	        int assistPlayerWhoScoredId = 0;
-	        String assistPlayer = "";
-	        Map assistEvent = incidentEvents.get(goalEvent.get("teamId")).get(goalEvent.get("relatedEventId"));
-	        if(assistEvent != null) {
-	            assistPlayerWhoScoredId = (int)assistEvent.get("playerId");
-	            assistPlayer = playerIdNameDictionary.get(assistPlayerWhoScoredId);
-	        }
+			boolean penalty = false;
+			List<Map> qualifiers = (List<Map>) goalEvent.get("qualifiers");
+			for (Map qualifier : qualifiers) {
+				Map typeMap = (Map) qualifier.get("type");
+				int value = (int) typeMap.get("value");
+				if (value == TYPE_PENALTY) {
+					penalty = true;
+					break;
+				}
+			}
 
-	        WhoScoredGoalParserObject whoScoredGoalParserObject = new WhoScoredGoalParserObject(player, playerWhoScoredId, assistPlayer, assistPlayerWhoScoredId, time, penalty, ownGoal);
-	        whoScoredGoalParserObjects.add(whoScoredGoalParserObject);
-	    }
-	    return whoScoredGoalParserObjects;
+			int assistPlayerWhoScoredId = 0;
+			String assistPlayer = "";
+			Map assistEvent = incidentEvents.get(goalEvent.get("teamId")).get(goalEvent.get("relatedEventId"));
+			if (assistEvent != null) {
+				assistPlayerWhoScoredId = (int) assistEvent.get("playerId");
+				assistPlayer = playerIdNameDictionary.get(assistPlayerWhoScoredId);
+			}
+
+			WhoScoredGoalParserObject whoScoredGoalParserObject = new WhoScoredGoalParserObject(player, playerWhoScoredId, assistPlayer, assistPlayerWhoScoredId, time, penalty, ownGoal);
+			whoScoredGoalParserObjects.add(whoScoredGoalParserObject);
+		}
+
+		return whoScoredGoalParserObjects;
+	}
+
+	public List<WhoScoredCardParserObject> getCardParserObjects() {
+		List<WhoScoredCardParserObject> whoScoredCardParserObjects = new ArrayList<WhoScoredCardParserObject>();
+
+		for (Map cardEvent : getIncidentEventsByType(TYPE_CARD)) {
+			int playerWhoScoredId = (int) cardEvent.get("playerId");
+			String player = playerIdNameDictionary.get(playerWhoScoredId);
+			int time = (int) cardEvent.get("minute") + 1;
+			CardType cardType = ((int) ((Map) cardEvent.get("cardType")).get("value") == TYPE_CARD_YELLOW ? CardType.YELLOW : CardType.RED);
+
+			WhoScoredCardParserObject whoScoredCardParserObject = new WhoScoredCardParserObject(player, playerWhoScoredId, time, cardType);
+			whoScoredCardParserObjects.add(whoScoredCardParserObject);
+		}
+		return whoScoredCardParserObjects;
+	}
+
+	public List<WhoScoredSubstitutionParserObject> getSubstitutionParserObjects() {
+		List<WhoScoredSubstitutionParserObject> whoScoredSubstitutionParserObjects = new ArrayList<WhoScoredSubstitutionParserObject>();
+
+		for (Map substitutionEvent : getIncidentEventsByType(TYPE_SUBSTITUTION_OFF)) {
+			int playerOutWhoScoredId = (int) substitutionEvent.get("playerId");
+			String playerOut = playerIdNameDictionary.get(playerOutWhoScoredId);
+			int time = (int) substitutionEvent.get("minute") + 1;
+
+			Map substitutionInEvent = incidentEvents.get(substitutionEvent.get("teamId")).get(substitutionEvent.get("relatedEventId"));
+			int playerInWhoScoredId = (int) substitutionInEvent.get("playerId");
+			String playerIn = playerIdNameDictionary.get(playerInWhoScoredId);
+
+			WhoScoredSubstitutionParserObject whoScoredSubstitutionParserObject = new WhoScoredSubstitutionParserObject(playerOut, playerOutWhoScoredId, playerIn, playerInWhoScoredId, time);
+			whoScoredSubstitutionParserObjects.add(whoScoredSubstitutionParserObject);
+		}
+		return whoScoredSubstitutionParserObjects;
 	}
 
 	private Map getMatchCentreData() {

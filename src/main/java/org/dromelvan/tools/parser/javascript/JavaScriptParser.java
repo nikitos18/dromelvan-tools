@@ -34,13 +34,9 @@ public class JavaScriptParser {
 
 		Bindings bindings = scriptEngine.getBindings(ScriptContext.ENGINE_SCOPE);
 
-		int k = 0;
 		for (String key : bindings.keySet()) {
-			System.out.println(key);
-			if (!"allRegions".equals(key.toString())) {
-				Object value = bindings.get(key);
-				javaScriptVariables.put(key, parseValue(value));
-			}
+			Object value = bindings.get(key);
+			javaScriptVariables.put(key, parseValue(value));
 		}
 
 		return javaScriptVariables;

@@ -34,101 +34,109 @@ public class WhoScoredMatchEventsParser extends JSoupDocumentParser<MatchParserO
 		return parse(new WhoScoredMatchParserObject());
 	}
 
-    public Set<MatchParserObject> parse(WhoScoredMatchParserObject whoScoredMatchParserObject) {
-        return parseJavaScript(whoScoredMatchParserObject);
-    }
+	public Set<MatchParserObject> parse(WhoScoredMatchParserObject whoScoredMatchParserObject) {
+		return parseJavaScript(whoScoredMatchParserObject);
+	}
 
 	public Set<MatchParserObject> parseJavaScript(WhoScoredMatchParserObject matchParserObject) {
-        JavaScriptParser javaScriptParser = new JavaScriptParser();
-        WhoScoredMatchEventsJavaScriptVariables whoScoredMatchEventsJavaScriptVariables = new WhoScoredMatchEventsJavaScriptVariables(javaScriptParser.parse(getDocument()));
+		JavaScriptParser javaScriptParser = new JavaScriptParser();
+		WhoScoredMatchEventsJavaScriptVariables whoScoredMatchEventsJavaScriptVariables = new WhoScoredMatchEventsJavaScriptVariables(javaScriptParser.parse(getDocument()));
 
-        for(WhoScoredGoalParserObject whoScoredGoalParserObject : whoScoredMatchEventsJavaScriptVariables.getGoalParserObjects()) {
-            TeamParserObject teamParserObject = matchParserObject.getTeamForPlayer(whoScoredGoalParserObject.getPlayerWhoScoredId());
-            teamParserObject.getGoals().add(whoScoredGoalParserObject);
-        }
+		for (WhoScoredGoalParserObject whoScoredGoalParserObject : whoScoredMatchEventsJavaScriptVariables.getGoalParserObjects()) {
+			TeamParserObject teamParserObject = matchParserObject.getTeamForPlayer(whoScoredGoalParserObject.getPlayerWhoScoredId());
+			teamParserObject.getGoals().add(whoScoredGoalParserObject);
+		}
 
+		for (WhoScoredCardParserObject whoScoredCardParserObject : whoScoredMatchEventsJavaScriptVariables.getCardParserObjects()) {
+			TeamParserObject teamParserObject = matchParserObject.getTeamForPlayer(whoScoredCardParserObject.getPlayerWhoScoredId());
+			teamParserObject.getCards().add(whoScoredCardParserObject);
+		}
 
+		for (WhoScoredSubstitutionParserObject whoScoredSubstitutionParserObject : whoScoredMatchEventsJavaScriptVariables.getSubstitutionParserObjects()) {
+			TeamParserObject teamParserObject = matchParserObject.getTeamForPlayer(whoScoredSubstitutionParserObject.getPlayerOutWhoScoredId());
+			teamParserObject.getSubstitutions().add(whoScoredSubstitutionParserObject);
+		}
 
-        getParserProperties().map(matchParserObject);
+		getParserProperties().map(matchParserObject);
 
-        Set<MatchParserObject> matchParserObjects = new HashSet<MatchParserObject>();
-        matchParserObjects.add(matchParserObject);
-        return matchParserObjects;
+		Set<MatchParserObject> matchParserObjects = new HashSet<MatchParserObject>();
+		matchParserObjects.add(matchParserObject);
+		return matchParserObjects;
 	}
 
 	public Set<MatchParserObject> parseDom(WhoScoredMatchParserObject matchParserObject) {
-	    Elements keyIncidentsElements = getDocument().getElementsByClass("match-centre-key-incidents");
-	    for(Element keyIncidentsElement : keyIncidentsElements) {
-	        Elements cellElements = keyIncidentsElement.getElementsByTag("td");
+		Elements keyIncidentsElements = getDocument().getElementsByClass("match-centre-key-incidents");
+		for (Element keyIncidentsElement : keyIncidentsElements) {
+			Elements cellElements = keyIncidentsElement.getElementsByTag("td");
 
-	        for(Element cellElement: cellElements) {
-	            // We'll just assume that we won't get more than one goal/assist per minute.
-	            Element goalElement = cellElement.getElementsByAttributeValue("data-type", "16").first();
-	            Element assistElement = cellElement.getElementsByAttributeValue("data-type", "1").first();
+			for (Element cellElement : cellElements) {
+				// We'll just assume that we won't get more than one goal/assist per minute.
+				Element goalElement = cellElement.getElementsByAttributeValue("data-type", "16").first();
+				Element assistElement = cellElement.getElementsByAttributeValue("data-type", "1").first();
 
-	            List<Element> cardElements = getMatchEventElements(cellElement, "17");
-	            List<Element> substitutionOffElements = getMatchEventElements(cellElement, "18");
-	            List<Element> substitutionOnElements = getMatchEventElements(cellElement, "19");
+				List<Element> cardElements = getMatchEventElements(cellElement, "17");
+				List<Element> substitutionOffElements = getMatchEventElements(cellElement, "18");
+				List<Element> substitutionOnElements = getMatchEventElements(cellElement, "19");
 
-	            if(goalElement != null) {
-	                String player = goalElement.getElementsByClass("player-name").text();
+				if (goalElement != null) {
+					String player = goalElement.getElementsByClass("player-name").text();
 
-	                Element dataElement = goalElement.getElementsByClass("incident-icon").first();
-	                int playerId = Integer.parseInt(dataElement.attr("data-player-id"));
-	                int time = Integer.parseInt(dataElement.attr("data-minute")) + 1;
-	                boolean penalty = dataElement.hasAttr("data-event-satisfier-penaltyscored");
-	                boolean ownGoal = dataElement.hasAttr("data-event-satisfier-goalown");
+					Element dataElement = goalElement.getElementsByClass("incident-icon").first();
+					int playerId = Integer.parseInt(dataElement.attr("data-player-id"));
+					int time = Integer.parseInt(dataElement.attr("data-minute")) + 1;
+					boolean penalty = dataElement.hasAttr("data-event-satisfier-penaltyscored");
+					boolean ownGoal = dataElement.hasAttr("data-event-satisfier-goalown");
 
-	                String assistPlayer = "";
-	                int assistPlayerId = 0;
+					String assistPlayer = "";
+					int assistPlayerId = 0;
 
-	                if(assistElement != null) {
-	                    assistPlayer = assistElement.getElementsByClass("player-name").text();
-	                    Element assistDataElement = assistElement.getElementsByClass("incident-icon").first();
-	                    assistPlayerId = Integer.parseInt(assistDataElement.attr("data-player-id"));
-	                }
-	                WhoScoredGoalParserObject goalParserObject = new WhoScoredGoalParserObject(player, playerId, assistPlayer, assistPlayerId, time, penalty, ownGoal);
+					if (assistElement != null) {
+						assistPlayer = assistElement.getElementsByClass("player-name").text();
+						Element assistDataElement = assistElement.getElementsByClass("incident-icon").first();
+						assistPlayerId = Integer.parseInt(assistDataElement.attr("data-player-id"));
+					}
+					WhoScoredGoalParserObject goalParserObject = new WhoScoredGoalParserObject(player, playerId, assistPlayer, assistPlayerId, time, penalty, ownGoal);
 
-                    WhoScoredTeamParserObject team = matchParserObject.getTeamForGoal(goalParserObject);
-                    if (team == null) {
-                        logger.error("Could not find team for goal {}.", goalParserObject);
-                    } else {
-                        team.getGoals().add(goalParserObject);
-                    }
-	            }
-	            if(!cardElements.isEmpty()) {
-	                for(Element cardElement : cardElements) {
-    	                String player = cardElement.getElementsByClass("player-name").text();
-    	                Element dataElement = cardElement.getElementsByClass("incident-icon").first();
+					WhoScoredTeamParserObject team = matchParserObject.getTeamForGoal(goalParserObject);
+					if (team == null) {
+						logger.error("Could not find team for goal {}.", goalParserObject);
+					} else {
+						team.getGoals().add(goalParserObject);
+					}
+				}
+				if (!cardElements.isEmpty()) {
+					for (Element cardElement : cardElements) {
+						String player = cardElement.getElementsByClass("player-name").text();
+						Element dataElement = cardElement.getElementsByClass("incident-icon").first();
 
-                        int playerId = Integer.parseInt(dataElement.attr("data-player-id"));
-                        int time = Integer.parseInt(dataElement.attr("data-minute")) + 1;
-    	                CardType cardType = (dataElement.hasAttr("data-event-satisfier-yellowcard") ? CardType.YELLOW : CardType.RED);
+						int playerId = Integer.parseInt(dataElement.attr("data-player-id"));
+						int time = Integer.parseInt(dataElement.attr("data-minute")) + 1;
+						CardType cardType = (dataElement.hasAttr("data-event-satisfier-yellowcard") ? CardType.YELLOW : CardType.RED);
 
-                        WhoScoredCardParserObject cardParserObject = new WhoScoredCardParserObject(player, playerId, time, cardType);
-                        matchParserObject.getTeamForPlayer(cardParserObject.getPlayerWhoScoredId()).getCards().add(cardParserObject);
-	                }
-	            }
-	            if(!substitutionOffElements.isEmpty()) {
-	                for(int i = 0; i < substitutionOffElements.size(); ++i) {
-	                    Element substitutionOffElement = substitutionOffElements.get(i);
-	                    Element substitutionOnElement = substitutionOnElements.get(i);
+						WhoScoredCardParserObject cardParserObject = new WhoScoredCardParserObject(player, playerId, time, cardType);
+						matchParserObject.getTeamForPlayer(cardParserObject.getPlayerWhoScoredId()).getCards().add(cardParserObject);
+					}
+				}
+				if (!substitutionOffElements.isEmpty()) {
+					for (int i = 0; i < substitutionOffElements.size(); ++i) {
+						Element substitutionOffElement = substitutionOffElements.get(i);
+						Element substitutionOnElement = substitutionOnElements.get(i);
 
-    	                Element playerOutDataElement = substitutionOffElement.getElementsByClass("incident-icon").first();
-    	                Element playerInDataElement = substitutionOnElement.getElementsByClass("incident-icon").first();
+						Element playerOutDataElement = substitutionOffElement.getElementsByClass("incident-icon").first();
+						Element playerInDataElement = substitutionOnElement.getElementsByClass("incident-icon").first();
 
-    	                String playerOut = substitutionOffElement.getElementsByClass("player-name").text();
-    	                int playerOutId = Integer.parseInt(playerOutDataElement.attr("data-player-id"));
-    	                String playerIn = substitutionOnElement.getElementsByClass("player-name").text();
-    	                int playerInId = Integer.parseInt(playerInDataElement.attr("data-player-id"));
-    	                int time = Integer.parseInt(playerOutDataElement.attr("data-minute")) + 1;
+						String playerOut = substitutionOffElement.getElementsByClass("player-name").text();
+						int playerOutId = Integer.parseInt(playerOutDataElement.attr("data-player-id"));
+						String playerIn = substitutionOnElement.getElementsByClass("player-name").text();
+						int playerInId = Integer.parseInt(playerInDataElement.attr("data-player-id"));
+						int time = Integer.parseInt(playerOutDataElement.attr("data-minute")) + 1;
 
-    	                WhoScoredSubstitutionParserObject substitutionParserObject = new WhoScoredSubstitutionParserObject(playerOut, playerOutId, playerIn, playerInId, time);
-    	                matchParserObject.getTeamForPlayer(substitutionParserObject.getPlayerOutWhoScoredId()).getSubstitutions().add(substitutionParserObject);
-	                }
-	            }
-	        }
-	    }
+						WhoScoredSubstitutionParserObject substitutionParserObject = new WhoScoredSubstitutionParserObject(playerOut, playerOutId, playerIn, playerInId, time);
+						matchParserObject.getTeamForPlayer(substitutionParserObject.getPlayerOutWhoScoredId()).getSubstitutions().add(substitutionParserObject);
+					}
+				}
+			}
+		}
 
 		getParserProperties().map(matchParserObject);
 
@@ -155,11 +163,11 @@ public class WhoScoredMatchEventsParser extends JSoupDocumentParser<MatchParserO
 	}
 
 	private List<Element> getMatchEventElements(Element cellElement, String dataType) {
-	    List<Element> matchEventElements = new ArrayList<Element>();
-	    Elements keyIncidentElements = cellElement.getElementsByAttributeValue("data-type", dataType);
-	    for(Element keyIncidentElement : keyIncidentElements) {
-	        matchEventElements.addAll(keyIncidentElement.getElementsByClass("match-centre-header-team-key-incident"));
-	    }
-	    return matchEventElements;
+		List<Element> matchEventElements = new ArrayList<Element>();
+		Elements keyIncidentElements = cellElement.getElementsByAttributeValue("data-type", dataType);
+		for (Element keyIncidentElement : keyIncidentElements) {
+			matchEventElements.addAll(keyIncidentElement.getElementsByClass("match-centre-header-team-key-incident"));
+		}
+		return matchEventElements;
 	}
 }

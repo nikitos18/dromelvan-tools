@@ -23,7 +23,7 @@ public class JavaScriptParserTests {
 	public static class Module extends JukitoModule {
 		@Override
 		protected void configureTest() {
-			bindManyInstances(File.class, new File("src/test/resources/Aston Villa-Sunderland.html"));
+			bindManyInstances(File.class, new File("src/test/resources/Liverpool-West Ham.html"));
 		}
 	}
 
@@ -39,11 +39,8 @@ public class JavaScriptParserTests {
 
 		System.out.println("matchId: " + whoScoredMatchEventsJavaScriptVariables.getMatchId());
 		System.out.println("Date: " + whoScoredMatchEventsJavaScriptVariables.getDateTime());
-		System.out.println("IncidentEvents:");
-		System.out.println(whoScoredMatchEventsJavaScriptVariables.getGoalParserObjects());
-//		for(Map map : whoScoredMatchEventsJavaScriptVariables.getIncidentEvents()) {
-//		    System.out.println(map.get("eventId") + " " + map.get("minute") + " " + whoScoredMatchEventsJavaScriptVariables.getPlayerIdNameDictionary().get(map.get("playerId")) + " " + map.get("type") + " " + map.get("qualifiers"));
-//		    System.out.println();
-//		}
+		// System.out.println(whoScoredMatchEventsJavaScriptVariables.getGoalParserObjects());
+		// System.out.println(whoScoredMatchEventsJavaScriptVariables.getCardParserObjects());
+		System.out.println(whoScoredMatchEventsJavaScriptVariables.getSubstitutionParserObjects());
 	}
 }
