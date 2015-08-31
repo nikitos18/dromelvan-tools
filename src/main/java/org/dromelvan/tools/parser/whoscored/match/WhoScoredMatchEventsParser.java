@@ -11,6 +11,7 @@ import org.dromelvan.tools.parser.javascript.JavaScriptParser;
 import org.dromelvan.tools.parser.jsoup.JSoupDocumentParser;
 import org.dromelvan.tools.parser.match.CardParserObject.CardType;
 import org.dromelvan.tools.parser.match.MatchParserObject;
+import org.dromelvan.tools.parser.match.TeamParserObject;
 import org.dromelvan.tools.parser.whoscored.WhoScoredProperties;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
@@ -41,6 +42,10 @@ public class WhoScoredMatchEventsParser extends JSoupDocumentParser<MatchParserO
         JavaScriptParser javaScriptParser = new JavaScriptParser();
         WhoScoredMatchEventsJavaScriptVariables whoScoredMatchEventsJavaScriptVariables = new WhoScoredMatchEventsJavaScriptVariables(javaScriptParser.parse(getDocument()));
 
+        for(WhoScoredGoalParserObject whoScoredGoalParserObject : whoScoredMatchEventsJavaScriptVariables.getGoalParserObjects()) {
+            TeamParserObject teamParserObject = matchParserObject.getTeamForPlayer(whoScoredGoalParserObject.getPlayerWhoScoredId());
+            teamParserObject.getGoals().add(whoScoredGoalParserObject);
+        }
 
 
 
