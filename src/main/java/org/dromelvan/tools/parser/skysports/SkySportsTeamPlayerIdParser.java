@@ -1,17 +1,18 @@
-package org.dromelvan.tools.util.parser.skysports;
+package org.dromelvan.tools.parser.skysports;
 
 import java.util.HashSet;
 import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import org.dromelvan.tools.parser.javascript.JavaScriptVariables;
 import org.dromelvan.tools.parser.jsoup.JSoupDocumentParser;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
 import com.google.inject.Inject;
 
-public class SkySportsTeamPlayerIdParser extends JSoupDocumentParser<PlayerIdParserObject> {
+public class SkySportsTeamPlayerIdParser extends JSoupDocumentParser<PlayerIdParserObject, JavaScriptVariables> {
 
 	@Inject
 	public SkySportsTeamPlayerIdParser(SkySportsProperties skySportsProperties) {

@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.HashSet;
 import java.util.Set;
 
+import org.dromelvan.tools.parser.javascript.JavaScriptVariables;
 import org.dromelvan.tools.parser.jsoup.JSoupDocumentParser;
 import org.dromelvan.tools.parser.whoscored.MatchDayParserObject;
 import org.dromelvan.tools.parser.whoscored.MatchParserObject;
@@ -19,7 +20,7 @@ import org.slf4j.LoggerFactory;
 
 import com.google.inject.Inject;
 
-public class WhoScoredFixturesParser extends JSoupDocumentParser<SeasonParserObject> {
+public class WhoScoredFixturesParser extends JSoupDocumentParser<SeasonParserObject, JavaScriptVariables> {
 
 	private final static Logger logger = LoggerFactory.getLogger(WhoScoredFixturesParser.class);
 

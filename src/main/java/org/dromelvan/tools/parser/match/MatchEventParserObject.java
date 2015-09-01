@@ -7,7 +7,7 @@ public class MatchEventParserObject extends ParserObject {
     private int time;
 
     public MatchEventParserObject(int time) {
-        this.time = time;
+        this.time = (time > 90 ? 90 : time);
     }
 
     public int getTime() {

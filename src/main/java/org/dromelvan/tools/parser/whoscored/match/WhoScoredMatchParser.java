@@ -44,7 +44,7 @@ public class WhoScoredMatchParser implements FileParser<MatchParserObject> {
 	public void setFile(File file) {
 		this.matchEventsReader = new JSoupFileReader(file);
 
-		File playerStatsFile = new File(file.getParent(), file.getName().replace("Live.htm", "- Live Statistics.htm"));
+		File playerStatsFile = new File(file.getParent(), file.getName().replace(".html", " - Live Statistics.html"));
 		this.playerStatsReader = new JSoupFileReader(playerStatsFile);
 	}
 
@@ -56,7 +56,7 @@ public class WhoScoredMatchParser implements FileParser<MatchParserObject> {
 		try {
 			document = playerStatsReader.read();
 		} catch (FileNotFoundException e) {
-			logger.debug("Fetching player stats file from URL: {}.", whoScoredMatchEventsParser.getPlayerStatsURL());
+			logger.info("Fetching player stats file from URL: {}.", whoScoredMatchEventsParser.getPlayerStatsURL());
 			JSoupURLReader jSoupURLReader = new JSoupURLReader(whoScoredMatchEventsParser.getPlayerStatsURL());
 			document = jSoupURLReader.read();
 

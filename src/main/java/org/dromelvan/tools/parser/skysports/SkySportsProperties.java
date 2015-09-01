@@ -1,4 +1,4 @@
-package org.dromelvan.tools.util.parser.skysports;
+package org.dromelvan.tools.parser.skysports;
 
 import org.dromelvan.tools.parser.ParserProperties;
 

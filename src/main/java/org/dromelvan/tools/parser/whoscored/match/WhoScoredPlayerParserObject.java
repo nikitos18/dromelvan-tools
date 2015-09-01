@@ -6,6 +6,8 @@ public class WhoScoredPlayerParserObject extends PlayerParserObject {
 
 	private WhoScoredPlayerStatsMap whoScoredPlayerStatsMap;
 
+	public WhoScoredPlayerParserObject() {}
+
 	public WhoScoredPlayerParserObject(WhoScoredPlayerStatsMap whoScoredPlayerStatsMap) {
 		setWhoScoredId(whoScoredPlayerStatsMap.getWhoScoredId());
 		setName(whoScoredPlayerStatsMap.getName());
@@ -26,6 +28,6 @@ public class WhoScoredPlayerParserObject extends PlayerParserObject {
 
 	@Override
 	public String toString() {
-		return String.format("Name: %s (%s) Participated: %s Rating: %s Stats: %s", getName(), getWhoScoredId(), getParticipated(), getRating(), getWhoScoredPlayerStatsMap());
+		return String.format("Name: %s (%s) Participated: %s Rating: %s Assists: %s Stats: %s", getName(), getWhoScoredId(), getParticipated(), getRating(), getAssists(), getWhoScoredPlayerStatsMap());
 	}
 }
