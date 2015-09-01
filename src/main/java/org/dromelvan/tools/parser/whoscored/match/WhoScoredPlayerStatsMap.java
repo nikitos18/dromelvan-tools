@@ -1,9 +1,8 @@
 package org.dromelvan.tools.parser.whoscored.match;
 
 import java.math.BigDecimal;
-import java.util.Collection;
 import java.util.HashMap;
-import java.util.Map;
+import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -52,63 +51,65 @@ public class WhoScoredPlayerStatsMap extends HashMap<String, String> {
 	public final static String GOALS_CONCEDED_TOTAL = "goals_conceded_total";
 	private boolean valid = false;
 
-	public WhoScoredPlayerStatsMap(Map playerStatsMap) {
-        // Ex: [43948, Costel Pantilimon, 6.19, [Stats map], 1, GK, 1, 0, 0, GK, 28, 203, 96]
-        put(WHOSCORED_ID, String.valueOf(playerStatsMap.get(0)));
-        put(NAME, (String)playerStatsMap.get(1));
-        put(RATING, String.valueOf(playerStatsMap.get(2)).replace(".", ""));
+	public WhoScoredPlayerStatsMap(List playerStats) {
+		put(WHOSCORED_ID, String.valueOf(playerStats.get(0)));
+		put(NAME, (String) playerStats.get(1));
 
+		// This is all a bit convoluted due to the way the javascript array is built
+		for (List playerStat : (List<List>) ((List) playerStats.get(3)).get(0)) {
+			String statName = (String) playerStat.get(0);
+			String statValue = String.valueOf(((List) playerStat.get(1)).get(0));
+			put(statName, statValue);
+		}
 
-        put(PLAYED_POSITION, (String)playerStatsMap.get(5));
-        put(SUBSTITUTION_TIME, String.valueOf(playerStatsMap.get(8)));
-        put(PLAYABLE_POSITIONS, (String)playerStatsMap.get(9));
+		put(PLAYED_POSITION, (String) playerStats.get(5));
+		put(SUBSTITUTION_TIME, String.valueOf(playerStats.get(8)));
+		put(PLAYABLE_POSITIONS, (String) playerStats.get(9));
 
-        // This is all a bit convoluted due to the way the javascript array is built.
-        Map statsMap = (Map)playerStatsMap.get(3);
-        statsMap = (Map)statsMap.get(0);
+		int totalPass = getIntegerValue(TOTAL_PASS);
+		int accuratePass = getIntegerValue(ACCURATE_PASS);
+		if (totalPass > 0) {
+			double accuratePassPercentage = ((double) accuratePass / (double) totalPass) * 1000;
+			put(ACCURATE_PASS_PERCENTAGE, String.valueOf((int) accuratePassPercentage));
+		}
+		put(SUCCESSFUL_TOUCH, String.valueOf(getIntegerValue(TOUCHES) - getIntegerValue(UNSUCCESSFUL_TOUCH)));
 
-        for(Map stat : (Collection<Map>)statsMap.values()) {
-            String statName = (String)stat.get(0);
-            String statValue = String.valueOf(((Map)stat.get(1)).get(0));
-            put(statName,statValue);
-        }
+		setValid(true);
 	}
 
-    public WhoScoredPlayerStatsMap(String[] playerStats) {
-        put(WHOSCORED_ID, playerStats[1]);
-        put(NAME, playerStats[2]);
+	public WhoScoredPlayerStatsMap(String[] playerStats) {
+		put(WHOSCORED_ID, playerStats[1]);
+		put(NAME, playerStats[2]);
 
-        int i = 4;
-        for(; i < playerStats.length; ++i) {
-            Matcher statNameMatcher = statNamePattern.matcher(playerStats[i]);
-            if(statNameMatcher.matches()) {
-                put(playerStats[i], playerStats[i + 1]);
-                ++i;
-            } else {
-                break;
-            }
-        }
+		int i = 4;
+		for (; i < playerStats.length; ++i) {
+			Matcher statNameMatcher = statNamePattern.matcher(playerStats[i]);
+			if (statNameMatcher.matches()) {
+				put(playerStats[i], playerStats[i + 1]);
+				++i;
+			} else {
+				break;
+			}
+		}
 
-        put(PLAYED_POSITION, playerStats[i + 1]);
-        put(SUBSTITUTION_TIME, playerStats[i + 4]);
-        put(PLAYABLE_POSITIONS, playerStats[i + 5]);
+		put(PLAYED_POSITION, playerStats[i + 1]);
+		put(SUBSTITUTION_TIME, playerStats[i + 4]);
+		put(PLAYABLE_POSITIONS, playerStats[i + 5]);
 
-        for(i = i + 6; i < playerStats.length - 3; ++i) {
-            put(PLAYABLE_POSITIONS, get(PLAYABLE_POSITIONS) + "," + playerStats[i]);
-        }
+		for (i = i + 6; i < playerStats.length - 3; ++i) {
+			put(PLAYABLE_POSITIONS, get(PLAYABLE_POSITIONS) + "," + playerStats[i]);
+		}
 
-        int totalPass = getIntegerValue(TOTAL_PASS);
-        int accuratePass = getIntegerValue(ACCURATE_PASS);
-        if (totalPass > 0) {
-            double accuratePassPercentage = ((double) accuratePass / (double) totalPass) * 1000;
-            put(ACCURATE_PASS_PERCENTAGE, String.valueOf((int) accuratePassPercentage));
-        }
-        put(SUCCESSFUL_TOUCH, String.valueOf(getIntegerValue(TOUCHES) - getIntegerValue(UNSUCCESSFUL_TOUCH)));
+		int totalPass = getIntegerValue(TOTAL_PASS);
+		int accuratePass = getIntegerValue(ACCURATE_PASS);
+		if (totalPass > 0) {
+			double accuratePassPercentage = ((double) accuratePass / (double) totalPass) * 1000;
+			put(ACCURATE_PASS_PERCENTAGE, String.valueOf((int) accuratePassPercentage));
+		}
+		put(SUCCESSFUL_TOUCH, String.valueOf(getIntegerValue(TOUCHES) - getIntegerValue(UNSUCCESSFUL_TOUCH)));
 
-        setValid(true);
-
-        System.out.println(getName() + " (" + getWhoScoredId() + ") " + getRating() + " " + get(PLAYED_POSITION) + " " + get(SUBSTITUTION_TIME) + " " + get(PLAYABLE_POSITIONS));
-    }
+		setValid(true);
+	}
 
 	public WhoScoredPlayerStatsMap(String scriptVariable) {
 		Matcher playerMatcher = playerPattern.matcher(scriptVariable);
@@ -158,7 +159,7 @@ public class WhoScoredPlayerStatsMap extends HashMap<String, String> {
 	}
 
 	public int getWhoScoredId() {
-	    String whoScoredId = get(WHOSCORED_ID);
+		String whoScoredId = get(WHOSCORED_ID);
 		return (whoScoredId != null ? Integer.parseInt(whoScoredId) : 0);
 	}
 
