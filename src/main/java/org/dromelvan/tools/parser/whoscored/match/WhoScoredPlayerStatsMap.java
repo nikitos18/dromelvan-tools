@@ -56,12 +56,11 @@ public class WhoScoredPlayerStatsMap extends HashMap<String, String> {
         // Ex: [43948, Costel Pantilimon, 6.19, [Stats map], 1, GK, 1, 0, 0, GK, 28, 203, 96]
         put(WHOSCORED_ID, String.valueOf(playerStatsMap.get(0)));
         put(NAME, (String)playerStatsMap.get(1));
-        put(RATING, String.valueOf(playerStatsMap.get(2)).replace(".", ""));
-
 
         put(PLAYED_POSITION, (String)playerStatsMap.get(5));
         put(SUBSTITUTION_TIME, String.valueOf(playerStatsMap.get(8)));
         put(PLAYABLE_POSITIONS, (String)playerStatsMap.get(9));
+        put(RATING, String.valueOf(playerStatsMap.get(2)).replace(".", ""));
 
         // This is all a bit convoluted due to the way the javascript array is built.
         Map statsMap = (Map)playerStatsMap.get(3);

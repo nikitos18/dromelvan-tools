@@ -82,6 +82,7 @@ public class WhoScoredMatchEventsJavaScriptVariables extends JavaScriptVariables
 		List<WhoScoredGoalParserObject> whoScoredGoalParserObjects = new ArrayList<WhoScoredGoalParserObject>();
 
 		for (Map goalEvent : getIncidentEventsByType(TYPE_GOAL)) {
+		    int teamId = (int)goalEvent.get("teamId");
 			int playerWhoScoredId = (int) goalEvent.get("playerId");
 			String player = playerIdNameDictionary.get(playerWhoScoredId);
 			int time = (int) goalEvent.get("minute") + 1;
@@ -106,7 +107,7 @@ public class WhoScoredMatchEventsJavaScriptVariables extends JavaScriptVariables
 				assistPlayer = playerIdNameDictionary.get(assistPlayerWhoScoredId);
 			}
 
-			WhoScoredGoalParserObject whoScoredGoalParserObject = new WhoScoredGoalParserObject(player, playerWhoScoredId, assistPlayer, assistPlayerWhoScoredId, time, penalty, ownGoal);
+			WhoScoredGoalParserObject whoScoredGoalParserObject = new WhoScoredGoalParserObject(teamId, player, playerWhoScoredId, assistPlayer, assistPlayerWhoScoredId, time, penalty, ownGoal);
 			whoScoredGoalParserObjects.add(whoScoredGoalParserObject);
 		}
 

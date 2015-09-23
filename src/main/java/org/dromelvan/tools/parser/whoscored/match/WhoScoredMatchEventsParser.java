@@ -42,6 +42,13 @@ public class WhoScoredMatchEventsParser extends JSoupDocumentParser<MatchParserO
 
 		for (WhoScoredGoalParserObject whoScoredGoalParserObject : whoScoredMatchEventsJavaScriptVariables.getGoalParserObjects()) {
 			TeamParserObject teamParserObject = matchParserObject.getTeamForPlayer(whoScoredGoalParserObject.getPlayerWhoScoredId());
+			if(whoScoredGoalParserObject.isOwnGoal()) {
+			    if(teamParserObject == matchParserObject.getHomeTeam()) {
+			        teamParserObject = matchParserObject.getAwayTeam();
+			    } else {
+			        teamParserObject = matchParserObject.getHomeTeam();
+			    }
+			}
 			teamParserObject.getGoals().add(whoScoredGoalParserObject);
 		}
 
@@ -110,7 +117,7 @@ public class WhoScoredMatchEventsParser extends JSoupDocumentParser<MatchParserO
 						Element assistDataElement = assistElement.getElementsByClass("incident-icon").first();
 						assistPlayerId = Integer.parseInt(assistDataElement.attr("data-player-id"));
 					}
-					WhoScoredGoalParserObject goalParserObject = new WhoScoredGoalParserObject(player, playerId, assistPlayer, assistPlayerId, time, penalty, ownGoal);
+					WhoScoredGoalParserObject goalParserObject = new WhoScoredGoalParserObject(0, player, playerId, assistPlayer, assistPlayerId, time, penalty, ownGoal);
 
 					WhoScoredTeamParserObject team = matchParserObject.getTeamForGoal(goalParserObject);
 					if (team == null) {
