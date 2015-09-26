@@ -31,13 +31,13 @@ public class WhoScoredMatchParserTests {
 		protected void configureTest() {
 			try {
 				bindManyInstances(URL.class, new URL("http://www.whoscored.com/Matches/720889/Live/England-Premier-League-2013-2014-Tottenham-Aston-Villa"));
-				bindManyInstances(File.class, new File("src/test/resources/Aston Villa-Sunderland.html"));
+				bindManyInstances(File.class, new File("src/test/resources/Liverpool-Norwich.html"));
 			} catch (MalformedURLException e) {
 			}
 		}
 	}
 
-	//@Test
+	// @Test
 	public void parsePlayerStatsURLTest(@All URL url, WhoScoredMatchParser whoScoredMatchParser) throws IOException {
 		whoScoredMatchParser.setURL(url);
 		Set<MatchParserObject> matchParserObjects = whoScoredMatchParser.parse();
