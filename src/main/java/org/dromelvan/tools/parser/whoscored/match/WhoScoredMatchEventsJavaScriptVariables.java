@@ -1,6 +1,5 @@
 package org.dromelvan.tools.parser.whoscored.match;
 
-import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -77,31 +76,6 @@ public class WhoScoredMatchEventsJavaScriptVariables extends JavaScriptVariables
 
 	public Map<Integer, String> getPlayerIdNameDictionary() {
 		return playerIdNameDictionary;
-	}
-
-	public Map<Integer, Integer> getRatings() {
-		Map<Integer, Integer> ratingMap = new HashMap<Integer, Integer>();
-
-		Map home = (Map) getMatchCentreData().get("home");
-		Map away = (Map) getMatchCentreData().get("away");
-
-		List<Map> players = (List<Map>) home.get("players");
-		players.addAll((List<Map>) away.get("players"));
-
-		for (Map player : players) {
-			int playerId = (int) player.get("playerId");
-			Map<String, Object> stats = (Map<String, Object>) player.get("stats");
-			if (stats != null) {
-				List<Double> ratings = (List<Double>) stats.get("ratings");
-				if (ratings != null) {
-					BigDecimal rating = BigDecimal.valueOf(ratings.get(ratings.size() - 1));
-					rating = rating.movePointRight(2);
-					ratingMap.put(playerId, rating.intValue());
-				}
-			}
-		}
-
-		return ratingMap;
 	}
 
 	public List<WhoScoredGoalParserObject> getGoalParserObjects() {

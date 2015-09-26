@@ -5,13 +5,11 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 
 import org.dromelvan.tools.parser.jsoup.JSoupDocumentParser;
 import org.dromelvan.tools.parser.match.CardParserObject.CardType;
 import org.dromelvan.tools.parser.match.MatchParserObject;
-import org.dromelvan.tools.parser.match.PlayerParserObject;
 import org.dromelvan.tools.parser.match.TeamParserObject;
 import org.dromelvan.tools.parser.whoscored.WhoScoredProperties;
 import org.jsoup.nodes.Element;
@@ -41,17 +39,6 @@ public class WhoScoredMatchEventsParser extends JSoupDocumentParser<MatchParserO
 
 	public Set<MatchParserObject> parseJavaScript(WhoScoredMatchParserObject matchParserObject) {
 		WhoScoredMatchEventsJavaScriptVariables whoScoredMatchEventsJavaScriptVariables = getJavaScriptVariables();
-
-		Map<Integer, Integer> ratingsMap = whoScoredMatchEventsJavaScriptVariables.getRatings();
-		for (int whoScoredId : ratingsMap.keySet()) {
-			int rating = ratingsMap.get(whoScoredId);
-			WhoScoredTeamParserObject whoScoredTeamParserObject = matchParserObject.getTeamForPlayer(whoScoredId);
-			PlayerParserObject playerParserObject = whoScoredTeamParserObject.getPlayer(whoScoredId);
-			if (rating != playerParserObject.getRating()) {
-				logger.info(" Changing rating for {} from {} to {}", playerParserObject.getName(), playerParserObject.getRating(), rating);
-				playerParserObject.setRating(rating);
-			}
-		}
 
 		for (WhoScoredGoalParserObject whoScoredGoalParserObject : whoScoredMatchEventsJavaScriptVariables.getGoalParserObjects()) {
 			TeamParserObject teamParserObject = matchParserObject.getTeamForPlayer(whoScoredGoalParserObject.getPlayerWhoScoredId());
