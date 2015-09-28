@@ -69,8 +69,10 @@ public class WhoScoredMatchParser implements FileParser<MatchParserObject> {
 		}
 		whoScoredPlayerStatsParser.setDocument(document);
 
+		// This isn't needed anymore but leaving it here in case we want to bring it back later.
 		Set<MatchParserObject> matchParserObjects = whoScoredPlayerStatsParser.parse();
-		matchParserObjects = whoScoredMatchEventsParser.parse((WhoScoredMatchParserObject) matchParserObjects.iterator().next());
+
+		matchParserObjects = whoScoredMatchEventsParser.parse();
 		return matchParserObjects;
 	}
 

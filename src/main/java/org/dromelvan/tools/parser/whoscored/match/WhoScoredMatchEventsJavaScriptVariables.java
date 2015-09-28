@@ -22,6 +22,9 @@ public class WhoScoredMatchEventsJavaScriptVariables extends JavaScriptVariables
 	public final static String MATCH_CENTRE_DATA = "matchCentreData";
 	public final static String QUALIFIERS = "qualifiers";
 	public final static String START_TIME = "startTime";
+	public final static String ELAPSED = "elapsed";
+	public final static String HOME_TEAM = "home";
+	public final static String AWAY_TEAM = "away";
 
 	public final static int TYPE_ASSIST = 1;
 	public final static int TYPE_PENALTY = 9;
@@ -47,8 +50,8 @@ public class WhoScoredMatchEventsJavaScriptVariables extends JavaScriptVariables
 		}
 
 		List<Map> incidentEventList = new ArrayList<Map>();
-		Map home = (Map) getMatchCentreData().get("home");
-		Map away = (Map) getMatchCentreData().get("away");
+		Map home = (Map) getMatchCentreData().get(HOME_TEAM);
+		Map away = (Map) getMatchCentreData().get(AWAY_TEAM);
 
 		incidentEventList.addAll((List<Map>) home.get("incidentEvents"));
 		incidentEventList.addAll((List<Map>) away.get("incidentEvents"));
@@ -75,6 +78,10 @@ public class WhoScoredMatchEventsJavaScriptVariables extends JavaScriptVariables
 		return DateTime.parse((String) getMatchCentreData().get(START_TIME), dateTimeFormat);
 	}
 
+	public String getTimeElapsed() {
+		return (String) getMatchCentreData().get(ELAPSED);
+	}
+
 	public Map<Integer, String> getPlayerIdNameDictionary() {
 		return playerIdNameDictionary;
 	}
@@ -82,8 +89,8 @@ public class WhoScoredMatchEventsJavaScriptVariables extends JavaScriptVariables
 	public Map<Integer, Integer> getRatings() {
 		Map<Integer, Integer> ratingMap = new HashMap<Integer, Integer>();
 
-		Map home = (Map) getMatchCentreData().get("home");
-		Map away = (Map) getMatchCentreData().get("away");
+		Map home = (Map) getMatchCentreData().get(HOME_TEAM);
+		Map away = (Map) getMatchCentreData().get(AWAY_TEAM);
 
 		List<Map> players = (List<Map>) home.get("players");
 		players.addAll((List<Map>) away.get("players"));
@@ -104,11 +111,43 @@ public class WhoScoredMatchEventsJavaScriptVariables extends JavaScriptVariables
 		return ratingMap;
 	}
 
+	public WhoScoredMatchParserObject getMatchParserObject() {
+		WhoScoredMatchParserObject matchParserObject = new WhoScoredMatchParserObject();
+
+		matchParserObject.setWhoScoredId(getMatchId());
+
+		WhoScoredTeamParserObject homeTeamParserObject = getTeamParserObject((Map) getMatchCentreData().get(HOME_TEAM));
+		WhoScoredTeamParserObject awayTeamParserObject = getTeamParserObject((Map) getMatchCentreData().get(AWAY_TEAM));
+
+		matchParserObject.setHomeTeam(homeTeamParserObject);
+		matchParserObject.setAwayTeam(awayTeamParserObject);
+
+		matchParserObject.setDateTime(getDateTime().toString());
+		matchParserObject.setTimeElapsed(getTimeElapsed());
+
+		return matchParserObject;
+	}
+
+	public WhoScoredTeamParserObject getTeamParserObject(Map team) {
+		String name = (String) team.get("name");
+		int id = (int) team.get("teamId");
+
+		WhoScoredTeamParserObject teamParserObject = new WhoScoredTeamParserObject(name, id);
+
+		List<Map> players = (List<Map>) team.get("players");
+		for (Map player : players) {
+			WhoScoredPlayerStatsMap whoScoredPlayerStatsMap = new WhoScoredPlayerStatsMap(player);
+			WhoScoredPlayerParserObject playerParserObject = new WhoScoredPlayerParserObject(whoScoredPlayerStatsMap);
+			teamParserObject.getPlayers().add(playerParserObject);
+		}
+		return teamParserObject;
+	}
+
 	public List<WhoScoredGoalParserObject> getGoalParserObjects() {
 		List<WhoScoredGoalParserObject> whoScoredGoalParserObjects = new ArrayList<WhoScoredGoalParserObject>();
 
 		for (Map goalEvent : getIncidentEventsByType(TYPE_GOAL)) {
-		    int teamId = (int)goalEvent.get("teamId");
+			int teamId = (int) goalEvent.get("teamId");
 			int playerWhoScoredId = (int) goalEvent.get("playerId");
 			String player = playerIdNameDictionary.get(playerWhoScoredId);
 			int time = (int) goalEvent.get("minute") + 1;

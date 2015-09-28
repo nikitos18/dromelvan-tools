@@ -32,15 +32,13 @@ public class WhoScoredMatchEventsParser extends JSoupDocumentParser<MatchParserO
 
 	@Override
 	public Set<MatchParserObject> parse() {
-		return parse(new WhoScoredMatchParserObject());
+		return parseJavaScript();
 	}
 
-	public Set<MatchParserObject> parse(WhoScoredMatchParserObject whoScoredMatchParserObject) {
-		return parseJavaScript(whoScoredMatchParserObject);
-	}
-
-	public Set<MatchParserObject> parseJavaScript(WhoScoredMatchParserObject matchParserObject) {
+	private Set<MatchParserObject> parseJavaScript() {
 		WhoScoredMatchEventsJavaScriptVariables whoScoredMatchEventsJavaScriptVariables = getJavaScriptVariables();
+
+		WhoScoredMatchParserObject matchParserObject = whoScoredMatchEventsJavaScriptVariables.getMatchParserObject();
 
 		Map<Integer, Integer> ratingsMap = whoScoredMatchEventsJavaScriptVariables.getRatings();
 		for (int whoScoredId : ratingsMap.keySet()) {
@@ -54,15 +52,21 @@ public class WhoScoredMatchEventsParser extends JSoupDocumentParser<MatchParserO
 		}
 
 		for (WhoScoredGoalParserObject whoScoredGoalParserObject : whoScoredMatchEventsJavaScriptVariables.getGoalParserObjects()) {
-			TeamParserObject teamParserObject = matchParserObject.getTeamForPlayer(whoScoredGoalParserObject.getPlayerWhoScoredId());
-			if(whoScoredGoalParserObject.isOwnGoal()) {
-			    if(teamParserObject == matchParserObject.getHomeTeam()) {
-			        teamParserObject = matchParserObject.getAwayTeam();
-			    } else {
-			        teamParserObject = matchParserObject.getHomeTeam();
-			    }
+			WhoScoredTeamParserObject teamParserObject = matchParserObject.getTeamForPlayer(whoScoredGoalParserObject.getPlayerWhoScoredId());
+			if (whoScoredGoalParserObject.isOwnGoal()) {
+				if (teamParserObject == matchParserObject.getHomeTeam()) {
+					teamParserObject = (WhoScoredTeamParserObject) matchParserObject.getAwayTeam();
+				} else {
+					teamParserObject = (WhoScoredTeamParserObject) matchParserObject.getHomeTeam();
+				}
 			}
+
 			teamParserObject.getGoals().add(whoScoredGoalParserObject);
+
+			if (whoScoredGoalParserObject.getAssistPlayerWhoScoredId() > 0) {
+				WhoScoredPlayerParserObject whoScoredPlayerParserObject = teamParserObject.getPlayer(whoScoredGoalParserObject.getAssistPlayerWhoScoredId());
+				whoScoredPlayerParserObject.setAssists(whoScoredPlayerParserObject.getAssists() + 1);
+			}
 		}
 
 		for (WhoScoredCardParserObject whoScoredCardParserObject : whoScoredMatchEventsJavaScriptVariables.getCardParserObjects()) {
@@ -99,7 +103,7 @@ public class WhoScoredMatchEventsParser extends JSoupDocumentParser<MatchParserO
 		return null;
 	}
 
-	public Set<MatchParserObject> parseDom(WhoScoredMatchParserObject matchParserObject) {
+	private Set<MatchParserObject> parseDom(WhoScoredMatchParserObject matchParserObject) {
 		Elements keyIncidentsElements = getDocument().getElementsByClass("match-centre-key-incidents");
 		for (Element keyIncidentsElement : keyIncidentsElements) {
 			Elements cellElements = keyIncidentsElement.getElementsByTag("td");
