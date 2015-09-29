@@ -3,6 +3,7 @@ package org.dromelvan.tools.parser.whoscored.match;
 import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -109,6 +110,21 @@ public class WhoScoredPlayerStatsMap extends HashMap<String, String> {
 		put(SUCCESSFUL_TOUCH, String.valueOf(getIntegerValue(TOUCHES) - getIntegerValue(UNSUCCESSFUL_TOUCH)));
 
 		setValid(true);
+	}
+
+	public WhoScoredPlayerStatsMap(Map player) {
+		put(WHOSCORED_ID, String.valueOf(player.get("playerId")));
+		put(NAME, (String) player.get("name"));
+
+		put(PLAYED_POSITION, ((String) player.get("position")).toUpperCase());
+
+		Map<String, Object> stats = (Map<String, Object>) player.get("stats");
+		if (stats != null) {
+			List<Double> ratings = (List<Double>) stats.get("ratings");
+			if (ratings != null) {
+				put(RATING, String.valueOf(ratings.get(ratings.size() - 1)));
+			}
+		}
 	}
 
 	public WhoScoredPlayerStatsMap(String scriptVariable) {
