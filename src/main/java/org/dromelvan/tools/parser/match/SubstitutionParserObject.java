@@ -7,6 +7,9 @@ public class SubstitutionParserObject extends MatchEventParserObject {
 	private int playerOutWhoScoredId;
 	private int playerInWhoScoredId;
 
+	public SubstitutionParserObject() {
+	}
+
 	public SubstitutionParserObject(String playerOut, String playerIn, int playerOutWhoScoredId, int playerInWhoScoredId, int time) {
 		super(time);
 		this.playerOut = playerOut;

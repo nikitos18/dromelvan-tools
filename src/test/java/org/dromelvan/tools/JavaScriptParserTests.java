@@ -35,11 +35,6 @@ public class JavaScriptParserTests {
 		Document document = reader.read();
 
 		WhoScoredMatchEventsJavaScriptVariables whoScoredMatchEventsJavaScriptVariables = javaScriptParser.parse(document);
-
-		System.out.println("matchId: " + whoScoredMatchEventsJavaScriptVariables.getMatchId());
-		System.out.println("Date: " + whoScoredMatchEventsJavaScriptVariables.getDateTime());
-		// System.out.println(whoScoredMatchEventsJavaScriptVariables.getGoalParserObjects());
-		// System.out.println(whoScoredMatchEventsJavaScriptVariables.getCardParserObjects());
-		System.out.println(whoScoredMatchEventsJavaScriptVariables.getSubstitutionParserObjects());
+		System.out.println(whoScoredMatchEventsJavaScriptVariables);
 	}
 }

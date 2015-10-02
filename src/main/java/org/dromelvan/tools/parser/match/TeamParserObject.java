@@ -18,6 +18,9 @@ public class TeamParserObject extends ParserObject {
 	private List<SubstitutionParserObject> substitutions = new ArrayList<SubstitutionParserObject>();
 	private final static Logger logger = LoggerFactory.getLogger(TeamParserObject.class);
 
+	public TeamParserObject() {
+	}
+
 	public TeamParserObject(String name) {
 		this.name = name;
 	}

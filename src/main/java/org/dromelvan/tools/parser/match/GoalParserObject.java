@@ -7,6 +7,9 @@ public class GoalParserObject extends MatchEventParserObject {
 	private boolean penalty;
 	private boolean ownGoal;
 
+	public GoalParserObject() {
+	}
+
 	public GoalParserObject(String player, int whoScoredId, int time, boolean penalty, boolean ownGoal) {
 		super(time);
 		this.player = player;
@@ -49,7 +52,7 @@ public class GoalParserObject extends MatchEventParserObject {
 
 	@Override
 	public String toString() {
-		return String.format("Goal - Player: %s Time: %d Penalty: %s Own Goal: %s", getPlayer(), getTime(), isPenalty(), isOwnGoal());
+		return String.format("Goal - Player: %s (%s) Time: %d Penalty: %s Own Goal: %s", getPlayer(), getWhoScoredId(), getTime(), isPenalty(), isOwnGoal());
 	}
 
 }

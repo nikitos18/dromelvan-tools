@@ -1,33 +1,36 @@
 package org.dromelvan.tools.parser.whoscored.match;
 
+import java.math.BigDecimal;
+import java.util.List;
+import java.util.Map;
+
 import org.dromelvan.tools.parser.match.PlayerParserObject;
 
 public class WhoScoredPlayerParserObject extends PlayerParserObject {
 
-	private WhoScoredPlayerStatsMap whoScoredPlayerStatsMap;
+	public WhoScoredPlayerParserObject(Map player) {
+		setWhoScoredId((int) player.get("playerId"));
+		setName((String) player.get("name"));
+		setParticipated((((String) player.get("position")).toUpperCase().equals("SUB") ? 1 : 2));
 
-	public WhoScoredPlayerParserObject() {}
-
-	public WhoScoredPlayerParserObject(WhoScoredPlayerStatsMap whoScoredPlayerStatsMap) {
-		setWhoScoredId(whoScoredPlayerStatsMap.getWhoScoredId());
-		setName(whoScoredPlayerStatsMap.getName());
-		setParticipated(whoScoredPlayerStatsMap.getParticipated());
-		setRating(whoScoredPlayerStatsMap.getRating());
-		setGoals(whoScoredPlayerStatsMap.getGoals());
-		setAssists(whoScoredPlayerStatsMap.getAssists());
-		this.whoScoredPlayerStatsMap = whoScoredPlayerStatsMap;
-	}
-
-	public WhoScoredPlayerStatsMap getWhoScoredPlayerStatsMap() {
-		return whoScoredPlayerStatsMap;
-	}
-
-	public void setWhoScoredPlayerStatsMap(WhoScoredPlayerStatsMap whoScoredPlayerStatsMap) {
-		this.whoScoredPlayerStatsMap = whoScoredPlayerStatsMap;
+		Map<String, Object> stats = (Map<String, Object>) player.get("stats");
+		if (stats != null) {
+			List<Object> ratings = (List<Object>) stats.get("ratings");
+			if (ratings != null) {
+				Object ratingObject = ratings.get(ratings.size() - 1);
+				if (ratingObject instanceof Double) {
+					BigDecimal bigDecimal = BigDecimal.valueOf((Double) ratingObject);
+					bigDecimal = bigDecimal.movePointRight(2);
+					setRating(bigDecimal.intValue());
+				} else if (ratingObject instanceof Integer) {
+					setRating((int) ratingObject * 100);
+				}
+			}
+		}
 	}
 
 	@Override
 	public String toString() {
-		return String.format("Name: %s (%s) Participated: %s Rating: %s Assists: %s Stats: %s", getName(), getWhoScoredId(), getParticipated(), getRating(), getAssists(), getWhoScoredPlayerStatsMap());
+		return String.format("Name: %s (%s) Participated: %s Rating: %s Assists: %s", getName(), getWhoScoredId(), getParticipated(), getRating(), getAssists());
 	}
 }

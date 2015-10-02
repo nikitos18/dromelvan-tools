@@ -22,15 +22,13 @@ import com.google.inject.Inject;
 public class WhoScoredMatchParser implements FileParser<MatchParserObject> {
 
 	private final WhoScoredMatchEventsParser whoScoredMatchEventsParser;
-	private final WhoScoredPlayerStatsParser whoScoredPlayerStatsParser;
 	private JSoupDocumentReader matchEventsReader;
 	private JSoupDocumentReader playerStatsReader;
 	private final static Logger logger = LoggerFactory.getLogger(WhoScoredMatchParser.class);
 
 	@Inject
-	public WhoScoredMatchParser(WhoScoredMatchEventsParser whoScoredMatchEventsParser, WhoScoredPlayerStatsParser whoScoredPlayerStatsParser) {
+	public WhoScoredMatchParser(WhoScoredMatchEventsParser whoScoredMatchEventsParser) {
 		this.whoScoredMatchEventsParser = whoScoredMatchEventsParser;
-		this.whoScoredPlayerStatsParser = whoScoredPlayerStatsParser;
 	}
 
 	public void setURL(URL url) throws MalformedURLException {
@@ -67,12 +65,8 @@ public class WhoScoredMatchParser implements FileParser<MatchParserObject> {
 			writer.flush();
 			writer.close();
 		}
-		whoScoredPlayerStatsParser.setDocument(document);
 
-		// This isn't needed anymore but leaving it here in case we want to bring it back later.
-		Set<MatchParserObject> matchParserObjects = whoScoredPlayerStatsParser.parse();
-
-		matchParserObjects = whoScoredMatchEventsParser.parse();
+		Set<MatchParserObject> matchParserObjects = whoScoredMatchEventsParser.parse();
 		return matchParserObjects;
 	}
 
