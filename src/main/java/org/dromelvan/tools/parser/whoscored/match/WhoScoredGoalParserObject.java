@@ -7,22 +7,21 @@ import org.dromelvan.tools.parser.match.GoalParserObject;
 
 public class WhoScoredGoalParserObject extends GoalParserObject {
 
-	public final static int TYPE_PENALTY = 9;
-
 	private int teamId;
 
 	public WhoScoredGoalParserObject(Map goalEvent) {
-		setTeamId((int) goalEvent.get("teamId"));
-		setWhoScoredId((int) goalEvent.get("playerId"));
+		setTeamId((int) goalEvent.get(WhoScoredMatchJavaScriptVariables.TEAM_INCIDENT_EVENT_TEAM_ID));
+		setWhoScoredId((int) goalEvent.get(WhoScoredMatchJavaScriptVariables.TEAM_INCIDENT_EVENT_PLAYER_ID));
 		setPlayer(PlayerNameDictionary.getName(getWhoScoredId()));
-		setTime((int) goalEvent.get("minute") + 1);
-		setOwnGoal((goalEvent.get("isOwnGoal") == null ? false : (boolean) goalEvent.get("isOwnGoal")));
+		setTime((int) goalEvent.get(WhoScoredMatchJavaScriptVariables.TEAM_INCIDENT_EVENT_MINUTE) + 1);
+		Boolean ownGoal = (Boolean) goalEvent.get(WhoScoredMatchJavaScriptVariables.TEAM_INCIDENT_EVENT_OWN_GOAL);
+		setOwnGoal(ownGoal == null ? false : ownGoal);
 
-		List<Map> qualifiers = (List<Map>) goalEvent.get("qualifiers");
+		List<Map> qualifiers = (List<Map>) goalEvent.get(WhoScoredMatchJavaScriptVariables.TEAM_INCIDENT_EVENT_QUALIFIERS);
 		for (Map qualifier : qualifiers) {
-			Map typeMap = (Map) qualifier.get("type");
-			int value = (int) typeMap.get("value");
-			if (value == TYPE_PENALTY) {
+			Map typeMap = (Map) qualifier.get(WhoScoredMatchJavaScriptVariables.TEAM_INCIDENT_EVENT_QUALIFIER_TYPE);
+			int value = (int) typeMap.get(WhoScoredMatchJavaScriptVariables.TEAM_INCIDENT_EVENT_QUALIFIER_VALUE);
+			if (value == WhoScoredMatchJavaScriptVariables.TYPE_PENALTY) {
 				setPenalty(true);
 				break;
 			}

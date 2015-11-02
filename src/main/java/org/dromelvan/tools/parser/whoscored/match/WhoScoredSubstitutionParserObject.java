@@ -6,12 +6,12 @@ import org.dromelvan.tools.parser.match.SubstitutionParserObject;
 
 public class WhoScoredSubstitutionParserObject extends SubstitutionParserObject {
 
-	public WhoScoredSubstitutionParserObject(Map substitutionOutEvent, Map substitutionInEvent) {
-		setPlayerOutWhoScoredId((int) substitutionOutEvent.get("playerId"));
+	public WhoScoredSubstitutionParserObject(Map substitutionOutEvent) {
+		setPlayerOutWhoScoredId((int) substitutionOutEvent.get(WhoScoredMatchJavaScriptVariables.TEAM_INCIDENT_EVENT_PLAYER_ID));
 		setPlayerOut(PlayerNameDictionary.getName(getPlayerOutWhoScoredId()));
-		setTime((int) substitutionOutEvent.get("minute") + 1);
+		setTime((int) substitutionOutEvent.get(WhoScoredMatchJavaScriptVariables.TEAM_INCIDENT_EVENT_MINUTE) + 1);
 
-		setPlayerInWhoScoredId((int) substitutionInEvent.get("playerId"));
+		setPlayerInWhoScoredId((int) substitutionOutEvent.get(WhoScoredMatchJavaScriptVariables.TEAM_INCIDENT_EVENT_RELATED_PLAYER_ID));
 		setPlayerIn(PlayerNameDictionary.getName(getPlayerInWhoScoredId()));
 	}
 

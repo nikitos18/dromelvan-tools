@@ -9,13 +9,13 @@ import org.dromelvan.tools.parser.match.PlayerParserObject;
 public class WhoScoredPlayerParserObject extends PlayerParserObject {
 
 	public WhoScoredPlayerParserObject(Map player) {
-		setWhoScoredId((int) player.get("playerId"));
-		setName((String) player.get("name"));
-		setParticipated((((String) player.get("position")).toUpperCase().equals("SUB") ? 1 : 2));
+		setWhoScoredId((int) player.get(WhoScoredMatchJavaScriptVariables.PLAYER_ID));
+		setName((String) player.get(WhoScoredMatchJavaScriptVariables.PLAYER_NAME));
+		setParticipated((((String) player.get(WhoScoredMatchJavaScriptVariables.PLAYER_POSITION)).toUpperCase().equals(WhoScoredMatchJavaScriptVariables.PLAYER_POSITION_SUBSTITUTE) ? 1 : 2));
 
-		Map<String, Object> stats = (Map<String, Object>) player.get("stats");
+		Map<String, Object> stats = (Map<String, Object>) player.get(WhoScoredMatchJavaScriptVariables.PLAYER_STATS);
 		if (stats != null) {
-			List<Object> ratings = (List<Object>) stats.get("ratings");
+			List<Object> ratings = (List<Object>) stats.get(WhoScoredMatchJavaScriptVariables.PLAYER_STATS_RATINGS);
 			if (ratings != null) {
 				Object ratingObject = ratings.get(ratings.size() - 1);
 				if (ratingObject instanceof Double) {

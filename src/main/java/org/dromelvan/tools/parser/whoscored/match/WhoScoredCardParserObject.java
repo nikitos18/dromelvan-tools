@@ -6,14 +6,12 @@ import org.dromelvan.tools.parser.match.CardParserObject;
 
 public class WhoScoredCardParserObject extends CardParserObject {
 
-	public final static int TYPE_CARD_YELLOW = 31;
-	public final static int TYPE_CARD_RED = 33;
-
 	public WhoScoredCardParserObject(Map cardEvent) {
-		setWhoScoredId((int) cardEvent.get("playerId"));
+		setWhoScoredId((int) cardEvent.get(WhoScoredMatchJavaScriptVariables.TEAM_INCIDENT_EVENT_PLAYER_ID));
 		setPlayer(PlayerNameDictionary.getName(getWhoScoredId()));
-		setTime((int) cardEvent.get("minute") + 1);
-		setCardType(((int) ((Map) cardEvent.get("cardType")).get("value") == TYPE_CARD_YELLOW ? CardType.YELLOW : CardType.RED));
+		setTime((int) cardEvent.get(WhoScoredMatchJavaScriptVariables.TEAM_INCIDENT_EVENT_MINUTE) + 1);
+		setCardType(((int) ((Map) cardEvent.get(WhoScoredMatchJavaScriptVariables.TEAM_INCIDENT_EVENT_CARD_TYPE))
+				.get(WhoScoredMatchJavaScriptVariables.TEAM_INCIDENT_EVENT_QUALIFIER_VALUE) == WhoScoredMatchJavaScriptVariables.TYPE_CARD_YELLOW ? CardType.YELLOW : CardType.RED));
 	}
 
 }
