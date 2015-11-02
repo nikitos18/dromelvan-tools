@@ -16,10 +16,10 @@ import java.util.regex.Pattern;
 
 import org.dromelvan.tools.parser.jsoup.JSoupFileReader;
 import org.dromelvan.tools.parser.jsoup.JSoupURLReader;
-import org.dromelvan.tools.parser.whoscored.MatchDayParserObject;
-import org.dromelvan.tools.parser.whoscored.MatchParserObject;
-import org.dromelvan.tools.parser.whoscored.SeasonParserObject;
 import org.dromelvan.tools.parser.whoscored.fixtures.FixtureParserObject;
+import org.dromelvan.tools.parser.whoscored.fixtures.MatchDayParserObject;
+import org.dromelvan.tools.parser.whoscored.fixtures.MatchParserObject;
+import org.dromelvan.tools.parser.whoscored.fixtures.SeasonParserObject;
 import org.dromelvan.tools.parser.whoscored.fixtures.TeamStandingsParserObject;
 import org.dromelvan.tools.parser.whoscored.fixtures.WhoScoredFixturesParser;
 import org.dromelvan.tools.parser.whoscored.fixtures.WhoScoredTeamFixturesParser;

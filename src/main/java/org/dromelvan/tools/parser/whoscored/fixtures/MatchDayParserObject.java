@@ -1,4 +1,4 @@
-package org.dromelvan.tools.parser.whoscored;
+package org.dromelvan.tools.parser.whoscored.fixtures;
 
 import java.util.ArrayList;
 import java.util.List;
