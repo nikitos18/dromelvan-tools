@@ -11,6 +11,8 @@ import org.dromelvan.tools.parser.match.CardParserObject.CardType;
 import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class WhoScoredMatchEventsJavaScriptVariables extends JavaScriptVariables {
 
@@ -38,6 +40,7 @@ public class WhoScoredMatchEventsJavaScriptVariables extends JavaScriptVariables
 
 	private Map<Integer, String> playerIdNameDictionary = new HashMap<Integer, String>();
 	private Map<Integer, Map<Integer, Map>> incidentEvents = new HashMap<Integer, Map<Integer, Map>>();
+	private final static Logger logger = LoggerFactory.getLogger(WhoScoredMatchEventsJavaScriptVariables.class);
 
 	@Override
 	public void init() {
@@ -183,14 +186,20 @@ public class WhoScoredMatchEventsJavaScriptVariables extends JavaScriptVariables
 		List<WhoScoredCardParserObject> whoScoredCardParserObjects = new ArrayList<WhoScoredCardParserObject>();
 
 		for (Map cardEvent : getIncidentEventsByType(TYPE_CARD)) {
-			int playerWhoScoredId = (int) cardEvent.get("playerId");
-			String player = playerIdNameDictionary.get(playerWhoScoredId);
-			int time = (int) cardEvent.get("minute") + 1;
-			CardType cardType = ((int) ((Map) cardEvent.get("cardType")).get("value") == TYPE_CARD_YELLOW ? CardType.YELLOW : CardType.RED);
+            // See Wes-Che match day 10 2015-2016 for why this is needed if WhoScored messes up.
+            Object playerId = cardEvent.get("playerId");
+            if(playerId != null) {
+                int playerWhoScoredId = (int) playerId;
+                String player = playerIdNameDictionary.get(playerWhoScoredId);
+                int time = (int) cardEvent.get("minute") + 1;
+                CardType cardType = ((int) ((Map) cardEvent.get("cardType")).get("value") == TYPE_CARD_YELLOW ? CardType.YELLOW : CardType.RED);
 
-			WhoScoredCardParserObject whoScoredCardParserObject = new WhoScoredCardParserObject(player, playerWhoScoredId, time, cardType);
-			whoScoredCardParserObjects.add(whoScoredCardParserObject);
-		}
+                WhoScoredCardParserObject whoScoredCardParserObject = new WhoScoredCardParserObject(player, playerWhoScoredId, time, cardType);
+                whoScoredCardParserObjects.add(whoScoredCardParserObject);
+            } else {
+                logger.info(" Player id missing for card incident {}", cardEvent.get("id"));
+            }
+        }
 		return whoScoredCardParserObjects;
 	}
 
