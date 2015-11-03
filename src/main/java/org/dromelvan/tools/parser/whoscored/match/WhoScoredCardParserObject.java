@@ -1,27 +1,17 @@
 package org.dromelvan.tools.parser.whoscored.match;
 
+import java.util.Map;
+
 import org.dromelvan.tools.parser.match.CardParserObject;
 
 public class WhoScoredCardParserObject extends CardParserObject {
 
-	private int playerWhoScoredId;
-
-	public WhoScoredCardParserObject(String player, int playerWhoScoredId, int time, CardType cardType) {
-		super(player, playerWhoScoredId, time, cardType);
-		this.playerWhoScoredId = playerWhoScoredId;
-	}
-
-	public int getPlayerWhoScoredId() {
-		return playerWhoScoredId;
-	}
-
-	public void setPlayerWhoScoredId(int playerWhoScoredId) {
-		this.playerWhoScoredId = playerWhoScoredId;
-	}
-
-	@Override
-	public String toString() {
-		return String.format("Card - Player: %s (%s) Time: %d Type: %s", getPlayer(), getPlayerWhoScoredId(), getTime(), getCardType());
+	public WhoScoredCardParserObject(Map cardEvent) {
+		setWhoScoredId((int) cardEvent.get(WhoScoredMatchJavaScriptVariables.TEAM_INCIDENT_EVENT_PLAYER_ID));
+		setPlayer(PlayerNameDictionary.getName(getWhoScoredId()));
+		setTime((int) cardEvent.get(WhoScoredMatchJavaScriptVariables.TEAM_INCIDENT_EVENT_MINUTE) + 1);
+		setCardType(((int) ((Map) cardEvent.get(WhoScoredMatchJavaScriptVariables.TEAM_INCIDENT_EVENT_CARD_TYPE))
+				.get(WhoScoredMatchJavaScriptVariables.TEAM_INCIDENT_EVENT_QUALIFIER_VALUE) == WhoScoredMatchJavaScriptVariables.TYPE_CARD_YELLOW ? CardType.YELLOW : CardType.RED));
 	}
 
 }

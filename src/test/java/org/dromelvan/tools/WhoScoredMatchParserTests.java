@@ -37,17 +37,10 @@ public class WhoScoredMatchParserTests {
 		}
 	}
 
-	// @Test
-	public void parsePlayerStatsURLTest(@All URL url, WhoScoredMatchParser whoScoredMatchParser) throws IOException {
-		whoScoredMatchParser.setURL(url);
-		Set<MatchParserObject> matchParserObjects = whoScoredMatchParser.parse();
-		logMatches(matchParserObjects);
-	}
-
 	@Test
-	public void parsePlayerStatsFileTest(@All File file, WhoScoredMatchParser whoScoredMatchParser) throws IOException {
-		whoScoredMatchParser.setFile(file);
-		Set<MatchParserObject> matchParserObjects = whoScoredMatchParser.parse();
+	public void parsePlayerStatsFileTest(@All File file, WhoScoredMatchParser whoScoredMatchEventsParser) throws IOException {
+		whoScoredMatchEventsParser.setFile(file);
+		Set<MatchParserObject> matchParserObjects = whoScoredMatchEventsParser.parse();
 		logMatches(matchParserObjects);
 	}
 

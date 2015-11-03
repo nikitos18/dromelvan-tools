@@ -1,4 +1,4 @@
-package org.dromelvan.tools.parser.whoscored;
+package org.dromelvan.tools.parser.whoscored.fixtures;
 
 import org.joda.time.LocalDate;
 

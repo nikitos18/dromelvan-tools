@@ -1,56 +1,39 @@
 package org.dromelvan.tools.parser.whoscored.match;
 
+import java.util.List;
+import java.util.Map;
+
 import org.dromelvan.tools.parser.match.GoalParserObject;
 
 public class WhoScoredGoalParserObject extends GoalParserObject {
 
-    private int teamId;
-	private int playerWhoScoredId;
-	private String assistPlayer;
-	private int assistPlayerWhoScoredId;
+	private int teamId;
 
-	public WhoScoredGoalParserObject(int teamId, String player, int playerWhoScoredId, String assistPlayer, int assistPlayerWhoScoredId, int time, boolean penalty, boolean ownGoal) {
-		super(player, playerWhoScoredId, time, penalty, ownGoal);
-		this.teamId = teamId;
-		this.playerWhoScoredId = playerWhoScoredId;
-		this.assistPlayer = assistPlayer;
-		this.assistPlayerWhoScoredId = assistPlayerWhoScoredId;
+	public WhoScoredGoalParserObject(Map goalEvent) {
+		setTeamId((int) goalEvent.get(WhoScoredMatchJavaScriptVariables.TEAM_INCIDENT_EVENT_TEAM_ID));
+		setWhoScoredId((int) goalEvent.get(WhoScoredMatchJavaScriptVariables.TEAM_INCIDENT_EVENT_PLAYER_ID));
+		setPlayer(PlayerNameDictionary.getName(getWhoScoredId()));
+		setTime((int) goalEvent.get(WhoScoredMatchJavaScriptVariables.TEAM_INCIDENT_EVENT_MINUTE) + 1);
+		Boolean ownGoal = (Boolean) goalEvent.get(WhoScoredMatchJavaScriptVariables.TEAM_INCIDENT_EVENT_OWN_GOAL);
+		setOwnGoal(ownGoal == null ? false : ownGoal);
+
+		List<Map> qualifiers = (List<Map>) goalEvent.get(WhoScoredMatchJavaScriptVariables.TEAM_INCIDENT_EVENT_QUALIFIERS);
+		for (Map qualifier : qualifiers) {
+			Map typeMap = (Map) qualifier.get(WhoScoredMatchJavaScriptVariables.TEAM_INCIDENT_EVENT_QUALIFIER_TYPE);
+			int value = (int) typeMap.get(WhoScoredMatchJavaScriptVariables.TEAM_INCIDENT_EVENT_QUALIFIER_VALUE);
+			if (value == WhoScoredMatchJavaScriptVariables.TYPE_PENALTY) {
+				setPenalty(true);
+				break;
+			}
+		}
 	}
 
 	public int getTeamId() {
-        return teamId;
-    }
-    public void setTeamId(int teamId) {
-        this.teamId = teamId;
-    }
-
-    public int getPlayerWhoScoredId() {
-		return playerWhoScoredId;
+		return teamId;
 	}
 
-	public void setPlayerWhoScoredId(int playerWhoScoredId) {
-		this.playerWhoScoredId = playerWhoScoredId;
-	}
-
-	public String getAssistPlayer() {
-		return assistPlayer;
-	}
-
-	public void setAssistPlayer(String assistPlayer) {
-		this.assistPlayer = assistPlayer;
-	}
-
-	public int getAssistPlayerWhoScoredId() {
-		return assistPlayerWhoScoredId;
-	}
-
-	public void setAssistPlayerWhoScoredId(int assistPlayerWhoScoredId) {
-		this.assistPlayerWhoScoredId = assistPlayerWhoScoredId;
-	}
-
-	@Override
-	public String toString() {
-		return String.format("Goal - Player: %s (%s) Time: %d Penalty: %s Own Goal: %s Assist: %s (%s)", getPlayer(), getPlayerWhoScoredId(), getTime(), isPenalty(), isOwnGoal(), getAssistPlayer(), getAssistPlayerWhoScoredId());
+	public void setTeamId(int teamId) {
+		this.teamId = teamId;
 	}
 
 }

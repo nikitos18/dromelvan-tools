@@ -1,15 +1,48 @@
 package org.dromelvan.tools.parser.whoscored.match;
 
-import org.dromelvan.tools.parser.match.PlayerParserObject;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import org.dromelvan.tools.parser.match.TeamParserObject;
 
 public class WhoScoredTeamParserObject extends TeamParserObject {
 
 	private int whoScoredId;
 
-	public WhoScoredTeamParserObject(String name, int whoScoredId) {
-		super(name);
-		this.whoScoredId = whoScoredId;
+	public WhoScoredTeamParserObject(Map team) {
+		setName((String) team.get(WhoScoredMatchJavaScriptVariables.TEAM_NAME));
+		setWhoScoredId((int) team.get(WhoScoredMatchJavaScriptVariables.TEAM_ID));
+
+		Map<Integer, WhoScoredPlayerParserObject> playerMap = new HashMap<Integer, WhoScoredPlayerParserObject>();
+		List<Map> players = (List<Map>) team.get(WhoScoredMatchJavaScriptVariables.TEAM_PLAYERS);
+		for (Map player : players) {
+			WhoScoredPlayerParserObject whoScoredPlayerParserObject = new WhoScoredPlayerParserObject(player);
+			getPlayers().add(whoScoredPlayerParserObject);
+			playerMap.put(whoScoredPlayerParserObject.getWhoScoredId(), whoScoredPlayerParserObject);
+		}
+
+		List<Map> incidentEvents = (List<Map>) team.get(WhoScoredMatchJavaScriptVariables.TEAM_INCIDENT_EVENTS);
+
+		for (Map incidentEvent : incidentEvents) {
+			Map type = (Map) incidentEvent.get(WhoScoredMatchJavaScriptVariables.TEAM_INCIDENT_EVENT_TYPE);
+			int typeValue = (int) type.get(WhoScoredMatchJavaScriptVariables.TEAM_INCIDENT_EVENT_VALUE);
+
+			if (typeValue == WhoScoredMatchJavaScriptVariables.TYPE_GOAL) {
+				WhoScoredGoalParserObject whoScoredGoalParserObject = new WhoScoredGoalParserObject(incidentEvent);
+				getGoals().add(whoScoredGoalParserObject);
+			} else if (typeValue == WhoScoredMatchJavaScriptVariables.TYPE_ASSIST) {
+				WhoScoredPlayerParserObject whoScoredPlayerParserObject = playerMap.get(incidentEvent.get(WhoScoredMatchJavaScriptVariables.PLAYER_ID));
+				whoScoredPlayerParserObject.setAssists(whoScoredPlayerParserObject.getAssists() + 1);
+			} else if (typeValue == WhoScoredMatchJavaScriptVariables.TYPE_CARD) {
+				WhoScoredCardParserObject whoScoredCardParserObject = new WhoScoredCardParserObject(incidentEvent);
+				getCards().add(whoScoredCardParserObject);
+			} else if (typeValue == WhoScoredMatchJavaScriptVariables.TYPE_SUBSTITUTION_OFF) {
+				WhoScoredSubstitutionParserObject whoScoredSubstitutionParserObject = new WhoScoredSubstitutionParserObject(incidentEvent);
+				getSubstitutions().add(whoScoredSubstitutionParserObject);
+			}
+		}
+
 	}
 
 	public int getWhoScoredId() {
@@ -18,16 +51,6 @@ public class WhoScoredTeamParserObject extends TeamParserObject {
 
 	public void setWhoScoredId(int whoScoredId) {
 		this.whoScoredId = whoScoredId;
-	}
-
-	public WhoScoredPlayerParserObject getPlayer(int whoScoredId) {
-		for (PlayerParserObject playerParserObject : getPlayers()) {
-			WhoScoredPlayerParserObject whoScoredPlayerParserObject = (WhoScoredPlayerParserObject) playerParserObject;
-			if (whoScoredPlayerParserObject.getWhoScoredId() == whoScoredId) {
-				return whoScoredPlayerParserObject;
-			}
-		}
-		return null;
 	}
 
 	@Override

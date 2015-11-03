@@ -5,7 +5,7 @@ import java.io.IOException;
 
 import org.dromelvan.tools.parser.javascript.JavaScriptParser;
 import org.dromelvan.tools.parser.jsoup.JSoupFileReader;
-import org.dromelvan.tools.parser.whoscored.match.WhoScoredMatchEventsJavaScriptVariables;
+import org.dromelvan.tools.parser.whoscored.match.WhoScoredMatchJavaScriptVariables;
 import org.jsoup.nodes.Document;
 import org.jukito.All;
 import org.jukito.JukitoModule;
@@ -28,18 +28,13 @@ public class JavaScriptParserTests {
 	}
 
 	@Test
-	public void test(@All File file, JavaScriptParser<WhoScoredMatchEventsJavaScriptVariables> javaScriptParser) throws IOException {
+	public void test(@All File file, JavaScriptParser<WhoScoredMatchJavaScriptVariables> javaScriptParser) throws IOException {
 		logger.info("Reading file: " + file);
 
 		JSoupFileReader reader = new JSoupFileReader(file);
 		Document document = reader.read();
 
-		WhoScoredMatchEventsJavaScriptVariables whoScoredMatchEventsJavaScriptVariables = javaScriptParser.parse(document);
-
-		System.out.println("matchId: " + whoScoredMatchEventsJavaScriptVariables.getMatchId());
-		System.out.println("Date: " + whoScoredMatchEventsJavaScriptVariables.getDateTime());
-		// System.out.println(whoScoredMatchEventsJavaScriptVariables.getGoalParserObjects());
-		// System.out.println(whoScoredMatchEventsJavaScriptVariables.getCardParserObjects());
-		System.out.println(whoScoredMatchEventsJavaScriptVariables.getSubstitutionParserObjects());
+		WhoScoredMatchJavaScriptVariables whoScoredMatchEventsJavaScriptVariables = javaScriptParser.parse(document);
+		System.out.println(whoScoredMatchEventsJavaScriptVariables);
 	}
 }

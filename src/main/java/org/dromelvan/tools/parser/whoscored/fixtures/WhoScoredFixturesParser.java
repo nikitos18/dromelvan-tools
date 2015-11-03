@@ -6,9 +6,6 @@ import java.util.Set;
 
 import org.dromelvan.tools.parser.javascript.JavaScriptVariables;
 import org.dromelvan.tools.parser.jsoup.JSoupDocumentParser;
-import org.dromelvan.tools.parser.whoscored.MatchDayParserObject;
-import org.dromelvan.tools.parser.whoscored.MatchParserObject;
-import org.dromelvan.tools.parser.whoscored.SeasonParserObject;
 import org.dromelvan.tools.parser.whoscored.WhoScoredProperties;
 import org.joda.time.LocalDate;
 import org.joda.time.format.DateTimeFormat;

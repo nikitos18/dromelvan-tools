@@ -1,10 +1,33 @@
 package org.dromelvan.tools.parser.whoscored.match;
 
+import java.util.Map;
+
 import org.dromelvan.tools.parser.match.MatchParserObject;
+import org.joda.time.DateTime;
+import org.joda.time.format.DateTimeFormat;
+import org.joda.time.format.DateTimeFormatter;
 
 public class WhoScoredMatchParserObject extends MatchParserObject {
 
 	private int whoScoredId;
+
+	public WhoScoredMatchParserObject(Map match) {
+		setWhoScoredId((Integer) match.get(WhoScoredMatchJavaScriptVariables.MATCH_ID));
+
+		Map matchCentreData = (Map) match.get(WhoScoredMatchJavaScriptVariables.MATCH_CENTRE_DATA);
+
+		DateTimeFormatter dateTimeFormat = DateTimeFormat.forPattern("MM/dd/YYYY HH:mm:ss");
+		DateTime dateTime = DateTime.parse((String) matchCentreData.get(WhoScoredMatchJavaScriptVariables.START_TIME), dateTimeFormat);
+		setDateTime(dateTime.toString());
+
+		setTimeElapsed((String) matchCentreData.get(WhoScoredMatchJavaScriptVariables.ELAPSED));
+
+		WhoScoredTeamParserObject homeTeamParserObject = new WhoScoredTeamParserObject((Map) matchCentreData.get(WhoScoredMatchJavaScriptVariables.HOME_TEAM));
+		WhoScoredTeamParserObject awayTeamParserObject = new WhoScoredTeamParserObject((Map) matchCentreData.get(WhoScoredMatchJavaScriptVariables.AWAY_TEAM));
+
+		setHomeTeam(homeTeamParserObject);
+		setAwayTeam(awayTeamParserObject);
+	}
 
 	public int getWhoScoredId() {
 		return whoScoredId;
@@ -12,33 +35,6 @@ public class WhoScoredMatchParserObject extends MatchParserObject {
 
 	public void setWhoScoredId(int whoScoredId) {
 		this.whoScoredId = whoScoredId;
-	}
-
-	protected WhoScoredTeamParserObject getTeamForPlayer(int whoScoredId) {
-		WhoScoredTeamParserObject whoScoredTeamParserObject = (WhoScoredTeamParserObject) getHomeTeam();
-		if (whoScoredTeamParserObject.getPlayer(whoScoredId) != null) {
-			return whoScoredTeamParserObject;
-		}
-		whoScoredTeamParserObject = (WhoScoredTeamParserObject) getAwayTeam();
-		if (whoScoredTeamParserObject.getPlayer(whoScoredId) != null) {
-			return whoScoredTeamParserObject;
-		}
-		return null;
-	}
-
-	protected WhoScoredTeamParserObject getTeamForGoal(WhoScoredGoalParserObject whoScoredGoalParserObject) {
-		WhoScoredTeamParserObject homeTeam = (WhoScoredTeamParserObject) getHomeTeam();
-		WhoScoredTeamParserObject awayTeam = (WhoScoredTeamParserObject) getAwayTeam();
-
-		if ((homeTeam.getPlayer(whoScoredGoalParserObject.getPlayerWhoScoredId()) != null && !whoScoredGoalParserObject.isOwnGoal())
-				|| (awayTeam.getPlayer(whoScoredGoalParserObject.getPlayerWhoScoredId()) != null && whoScoredGoalParserObject.isOwnGoal())) {
-			return homeTeam;
-		}
-		if ((awayTeam.getPlayer(whoScoredGoalParserObject.getPlayerWhoScoredId()) != null && !whoScoredGoalParserObject.isOwnGoal())
-				|| (homeTeam.getPlayer(whoScoredGoalParserObject.getPlayerWhoScoredId()) != null && whoScoredGoalParserObject.isOwnGoal())) {
-			return awayTeam;
-		}
-		return null;
 	}
 
 	@Override

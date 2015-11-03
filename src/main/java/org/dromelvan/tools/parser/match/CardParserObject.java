@@ -11,6 +11,9 @@ public class CardParserObject extends MatchEventParserObject {
 	private int whoScoredId;
 	private CardType type;
 
+	public CardParserObject() {
+	}
+
 	public CardParserObject(String player, int whoScoredId, int time, CardType type) {
 		super(time);
 		this.player = player;
