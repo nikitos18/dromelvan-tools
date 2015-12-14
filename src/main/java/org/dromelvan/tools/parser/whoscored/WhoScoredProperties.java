@@ -12,6 +12,6 @@ public class WhoScoredProperties extends ParserProperties {
 	public WhoScoredProperties() {
 		super("whoscored");
 		setVerifyNames(false);
-		setMapNames(false);
+		setMapNames(true);
 	}
 }

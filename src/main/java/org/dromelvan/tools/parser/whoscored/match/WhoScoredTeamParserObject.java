@@ -1,14 +1,17 @@
 package org.dromelvan.tools.parser.whoscored.match;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.dromelvan.tools.parser.match.GoalParserObject;
 import org.dromelvan.tools.parser.match.TeamParserObject;
 
 public class WhoScoredTeamParserObject extends TeamParserObject {
 
 	private int whoScoredId;
+	private List<GoalParserObject> ownGoals = new ArrayList<GoalParserObject>();
 
 	public WhoScoredTeamParserObject(Map team) {
 		setName((String) team.get(WhoScoredMatchJavaScriptVariables.TEAM_NAME));
@@ -30,7 +33,11 @@ public class WhoScoredTeamParserObject extends TeamParserObject {
 
 			if (typeValue == WhoScoredMatchJavaScriptVariables.TYPE_GOAL) {
 				WhoScoredGoalParserObject whoScoredGoalParserObject = new WhoScoredGoalParserObject(incidentEvent);
-				getGoals().add(whoScoredGoalParserObject);
+				if(!whoScoredGoalParserObject.isOwnGoal()) {
+				    getGoals().add(whoScoredGoalParserObject);
+				} else {
+				    getOwnGoals().add(whoScoredGoalParserObject);
+				}
 			} else if (typeValue == WhoScoredMatchJavaScriptVariables.TYPE_ASSIST) {
 				WhoScoredPlayerParserObject whoScoredPlayerParserObject = playerMap.get(incidentEvent.get(WhoScoredMatchJavaScriptVariables.PLAYER_ID));
 				whoScoredPlayerParserObject.setAssists(whoScoredPlayerParserObject.getAssists() + 1);
@@ -53,7 +60,15 @@ public class WhoScoredTeamParserObject extends TeamParserObject {
 		this.whoScoredId = whoScoredId;
 	}
 
-	@Override
+	public List<GoalParserObject> getOwnGoals() {
+        return ownGoals;
+    }
+
+    public void setOwnGoals(List<GoalParserObject> ownGoals) {
+        this.ownGoals = ownGoals;
+    }
+
+    @Override
 	public String toString() {
 		return String.format("%s (%s)", getName(), getWhoScoredId());
 	}

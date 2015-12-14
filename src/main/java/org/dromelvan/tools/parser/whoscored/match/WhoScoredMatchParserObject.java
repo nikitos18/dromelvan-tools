@@ -25,6 +25,9 @@ public class WhoScoredMatchParserObject extends MatchParserObject {
 		WhoScoredTeamParserObject homeTeamParserObject = new WhoScoredTeamParserObject((Map) matchCentreData.get(WhoScoredMatchJavaScriptVariables.HOME_TEAM));
 		WhoScoredTeamParserObject awayTeamParserObject = new WhoScoredTeamParserObject((Map) matchCentreData.get(WhoScoredMatchJavaScriptVariables.AWAY_TEAM));
 
+		homeTeamParserObject.getGoals().addAll(awayTeamParserObject.getOwnGoals());
+		awayTeamParserObject.getGoals().addAll(homeTeamParserObject.getOwnGoals());
+
 		setHomeTeam(homeTeamParserObject);
 		setAwayTeam(awayTeamParserObject);
 	}
