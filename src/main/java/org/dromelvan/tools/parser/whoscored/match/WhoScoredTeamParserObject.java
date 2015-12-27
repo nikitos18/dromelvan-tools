@@ -35,12 +35,13 @@ public class WhoScoredTeamParserObject extends TeamParserObject {
 				WhoScoredGoalParserObject whoScoredGoalParserObject = new WhoScoredGoalParserObject(incidentEvent);
 				if(!whoScoredGoalParserObject.isOwnGoal()) {
 				    getGoals().add(whoScoredGoalParserObject);
+				    WhoScoredPlayerParserObject relatedWhoScoredPlayerParserObject = playerMap.get(incidentEvent.get(WhoScoredMatchJavaScriptVariables.TEAM_INCIDENT_EVENT_RELATED_PLAYER_ID));
+				    if(relatedWhoScoredPlayerParserObject != null) {
+				        relatedWhoScoredPlayerParserObject.setAssists(relatedWhoScoredPlayerParserObject.getAssists() + 1);
+				    }
 				} else {
 				    getOwnGoals().add(whoScoredGoalParserObject);
 				}
-			} else if (typeValue == WhoScoredMatchJavaScriptVariables.TYPE_ASSIST) {
-				WhoScoredPlayerParserObject whoScoredPlayerParserObject = playerMap.get(incidentEvent.get(WhoScoredMatchJavaScriptVariables.PLAYER_ID));
-				whoScoredPlayerParserObject.setAssists(whoScoredPlayerParserObject.getAssists() + 1);
 			} else if (typeValue == WhoScoredMatchJavaScriptVariables.TYPE_CARD) {
 				WhoScoredCardParserObject whoScoredCardParserObject = new WhoScoredCardParserObject(incidentEvent);
 				getCards().add(whoScoredCardParserObject);

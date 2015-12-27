@@ -31,7 +31,7 @@ public class WhoScoredMatchParserTests {
 		protected void configureTest() {
 			try {
 				bindManyInstances(URL.class, new URL("http://www.whoscored.com/Matches/720889/Live/England-Premier-League-2013-2014-Tottenham-Aston-Villa"));
-				bindManyInstances(File.class, new File("src/test/resources/Manchester City-Liverpool.html"));
+				bindManyInstances(File.class, new File("src/test/resources/Chelsea-Watford.html"));
 			} catch (MalformedURLException e) {
 			}
 		}
