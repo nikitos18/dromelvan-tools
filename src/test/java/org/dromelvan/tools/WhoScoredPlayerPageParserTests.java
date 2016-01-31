@@ -239,10 +239,9 @@ public class WhoScoredPlayerPageParserTests {
 		}
 
 		reader.close();
-		// writer.close();
-		// failedWriter.flush();
-		// failedWriter.close();
-
+		writer.close();
+		failedWriter.flush();
+		failedWriter.close();
 	}
 
 	// @Test

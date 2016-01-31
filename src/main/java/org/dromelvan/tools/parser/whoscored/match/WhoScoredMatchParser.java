@@ -9,14 +9,10 @@ import org.dromelvan.tools.parser.jsoup.JSoupDocumentParser;
 import org.dromelvan.tools.parser.jsoup.JSoupFileReader;
 import org.dromelvan.tools.parser.match.MatchParserObject;
 import org.dromelvan.tools.parser.whoscored.WhoScoredProperties;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import com.google.inject.Inject;
 
 public class WhoScoredMatchParser extends JSoupDocumentParser<MatchParserObject, WhoScoredMatchJavaScriptVariables> implements FileParser<MatchParserObject> {
-
-	private final static Logger logger = LoggerFactory.getLogger(WhoScoredMatchParser.class);
 
 	@Inject
 	public WhoScoredMatchParser(WhoScoredProperties whoScoredProperties) {
