@@ -16,7 +16,7 @@ public class WhoScoredMatchParserObject extends MatchParserObject {
 
 		Map matchCentreData = (Map) match.get(WhoScoredMatchJavaScriptVariables.MATCH_CENTRE_DATA);
 
-		DateTimeFormatter dateTimeFormat = DateTimeFormat.forPattern("MM/dd/YYYY HH:mm:ss");
+		DateTimeFormatter dateTimeFormat = DateTimeFormat.forPattern("MM/dd/YYYY HH:mm:ss 'PM'");
 		DateTime dateTime = DateTime.parse((String) matchCentreData.get(WhoScoredMatchJavaScriptVariables.START_TIME), dateTimeFormat);
 		setDateTime(dateTime.toString());
 
