@@ -7,11 +7,14 @@ import java.util.Map;
 
 import org.dromelvan.tools.parser.match.GoalParserObject;
 import org.dromelvan.tools.parser.match.TeamParserObject;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class WhoScoredTeamParserObject extends TeamParserObject {
 
 	private int whoScoredId;
 	private List<GoalParserObject> ownGoals = new ArrayList<GoalParserObject>();
+	private final static Logger logger = LoggerFactory.getLogger(WhoScoredTeamParserObject.class);
 
 	public WhoScoredTeamParserObject(Map team) {
 		setName((String) team.get(WhoScoredMatchJavaScriptVariables.TEAM_NAME));
@@ -43,6 +46,11 @@ public class WhoScoredTeamParserObject extends TeamParserObject {
 				    getOwnGoals().add(whoScoredGoalParserObject);
 				}
 			} else if (typeValue == WhoScoredMatchJavaScriptVariables.TYPE_CARD) {
+			    // For example Stoke - Everton 6.2 2016
+	            if(incidentEvent.get(WhoScoredMatchJavaScriptVariables.TEAM_INCIDENT_EVENT_PLAYER_ID) == null) {
+	                logger.error("Value playerId missing in incident event {}.", incidentEvent);
+	                continue;
+	            }
 				WhoScoredCardParserObject whoScoredCardParserObject = new WhoScoredCardParserObject(incidentEvent);
 				getCards().add(whoScoredCardParserObject);
 			} else if (typeValue == WhoScoredMatchJavaScriptVariables.TYPE_SUBSTITUTION_OFF) {
